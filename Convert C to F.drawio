@@ -1,0 +1,41 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:148.0) Gecko/20100101 Firefox/148.0" version="29.6.3">
+  <diagram name="Celsius to Fahrenheit Flowchart" id="R6y1aAH_4VletUy0R7sS">
+    <mxGraphModel dx="1668" dy="1322" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="8_3B-7OoH4mu0KrbKGQO-1" parent="1" style="ellipse;whiteSpace=wrap;html=1;" value="START" vertex="1">
+          <mxGeometry height="60" width="120" x="367" y="200" as="geometry" />
+        </mxCell>
+        <mxCell id="8_3B-7OoH4mu0KrbKGQO-13" edge="1" parent="1" source="8_3B-7OoH4mu0KrbKGQO-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="8_3B-7OoH4mu0KrbKGQO-12">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="8_3B-7OoH4mu0KrbKGQO-3" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="F = (C × 9 / 5) + 32" vertex="1">
+          <mxGeometry height="60" width="200" x="327" y="400" as="geometry" />
+        </mxCell>
+        <mxCell id="8_3B-7OoH4mu0KrbKGQO-5" parent="1" style="ellipse;whiteSpace=wrap;html=1;" value="END" vertex="1">
+          <mxGeometry height="60" width="120" x="367" y="600" as="geometry" />
+        </mxCell>
+        <mxCell id="8_3B-7OoH4mu0KrbKGQO-6" edge="1" parent="1" source="8_3B-7OoH4mu0KrbKGQO-1" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="8_3B-7OoH4mu0KrbKGQO-11">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="427" y="300" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="8_3B-7OoH4mu0KrbKGQO-7" edge="1" parent="1" source="8_3B-7OoH4mu0KrbKGQO-11" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="8_3B-7OoH4mu0KrbKGQO-3">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="427" y="360" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="8_3B-7OoH4mu0KrbKGQO-11" parent="1" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" value="INPUT C" vertex="1">
+          <mxGeometry height="60" width="214" x="320" y="300" as="geometry" />
+        </mxCell>
+        <mxCell id="8_3B-7OoH4mu0KrbKGQO-14" edge="1" parent="1" source="8_3B-7OoH4mu0KrbKGQO-12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="8_3B-7OoH4mu0KrbKGQO-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="8_3B-7OoH4mu0KrbKGQO-12" parent="1" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" value="OUTPUT F" vertex="1">
+          <mxGeometry height="60" width="214" x="320" y="500" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
