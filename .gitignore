@@ -1,3 +1,4 @@
 .vscode/tasks.json
 /helloworld.dSYM
 /leapyear.dSYM
+*.exe

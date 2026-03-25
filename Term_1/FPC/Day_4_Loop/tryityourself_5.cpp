@@ -1,0 +1,24 @@
+#include <stdio.h>
+
+// in tháp *
+int main() {
+  int n = 7;
+
+  // for (int i = 1; i <= n; i++) {
+  //   for (int j = 1; j <= i; j++) {
+  //     printf("*");
+  //   }
+  //   printf("\n");
+  // }
+
+  // Đảo lại
+  for (int i = 1; i <= n; i++) {
+    for (int j = n; j >= i; j--) {
+      printf("*");
+    }
+    printf("\n");
+  }
+
+  return 0;
+}
+
