@@ -1,9 +1,10 @@
 #include <stdio.h>
 
 int main() {
-  for (int x = 100; x >= 5; x -= 5) {
-    printf("%d ", x);
+  int x = 100;
+  for (; x > 5; x -= 5) {
+    printf("%d, ", x);
   }
-  printf("\n");
+  printf("%d\n", x);
   return 0;
 }
