@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>session storage</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/digitallytailored/classless@latest/classless.min.css"
+    />
+  </head>
+  <body>
+    <h2>Session Storage Example</h2>
+    <button onclick="saveData()">Save Data</button>
+    <button onclick="getData()">Get Data</button>
+    <button onclick="removeData()">Remove Data</button>
+    <button onclick="clearData()">Clear Data</button>
+    <script>
+      function saveData() {
+        sessionStorage.setItem("name", "John Doe");
+        alert("Data saved to session storage!");
+      }
+
+      function getData() {
+        const name = sessionStorage.getItem("name");
+        if (name) {
+          alert("Retrieved data: " + name);
+        } else {
+          alert("No data found in session storage.");
+        }
+      }
+
+      function removeData() {
+        sessionStorage.removeItem("name");
+        alert("Data removed from session storage!");
+      }
+
+      function clearData() {
+        sessionStorage.clear();
+        alert("All data cleared from session storage!");
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Amazing Bridges - Contact</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: auto;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: auto;
+        padding: 24px;
+      }
+
+      .header {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+
+      .logo {
+        width: 190px;
+        height: 125px;
+        object-fit: cover;
+      }
+
+      .site-name {
+        font-size: clamp(44px, 5vw, 74px);
+        font-family: Georgia, "Times New Roman", serif;
+        font-weight: 700;
+      }
+
+      .menu {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 54px;
+        margin: 30px 4px 20px;
+      }
+
+      .menu a {
+        text-decoration: none;
+        color: #101010;
+        font-size: clamp(24px, 1vw, 49px);
+        font-weight: 700;
+      }
+
+      .menu a:hover {
+        color: #0063b3;
+      }
+
+      .form-shell {
+        border-top: 4px solid #d7d7d7;
+        padding-top: 10px;
+      }
+
+      h1 {
+        margin: 6px 0 18px 100px;
+        color: #ff220f;
+        font-size: clamp(24px, 1vw, 49px);
+        line-height: 1;
+        font-family: Georgia, "Times New Roman", serif;
+        text-shadow: 2px 2px 3px #9d9d9d;
+      }
+
+      fieldset {
+        border: 2px solid #8a8a8a;
+        padding: 24px 24px 18px;
+        margin: 0 0 24px;
+      }
+
+      legend {
+        font-size: clamp(24px, 1vw, 49px);
+        padding: 0 6px;
+      }
+
+      .row {
+        display: grid;
+        grid-template-columns: 120px minmax(260px, 460px) auto;
+        align-items: center;
+        column-gap: 16px;
+        margin: 12px 0;
+      }
+
+      .row label,
+      .full-label {
+        font-size: clamp(24px, 1vw, 49px);
+      }
+
+      .star {
+        color: #ff1a1a;
+        font-size: clamp(24px, 1vw, 49px);
+        font-weight: 700;
+      }
+
+      .text-input {
+        height: 62px;
+        border: 2px solid #d3d3d3;
+        border-bottom: 4px solid #2434ff;
+        font-size: clamp(24px, 1vw, 49px);
+        padding: 8px 14px;
+      }
+
+      .review-row {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 24px;
+        margin: 18px 0;
+      }
+
+      .review-row > label:first-child {
+        min-width: 440px;
+        font-size: clamp(24px, 1vw, 49px);
+      }
+
+      select {
+        width: 320px;
+        height: 66px;
+        font-size: clamp(24px, 1vw, 49px);
+        border: 2px solid #b8b8b8;
+        background: #f8f8f8;
+        padding: 6px 18px;
+      }
+
+      .options {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 38px;
+      }
+
+      .options label,
+      .check-line label {
+        font-size: clamp(24px, 1vw, 49px);
+      }
+
+      textarea {
+        width: 880px;
+        max-width: 100%;
+        height: 190px;
+        resize: both;
+        font-size: clamp(24px, 1vw, 49px);
+        padding: 10px;
+        border: 2px solid #bfbfbf;
+      }
+
+      .check-line {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        margin: 20px 0 14px;
+      }
+
+      input[type="radio"],
+      input[type="checkbox"] {
+        width: 28px;
+        height: 28px;
+      }
+
+      .buttons {
+        display: flex;
+        gap: 16px;
+      }
+
+      .btn {
+        border: 1px solid #8f8f8f;
+        border-radius: 42px;
+        color: #ffffff;
+        background: #1f2eff;
+        font-size: clamp(24px, 1vw, 49px);
+        padding: 8px 28px 12px;
+        line-height: 1;
+        cursor: pointer;
+      }
+
+      #message {
+        margin-top: 14px;
+        padding: 12px 16px;
+        border-radius: 5px;
+        font-size: 20px;
+        line-height: 1.4;
+        display: none;
+      }
+
+      #message.error {
+        display: block;
+        background: #ffe7e7;
+        border: 1px solid #cc0000;
+        color: #8d0000;
+      }
+
+      #message.success {
+        display: block;
+        background: #e7ffe9;
+        border: 1px solid #188b2c;
+        color: #135f20;
+      }
+
+      footer {
+        text-align: center;
+        font-size: clamp(24px, 1vw, 49px);
+        margin: 24px 0 8px;
+      }
+
+      @media (max-width: 900px) {
+        .row {
+          grid-template-columns: 1fr;
+          row-gap: 8px;
+        }
+
+        .review-row > label:first-child {
+          min-width: 0;
+        }
+
+        h1 {
+          margin-left: 12px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header class="header">
+        <img class="logo" src="./image/logo.jpg" alt="Bridge logo" />
+        <div class="site-name">Amazing Bridges</div>
+      </header>
+
+      <nav class="menu">
+        <a href="./home.html">HOME</a>
+        <a href="#">WORLD BRIDES</a>
+        <a href="#">TOP LONGEST</a>
+        <a href="#">TOP HIGHEST</a>
+        <a href="./contact.html">CONTACT</a>
+      </nav>
+
+      <section class="form-shell">
+        <h1>Contact us</h1>
+
+        <form id="contactForm" novalidate>
+          <fieldset>
+            <legend>Your Details:</legend>
+            <div class="row">
+              <label for="name">Name</label>
+              <input id="name" class="text-input" type="text" />
+              <span class="star">*</span>
+            </div>
+
+            <div class="row">
+              <label for="email">Email</label>
+              <input id="email" class="text-input" type="email" />
+              <span class="star">*</span>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Your Review:</legend>
+            <div class="review-row">
+              <label for="source">How did you hear about us?</label>
+              <select id="source">
+                <option value="Google">Google</option>
+                <option value="Friend">Friend</option>
+                <option value="Advert">Advert</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+
+            <div class="review-row">
+              <label class="full-label">Would you visit again?</label>
+              <div class="options">
+                <label
+                  ><input type="radio" name="visit" value="Yes" />Yes</label
+                >
+                <label><input type="radio" name="visit" value="No" />No</label>
+                <label
+                  ><input type="radio" name="visit" value="Maybe" />Maybe</label
+                >
+              </div>
+            </div>
+
+            <div class="review-row">
+              <label class="full-label" for="review">Comments:</label>
+            </div>
+            <textarea id="review"></textarea>
+
+            <div class="check-line">
+              <input id="updates" type="checkbox" checked />
+              <label for="updates">Sign me up for email updates</label>
+            </div>
+
+            <div class="buttons">
+              <button class="btn" type="submit">Submit review</button>
+              <button class="btn" type="reset">Reset</button>
+            </div>
+            <div id="message"></div>
+          </fieldset>
+        </form>
+      </section>
+
+      <footer>Copyright &copy; by ABC Team - April, 2020</footer>
+    </div>
+
+    <script>
+      const form = document.getElementById("contactForm");
+      const nameInput = document.getElementById("name");
+      const emailInput = document.getElementById("email");
+      const sourceInput = document.getElementById("source");
+      const reviewInput = document.getElementById("review");
+      const updatesInput = document.getElementById("updates");
+      const messageBox = document.getElementById("message");
+
+      function showMessage(type, text) {
+        messageBox.className = type;
+        messageBox.innerHTML = text;
+      }
+
+      form.addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        const name = nameInput.value.trim();
+        const email = emailInput.value.trim();
+        const source = sourceInput.value;
+        const visit = document.querySelector('input[name="visit"]:checked');
+        const review = reviewInput.value.trim();
+        const updates = updatesInput.checked ? "Yes" : "No";
+        const errors = [];
+
+        if (!/^[A-Za-z ]{3,}$/.test(name)) {
+          errors.push(
+            "Name must be at least 3 characters and contain only letters or spaces.",
+          );
+        }
+
+        if (!/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/.test(email)) {
+          errors.push(
+            "Email must be in the correct format (example: name@example.com).",
+          );
+        }
+
+        if (errors.length > 0) {
+          showMessage("error", errors.join("<br />"));
+          return;
+        }
+
+        showMessage(
+          "success",
+          "Thank you for your review!<br />" +
+            "Name: " +
+            name +
+            "<br />Email: " +
+            email +
+            "<br />Source: " +
+            source +
+            "<br />Visit again: " +
+            (visit ? visit.value : "Not selected") +
+            "<br />Email updates: " +
+            updates +
+            "<br />Review: " +
+            (review || "No review text."),
+        );
+        form.reset();
+      });
+    </script>
+  </body>
+</html>

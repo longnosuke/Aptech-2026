@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Amazing Bridges - Home</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: auto;
+        padding: 24px;
+      }
+
+      .header {
+        display: flex;
+        justify-content: center;
+        gap: 16px;
+      }
+
+      .logo {
+        width: 190px;
+        height: 125px;
+        object-fit: cover;
+      }
+
+      .menu {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 54px;
+        margin: 30px 4px 28px;
+        padding: 20px 0;
+        border-top: 2px solid #333;
+        border-bottom: 1px solid #333;
+      }
+
+      .menu a {
+        text-decoration: none;
+        color: #101010;
+        font-size: clamp(24px, 1vw, 49px);
+        font-weight: 700;
+      }
+
+      .menu a:hover {
+        color: #0063b3;
+      }
+
+      .main-img {
+        display: flex;
+        justify-content: center;
+        height: 200px;
+      }
+
+      footer {
+        text-align: center;
+        font-size: clamp(24px, 1vw, 48px);
+        margin: 30px 0 10px;
+      }
+
+      @media (max-width: 900px) {
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header class="header">
+        <img class="main" src="./images/logo.gif" alt="Logo" />
+      </header>
+
+      <nav class="menu">
+        <a href="./index.html">HOME</a>
+        <a href="#">FOR SALE</a>
+        <a href="#">REPAIRS</a>
+        <a href="#">SIGNIN</a>
+        <a href="./register.html">REGISTER</a>
+        <a href="#">CONTACT</a>
+      </nav>
+
+      <div class="main-img">
+        <img src="./images/keys.jpg" alt="" />
+      </div>
+
+      <section class="gallery"></section>
+
+      <footer>
+        We specialized in the sale and repair of classic keyboards, in
+        particular the Fender Rhodes, Wurlitzer Ep200, and Hohner Clavinet
+      </footer>
+    </div>
+  </body>
+</html>

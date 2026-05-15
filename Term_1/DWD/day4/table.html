@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/digitallytailored/classless@latest/classless.min.css">
+    <title>table</title>
+
+    <style>
+      table * {
+        border: 1px solid #333;
+      }
+      table {
+        border-radius: 16px;
+        overflow: hidden
+      }
+      td[rowspan="4"], td[rowspan="3"] {
+        background-color: #333;
+        color: white;
+      }
+      tr:nth-of-type(even) {
+        background-color: #333;
+        color: white;
+      }
+      tr:nth-of-type(even):hover {
+        background-color: #8898AD;
+      }
+    </style>
+</head>
+
+<body>
+    <div>
+        <h2>List of Students</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Group</th>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Gender</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td rowspan="4">G1</td>
+                    <td>SV1</td>
+                    <td>Le Thanh Hoang Trieu</td>
+                    <td>trieu@gmail.com</td>
+                    <td>Male</td>
+                </tr>
+                <tr>
+                    <td>SV2</td>
+                    <td>Mai Chi Dung</td>
+                    <td>dung@hotmail.com</td>
+                    <td>Male</td>
+                </tr>
+                <tr>
+                    <td>SV3</td>
+                    <td>Luong Son Ba</td>
+                    <td>ba@yahoo.com</td>
+                    <td>Male</td>
+                </tr>
+                <tr>
+                    <td>SV4</td>
+                    <td>Chuc Anh Dai</td>
+                    <td>dai@gmail.com</td>
+                    <td>Female</td>
+                </tr>
+
+                <tr>
+                    <td rowspan="3">G2</td>
+                    <td>SV5</td>
+                    <td>Nguyen Duy Khang</td>
+                    <td>khang@gmail.com</td>
+                    <td>Male</td>
+                </tr>
+                <tr>
+                    <td>SV6</td>
+                    <td>Vu Dinh Hiep</td>
+                    <td>hiep@gmail.com</td>
+                    <td>Female</td>
+                </tr>
+                <tr>
+                    <td>SV7</td>
+                    <td>Bui Hoang Thien</td>
+                    <td>thien@gmail.com</td>
+                    <td>Female</td>
+                </tr>
+
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="5" style="text-align: right;">
+                        Total : 7 students
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</body>
+
+</html>

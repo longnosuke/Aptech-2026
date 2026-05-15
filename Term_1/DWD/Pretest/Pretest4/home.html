@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Amazing Bridges - Home</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 24px;
+      }
+
+      .header {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+
+      .logo {
+        width: 190px;
+        height: 125px;
+        object-fit: cover;
+      }
+
+      .site-name {
+        font-size: clamp(44px, 5vw, 74px);
+        font-family: Georgia, "Times New Roman", serif;
+        font-weight: 700;
+      }
+
+      .menu {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 54px;
+        margin: 30px 4px 28px;
+      }
+
+      .menu a {
+        text-decoration: none;
+        color: #101010;
+        font-size: clamp(24px, 1vw, 49px);
+        font-weight: 700;
+      }
+
+      .menu a:hover {
+        color: #0063b3;
+      }
+
+      .gallery {
+        border-top: 4px solid #d7d7d7;
+        display: grid;
+        grid-template-columns: 2.8fr 0.9fr;
+        gap: 4px;
+        background: #fff;
+      }
+
+      .gallery .main {
+        width: 100%;
+        height: 950px;
+        object-fit: cover;
+      }
+
+      .side {
+        display: grid;
+        grid-template-rows: 1fr 1fr 1fr;
+        gap: 4px;
+      }
+
+      .side img {
+        width: 100%;
+        height: 314px;
+        object-fit: cover;
+      }
+
+      footer {
+        text-align: center;
+        font-size: clamp(24px, 2.2vw, 48px);
+        margin: 30px 0 10px;
+      }
+
+      @media (max-width: 900px) {
+        .gallery {
+          grid-template-columns: 1fr;
+        }
+
+        .gallery .main {
+          height: 420px;
+        }
+
+        .side {
+          grid-template-columns: 1fr 1fr 1fr;
+          grid-template-rows: 1fr;
+        }
+
+        .side img {
+          height: 160px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header class="header">
+        <img class="logo" src="./image/logo.jpg" alt="Bridge logo" />
+        <div class="site-name">Amazing Bridges</div>
+      </header>
+
+      <nav class="menu">
+        <a href="./home.html">HOME</a>
+        <a href="#">WORLD BRIDES</a>
+        <a href="#">TOP LONGEST</a>
+        <a href="#">TOP HIGHEST</a>
+        <a href="./contact.html">CONTACT</a>
+      </nav>
+
+      <section class="gallery">
+        <img
+          class="main"
+          src="./image/GoldenGate.jpg"
+          alt="Golden Gate Bridge"
+        />
+        <div class="side">
+          <img src="./image/bridge_2.jpg" alt="Bridge view 2" />
+          <img src="./image/bridge_3.jpg" alt="Bridge view 3" />
+          <img src="./image/bridge_4.jpg" alt="Bridge view 4" />
+        </div>
+      </section>
+
+      <footer>Copyright &copy; by ABC Team - April, 2020</footer>
+    </div>
+  </body>
+</html>

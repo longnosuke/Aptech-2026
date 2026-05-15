@@ -1,0 +1,1555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NOIR Supply — Dark Luxury Tech Store</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-primary: #0a0a0f;
+      --bg-secondary: #111118;
+      --bg-tertiary: #1a1a24;
+      --border: #2a2a3a;
+      --border-accent: #3a3a5a;
+      --text-primary: #f0f0f5;
+      --text-secondary: #8888aa;
+      --text-muted: #55556a;
+      --accent: #7c6fff;
+      --accent-hover: #9b8fff;
+      --accent-glow: rgba(124, 111, 255, 0.3);
+      --success: #22d3a0;
+      --danger: #ff5566;
+      --warning: #ffb347;
+      --gradient-card: linear-gradient(135deg, #111118 0%, #1a1a28 100%);
+      --shadow-soft: 0 24px 90px rgba(0, 0, 0, 0.35);
+      --container: 1280px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--text-primary);
+      background:
+        radial-gradient(circle at top left, rgba(124, 111, 255, 0.18), transparent 32rem),
+        radial-gradient(circle at 80% 10%, rgba(34, 211, 160, 0.08), transparent 26rem),
+        var(--bg-primary);
+      font-family: "DM Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,0.8), rgba(0,0,0,0.15));
+      pointer-events: none;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    button {
+      border: 0;
+      cursor: pointer;
+    }
+
+    .container {
+      width: min(100% - 32px, var(--container));
+      margin-inline: auto;
+    }
+
+    .page {
+      display: none;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    .auth-page.active {
+      display: grid;
+      min-height: 100vh;
+      place-items: center;
+      padding: 40px 16px;
+      position: relative;
+    }
+
+    .auth-page::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background-image: radial-gradient(rgba(255,255,255,0.12) 1px, transparent 1px);
+      background-size: 24px 24px;
+      opacity: 0.25;
+    }
+
+    .auth-card {
+      width: min(100%, 420px);
+      padding: 32px;
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.035), transparent),
+        rgba(17, 17, 24, 0.88);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(22px);
+      animation: fadeInUp 0.5s ease both;
+    }
+
+    .brand-lockup {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 22px;
+    }
+
+    .logo-mark {
+      display: inline-grid;
+      width: 44px;
+      height: 44px;
+      place-items: center;
+      border: 1px solid rgba(124, 111, 255, 0.38);
+      border-radius: 16px;
+      background: linear-gradient(135deg, rgba(124, 111, 255, 0.22), rgba(255, 255, 255, 0.04));
+      box-shadow: 0 0 40px var(--accent-glow);
+      font-size: 1.35rem;
+    }
+
+    .brand-name {
+      font-family: "Syne", sans-serif;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      font-size: 1.35rem;
+    }
+
+    .auth-title {
+      margin: 0;
+      font-family: "Syne", sans-serif;
+      font-size: clamp(2rem, 7vw, 3rem);
+      line-height: 0.95;
+      letter-spacing: -0.055em;
+      text-align: center;
+    }
+
+    .auth-copy {
+      margin: 14px auto 28px;
+      max-width: 32ch;
+      color: var(--text-secondary);
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    .form-stack {
+      display: grid;
+      gap: 16px;
+    }
+
+    .field label {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .field input {
+      width: 100%;
+      padding: 14px 15px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      outline: none;
+      color: var(--text-primary);
+      background: var(--bg-tertiary);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+    }
+
+    .field input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px rgba(124, 111, 255, 0.16);
+      transform: translateY(-1px);
+    }
+
+    .remember-row,
+    .auth-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      color: var(--text-secondary);
+      font-size: 0.92rem;
+    }
+
+    .remember-row label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+    }
+
+    .remember-row input {
+      width: 17px;
+      height: 17px;
+      accent-color: var(--accent);
+    }
+
+    .inline-error {
+      min-height: 20px;
+      color: var(--danger);
+      font-size: 0.9rem;
+      line-height: 1.4;
+    }
+
+    .text-link {
+      color: var(--accent-hover);
+      font-weight: 700;
+    }
+
+    .text-link:hover {
+      text-decoration: underline;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border-radius: 12px;
+      padding: 12px 16px;
+      color: var(--text-primary);
+      background: var(--bg-tertiary);
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+      user-select: none;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn:active {
+      transform: translateY(0) scale(0.98);
+    }
+
+    .btn-primary {
+      width: 100%;
+      min-height: 48px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: linear-gradient(135deg, var(--accent), #5f52ed);
+      box-shadow: 0 14px 35px rgba(124, 111, 255, 0.28);
+      font-weight: 800;
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, var(--accent-hover), var(--accent));
+      box-shadow: 0 18px 45px rgba(124, 111, 255, 0.35);
+    }
+
+    .btn-outline {
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.03);
+      color: var(--text-primary);
+    }
+
+    .btn-ghost {
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--text-secondary);
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--border);
+      color: var(--text-primary);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .navbar {
+      display: none;
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      border-bottom: 1px solid rgba(42, 42, 58, 0.86);
+      background: rgba(10, 10, 15, 0.72);
+      backdrop-filter: blur(20px);
+    }
+
+    .navbar.visible {
+      display: block;
+      animation: navDrop 0.35s ease both;
+    }
+
+    .nav-inner {
+      display: flex;
+      min-height: 76px;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .nav-left,
+    .nav-links,
+    .nav-user {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .nav-left .brand-lockup {
+      justify-content: flex-start;
+      margin: 0 12px 0 0;
+    }
+
+    .nav-left .logo-mark {
+      width: 40px;
+      height: 40px;
+      border-radius: 14px;
+    }
+
+    .nav-link {
+      position: relative;
+      min-height: 42px;
+      padding-inline: 14px;
+      border: 1px solid transparent;
+      border-radius: 999px;
+      background: transparent;
+      color: var(--text-secondary);
+      font-weight: 700;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      border-color: var(--border);
+      color: var(--text-primary);
+      background: rgba(255, 255, 255, 0.045);
+    }
+
+    .cart-badge {
+      display: inline-grid;
+      min-width: 22px;
+      height: 22px;
+      margin-left: 4px;
+      padding-inline: 6px;
+      place-items: center;
+      border-radius: 999px;
+      color: #0a0a0f;
+      background: var(--success);
+      font-size: 0.75rem;
+      font-weight: 900;
+    }
+
+    .cart-badge.pulse {
+      animation: badgePulse 0.45s ease;
+    }
+
+    .user-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      max-width: 240px;
+      padding: 7px 10px 7px 7px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.035);
+      color: var(--text-secondary);
+    }
+
+    .avatar {
+      display: inline-grid;
+      width: 32px;
+      height: 32px;
+      flex: 0 0 auto;
+      place-items: center;
+      border-radius: 50%;
+      color: var(--text-primary);
+      background: linear-gradient(135deg, var(--accent), #3f35b6);
+      font-size: 0.78rem;
+      font-weight: 900;
+    }
+
+    .user-name {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: 0.92rem;
+      font-weight: 700;
+    }
+
+    .main-pad {
+      padding: 48px 0 72px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 24px;
+      align-items: end;
+      margin-bottom: 30px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      width: max-content;
+      margin-bottom: 16px;
+      padding: 7px 10px;
+      border: 1px solid rgba(124, 111, 255, 0.26);
+      border-radius: 999px;
+      color: var(--accent-hover);
+      background: rgba(124, 111, 255, 0.08);
+      font-size: 0.74rem;
+      font-weight: 900;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .hero h1,
+    .section-title {
+      margin: 0;
+      font-family: "Syne", sans-serif;
+      font-size: clamp(2.5rem, 7vw, 5.3rem);
+      line-height: 0.92;
+      letter-spacing: -0.065em;
+    }
+
+    .hero p {
+      max-width: 680px;
+      margin: 18px 0 0;
+      color: var(--text-secondary);
+      font-size: 1.05rem;
+      line-height: 1.7;
+    }
+
+    .hero-stat {
+      min-width: 190px;
+      padding: 18px;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.035);
+    }
+
+    .hero-stat strong {
+      display: block;
+      color: var(--text-primary);
+      font-family: "DM Mono", monospace;
+      font-size: 2rem;
+    }
+
+    .hero-stat span {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 24px;
+    }
+
+    .product-card {
+      position: relative;
+      display: flex;
+      min-height: 430px;
+      flex-direction: column;
+      overflow: hidden;
+      padding: 24px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: var(--gradient-card);
+      box-shadow: 0 20px 55px rgba(0, 0, 0, 0.14);
+      animation: fadeInUp 0.4s ease both;
+      transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .product-card::before {
+      content: "";
+      position: absolute;
+      inset: -1px;
+      z-index: 0;
+      background: radial-gradient(circle at 50% 0%, rgba(124, 111, 255, 0.18), transparent 45%);
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+
+    .product-card:hover {
+      border-color: var(--accent);
+      box-shadow: 0 24px 80px rgba(124, 111, 255, 0.17);
+      transform: translateY(-4px);
+    }
+
+    .product-card:hover::before {
+      opacity: 1;
+    }
+
+    .product-card > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .product-visual {
+      display: grid;
+      width: 136px;
+      height: 136px;
+      margin: 4px auto 24px;
+      place-items: center;
+      border: 1px solid rgba(124, 111, 255, 0.22);
+      border-radius: 40px;
+      background:
+        radial-gradient(circle, rgba(124, 111, 255, 0.28), rgba(124, 111, 255, 0.04) 64%, transparent),
+        rgba(255, 255, 255, 0.025);
+      box-shadow: inset 0 0 40px rgba(255,255,255,0.03), 0 0 46px rgba(124, 111, 255, 0.18);
+      font-size: 4.5rem;
+    }
+
+    .category-badge {
+      width: max-content;
+      max-width: 100%;
+      padding: 6px 9px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      color: var(--text-secondary);
+      background: rgba(255, 255, 255, 0.035);
+      font-size: 0.67rem;
+      font-weight: 900;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .product-card h3 {
+      margin: 14px 0 8px;
+      font-family: "Syne", sans-serif;
+      font-size: 1.5rem;
+      letter-spacing: -0.04em;
+    }
+
+    .product-desc {
+      min-height: 50px;
+      margin: 0 0 18px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .card-footer {
+      display: grid;
+      gap: 18px;
+      margin-top: auto;
+    }
+
+    .price {
+      color: var(--accent-hover);
+      font-family: "DM Mono", monospace;
+      font-size: 1.65rem;
+      font-weight: 500;
+      letter-spacing: -0.06em;
+    }
+
+    .add-btn {
+      width: 100%;
+      min-height: 46px;
+      border-radius: 10px;
+      color: white;
+      background: var(--accent);
+      font-weight: 900;
+      box-shadow: 0 14px 35px rgba(124, 111, 255, 0.22);
+    }
+
+    .add-btn:hover {
+      background: var(--accent-hover);
+    }
+
+    .add-btn.added {
+      background: var(--success);
+      color: #07120f;
+      animation: addFlash 1.2s ease;
+    }
+
+    .cart-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 2fr) minmax(320px, 1fr);
+      gap: 24px;
+      align-items: start;
+    }
+
+    .cart-list {
+      display: grid;
+      gap: 16px;
+    }
+
+    .cart-row {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      gap: 18px;
+      align-items: center;
+      padding: 18px;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      background: var(--gradient-card);
+      animation: fadeInUp 0.35s ease both;
+    }
+
+    .cart-image {
+      display: grid;
+      width: 86px;
+      height: 86px;
+      place-items: center;
+      border: 1px solid rgba(124, 111, 255, 0.2);
+      border-radius: 24px;
+      background: rgba(124, 111, 255, 0.08);
+      font-size: 2.7rem;
+    }
+
+    .cart-info h3 {
+      margin: 8px 0 5px;
+      font-family: "Syne", sans-serif;
+      font-size: 1.2rem;
+      letter-spacing: -0.035em;
+    }
+
+    .cart-info p {
+      margin: 0;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    .cart-meta {
+      display: grid;
+      gap: 12px;
+      justify-items: end;
+    }
+
+    .unit-price {
+      color: var(--text-secondary);
+      font-family: "DM Mono", monospace;
+      font-size: 0.9rem;
+    }
+
+    .qty-control {
+      display: inline-grid;
+      grid-template-columns: 36px 44px 36px;
+      align-items: center;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.035);
+    }
+
+    .qty-control button {
+      height: 36px;
+      color: var(--text-primary);
+      background: transparent;
+      font-size: 1.1rem;
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+
+    .qty-control button:hover {
+      background: rgba(124, 111, 255, 0.16);
+    }
+
+    .qty-control button:active {
+      transform: scale(0.9);
+    }
+
+    .qty-control span {
+      color: var(--text-primary);
+      font-family: "DM Mono", monospace;
+      text-align: center;
+    }
+
+    .subtotal {
+      color: var(--accent-hover);
+      font-family: "DM Mono", monospace;
+      font-size: 1.1rem;
+      font-weight: 500;
+    }
+
+    .remove-btn {
+      width: 34px;
+      height: 34px;
+      border: 1px solid rgba(255, 85, 102, 0.24);
+      border-radius: 50%;
+      color: var(--danger);
+      background: rgba(255, 85, 102, 0.08);
+      font-size: 1.2rem;
+    }
+
+    .remove-btn:hover {
+      background: rgba(255, 85, 102, 0.16);
+    }
+
+    .summary-card,
+    .empty-state {
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      background: rgba(17, 17, 24, 0.86);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(18px);
+    }
+
+    .summary-card {
+      position: sticky;
+      top: 100px;
+      padding: 24px;
+    }
+
+    .summary-card h2 {
+      margin: 0 0 18px;
+      font-family: "Syne", sans-serif;
+      letter-spacing: -0.04em;
+    }
+
+    .summary-line {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-secondary);
+    }
+
+    .summary-line strong {
+      color: var(--text-primary);
+    }
+
+    .summary-total {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 16px;
+      margin: 18px 0 22px;
+    }
+
+    .summary-total span {
+      color: var(--text-secondary);
+    }
+
+    .summary-total strong {
+      color: var(--accent-hover);
+      font-family: "DM Mono", monospace;
+      font-size: clamp(1.85rem, 5vw, 2.35rem);
+      font-weight: 500;
+      letter-spacing: -0.06em;
+    }
+
+    .summary-actions {
+      display: grid;
+      gap: 12px;
+    }
+
+    .empty-state {
+      display: grid;
+      min-height: 360px;
+      place-items: center;
+      padding: 42px 24px;
+      text-align: center;
+    }
+
+    .empty-emoji {
+      display: grid;
+      width: 116px;
+      height: 116px;
+      margin-inline: auto;
+      place-items: center;
+      border: 1px solid rgba(124, 111, 255, 0.24);
+      border-radius: 32px;
+      background: rgba(124, 111, 255, 0.08);
+      box-shadow: 0 0 50px rgba(124, 111, 255, 0.12);
+      font-size: 4rem;
+    }
+
+    .empty-state h2 {
+      margin: 22px 0 8px;
+      font-family: "Syne", sans-serif;
+      font-size: 2rem;
+      letter-spacing: -0.05em;
+    }
+
+    .empty-state p {
+      max-width: 44ch;
+      margin: 0 auto 24px;
+      color: var(--text-secondary);
+      line-height: 1.65;
+    }
+
+    #toast-container {
+      position: fixed;
+      top: 22px;
+      right: 22px;
+      z-index: 50;
+      display: grid;
+      width: min(360px, calc(100vw - 32px));
+      gap: 12px;
+      pointer-events: none;
+    }
+
+    .toast {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 10px;
+      align-items: start;
+      padding: 14px 15px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      color: var(--text-primary);
+      background: rgba(17, 17, 24, 0.94);
+      box-shadow: 0 18px 55px rgba(0, 0, 0, 0.36);
+      backdrop-filter: blur(18px);
+      pointer-events: auto;
+      animation: toastIn 0.32s ease both;
+    }
+
+    .toast.success {
+      border-color: rgba(34, 211, 160, 0.42);
+    }
+
+    .toast.danger {
+      border-color: rgba(255, 85, 102, 0.42);
+    }
+
+    .toast.info {
+      border-color: rgba(124, 111, 255, 0.34);
+    }
+
+    .toast.leaving {
+      animation: toastOut 0.28s ease both;
+    }
+
+    .toast-icon {
+      line-height: 1.35;
+    }
+
+    .toast-message {
+      color: var(--text-primary);
+      line-height: 1.35;
+      font-weight: 700;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes badgePulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.4); }
+      100% { transform: scale(1); }
+    }
+
+    @keyframes toastIn {
+      from { transform: translateX(120%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    @keyframes toastOut {
+      from { transform: translateX(0); opacity: 1; }
+      to { transform: translateX(120%); opacity: 0; }
+    }
+
+    @keyframes addFlash {
+      0% { transform: scale(1); }
+      35% { transform: scale(1.04); }
+      70% { transform: scale(1); }
+      100% { transform: scale(1); }
+    }
+
+    @keyframes navDrop {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 920px) {
+      .hero,
+      .cart-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-stat {
+        width: 100%;
+      }
+
+      .summary-card {
+        position: static;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-inner {
+        min-height: auto;
+        flex-wrap: wrap;
+        padding: 12px 0;
+      }
+
+      .nav-left,
+      .nav-user {
+        width: 100%;
+        justify-content: space-between;
+      }
+
+      .nav-links {
+        order: 3;
+        width: 100%;
+        justify-content: stretch;
+      }
+
+      .nav-link {
+        flex: 1;
+      }
+
+      .cart-row {
+        grid-template-columns: auto 1fr;
+      }
+
+      .cart-meta {
+        grid-column: 1 / -1;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        justify-items: stretch;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .auth-card {
+        padding: 24px;
+        border-radius: 22px;
+      }
+
+      .product-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .product-card {
+        min-height: auto;
+      }
+
+      .cart-row {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+
+      .cart-image {
+        margin-inline: auto;
+      }
+
+      .cart-meta {
+        justify-content: center;
+      }
+
+      .category-badge {
+        margin-inline: auto;
+      }
+
+      .hero h1,
+      .section-title {
+        font-size: clamp(2.25rem, 16vw, 3.5rem);
+      }
+
+      .user-name {
+        max-width: 130px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header id="navbar" class="navbar" aria-label="Main navigation">
+    <div class="container nav-inner">
+      <div class="nav-left">
+        <a href="#home" class="brand-lockup" aria-label="NOIR Supply home">
+          <span class="logo-mark">◆</span>
+          <span class="brand-name">NOIR Supply</span>
+        </a>
+        <nav class="nav-links" aria-label="Primary links">
+          <button class="btn nav-link" data-route="home" type="button">Home</button>
+          <button class="btn nav-link" data-route="cart" type="button">
+            Cart <span id="cart-badge" class="cart-badge">0</span>
+          </button>
+        </nav>
+      </div>
+      <div class="nav-user">
+        <div class="user-chip" title="Current user">
+          <span id="user-avatar" class="avatar">U</span>
+          <span id="user-name" class="user-name">User</span>
+        </div>
+        <button id="signout-btn" class="btn btn-ghost" type="button">Sign Out</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="app">
+    <section id="page-signin" class="page auth-page" aria-labelledby="signin-title">
+      <div class="auth-card">
+        <div class="brand-lockup">
+          <span class="logo-mark">◆</span>
+          <span class="brand-name">NOIR Supply</span>
+        </div>
+        <h1 id="signin-title" class="auth-title">Welcome back.</h1>
+        <p class="auth-copy">Sign in to access curated luxury tech drops, your cart, and your saved session.</p>
+
+        <form id="signin-form" class="form-stack" autocomplete="on">
+          <div class="field">
+            <label for="signin-username">Username</label>
+            <input id="signin-username" name="username" type="text" placeholder="admin" required />
+          </div>
+          <div class="field">
+            <label for="signin-password">Password</label>
+            <input id="signin-password" name="password" type="password" placeholder="admin123" required />
+          </div>
+          <div class="remember-row">
+            <label for="remember-me"><input id="remember-me" name="remember" type="checkbox" /> Remember Me</label>
+            <span>Try admin / admin123</span>
+          </div>
+          <div id="signin-error" class="inline-error" role="alert"></div>
+          <button class="btn btn-primary" type="submit">Sign In</button>
+          <div class="auth-footer">
+            <span>New here?</span>
+            <a class="text-link" href="#signup">Create an account</a>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <section id="page-signup" class="page auth-page" aria-labelledby="signup-title">
+      <div class="auth-card">
+        <div class="brand-lockup">
+          <span class="logo-mark">◆</span>
+          <span class="brand-name">NOIR Supply</span>
+        </div>
+        <h1 id="signup-title" class="auth-title">Join the list.</h1>
+        <p class="auth-copy">Create an in-memory account and step inside the dark luxury tech showroom.</p>
+
+        <form id="signup-form" class="form-stack" autocomplete="on">
+          <div class="field">
+            <label for="signup-name">Name</label>
+            <input id="signup-name" name="name" type="text" placeholder="Jane Doe" required />
+          </div>
+          <div class="field">
+            <label for="signup-username">Username</label>
+            <input id="signup-username" name="username" type="text" placeholder="jane" required />
+          </div>
+          <div class="field">
+            <label for="signup-password">Password</label>
+            <input id="signup-password" name="password" type="password" placeholder="Choose a password" required />
+          </div>
+          <div class="field">
+            <label for="signup-confirm">Confirm password</label>
+            <input id="signup-confirm" name="confirm" type="password" placeholder="Repeat password" required />
+          </div>
+          <div id="signup-error" class="inline-error" role="alert"></div>
+          <button class="btn btn-primary" type="submit">Create Account</button>
+          <div class="auth-footer">
+            <span>Already have access?</span>
+            <a class="text-link" href="#signin">Sign in</a>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <section id="page-home" class="page main-pad" aria-labelledby="home-title">
+      <div class="container">
+        <div class="hero">
+          <div>
+            <span class="eyebrow">Limited Run / Premium Tech</span>
+            <h1 id="home-title">Dark luxury essentials.</h1>
+            <p>Shop sharp, high-contrast technology curated for people who like their devices fast, rare, and visually immaculate.</p>
+          </div>
+          <div class="hero-stat" aria-label="Product count">
+            <strong id="product-count">8</strong>
+            <span>curated pieces available now</span>
+          </div>
+        </div>
+        <div id="products-grid" class="product-grid" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <section id="page-cart" class="page main-pad" aria-labelledby="cart-title">
+      <div class="container">
+        <div class="hero">
+          <div>
+            <span class="eyebrow">Private Cart</span>
+            <h1 id="cart-title">Your selections.</h1>
+            <p>Adjust quantities, review totals, and place a demo order whenever your edit feels complete.</p>
+          </div>
+          <button class="btn btn-outline" type="button" data-route="home">Continue Shopping</button>
+        </div>
+        <div id="cart-content" aria-live="polite"></div>
+      </div>
+    </section>
+  </main>
+
+  <div id="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+  <script>
+    const AUTH_KEY = "auth_user";
+    const CART_KEY = "cart";
+
+    const USERS = [
+      { id: 1, username: "admin", password: "admin123", name: "Admin User" },
+      { id: 2, username: "john", password: "john456", name: "John Doe" }
+    ];
+
+    const PRODUCTS = [
+      { id: 1, name: "iPhone 15 Pro", price: 999, desc: "Apple's latest flagship smartphone with titanium design", category: "Phones", image: "📱" },
+      { id: 2, name: "MacBook Air M3", price: 1299, desc: "Thin, light, and blazingly fast with Apple Silicon", category: "Laptops", image: "💻" },
+      { id: 3, name: "Sony WH-1000XM5", price: 349, desc: "Industry-leading noise cancelling wireless headphones", category: "Audio", image: "🎧" },
+      { id: 4, name: "iPad Pro 12.9\"", price: 1099, desc: "The ultimate iPad experience with M2 chip", category: "Tablets", image: "📲" },
+      { id: 5, name: "Apple Watch Ultra 2", price: 799, desc: "The most rugged and capable Apple Watch ever", category: "Wearables", image: "⌚" },
+      { id: 6, name: "AirPods Pro 2", price: 249, desc: "Adaptive Audio, Transparency mode, and Personalised Spatial Audio", category: "Audio", image: "🎵" },
+      { id: 7, name: "Samsung 4K Monitor", price: 599, desc: "32-inch 4K UHD display with HDR600", category: "Monitors", image: "🖥️" },
+      { id: 8, name: "Mechanical Keyboard", price: 189, desc: "TKL layout with Cherry MX Brown switches", category: "Accessories", image: "⌨️" }
+    ];
+
+    const publicRoutes = new Set(["signin", "signup"]);
+    const privateRoutes = new Set(["home", "cart"]);
+    const validRoutes = new Set(["signin", "signup", "home", "cart"]);
+
+    let currentUser = null;
+
+    const $ = (selector, scope = document) => scope.querySelector(selector);
+    const $$ = (selector, scope = document) => Array.from(scope.querySelectorAll(selector));
+
+    function formatMoney(amount) {
+      return new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+        minimumFractionDigits: 2
+      }).format(amount);
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function loadSessionUser() {
+      try {
+        const raw = sessionStorage.getItem(AUTH_KEY);
+        return raw ? JSON.parse(raw) : null;
+      } catch (error) {
+        sessionStorage.removeItem(AUTH_KEY);
+        return null;
+      }
+    }
+
+    function persistUser(user) {
+      sessionStorage.setItem(AUTH_KEY, JSON.stringify({
+        id: user.id,
+        username: user.username,
+        name: user.name
+      }));
+    }
+
+    function getCart() {
+      try {
+        const cart = JSON.parse(sessionStorage.getItem(CART_KEY) || "[]");
+        return Array.isArray(cart) ? cart : [];
+      } catch (error) {
+        sessionStorage.removeItem(CART_KEY);
+        return [];
+      }
+    }
+
+    function saveCart(cart) {
+      sessionStorage.setItem(CART_KEY, JSON.stringify(cart));
+      updateCartBadge(true);
+      if (getCurrentRoute() === "cart") {
+        renderCart();
+      }
+    }
+
+    function getCartCount() {
+      return getCart().reduce((total, item) => total + Number(item.quantity || 0), 0);
+    }
+
+    function updateCartBadge(animate = false) {
+      const badge = $("#cart-badge");
+      if (!badge) return;
+
+      badge.textContent = getCartCount();
+      if (animate) {
+        badge.classList.remove("pulse");
+        void badge.offsetWidth;
+        badge.classList.add("pulse");
+      }
+    }
+
+    function showToast(message, type = "info", icon = "ℹ️") {
+      const container = $("#toast-container");
+      const toast = document.createElement("div");
+      toast.className = `toast ${type}`;
+      toast.innerHTML = `
+        <span class="toast-icon" aria-hidden="true">${icon}</span>
+        <span class="toast-message">${escapeHtml(message)}</span>
+      `;
+      container.appendChild(toast);
+
+      window.setTimeout(() => {
+        toast.classList.add("leaving");
+        toast.addEventListener("animationend", () => toast.remove(), { once: true });
+      }, 3000);
+    }
+
+    function getCurrentRoute() {
+      const route = location.hash.replace("#", "").trim().toLowerCase();
+      return validRoutes.has(route) ? route : "";
+    }
+
+    function navigate(route) {
+      const normalized = validRoutes.has(route) ? route : (currentUser ? "home" : "signin");
+      if (location.hash !== `#${normalized}`) {
+        location.hash = normalized;
+      } else {
+        renderRoute();
+      }
+    }
+
+    function resolveRoute() {
+      let route = getCurrentRoute() || (currentUser ? "home" : "signin");
+
+      if (!currentUser && privateRoutes.has(route)) {
+        route = "signin";
+      }
+
+      if (currentUser && publicRoutes.has(route)) {
+        route = "home";
+      }
+
+      return route;
+    }
+
+    function renderRoute() {
+      const route = resolveRoute();
+
+      if (location.hash !== `#${route}`) {
+        history.replaceState(null, "", `#${route}`);
+      }
+
+      $$(".page").forEach(page => page.classList.remove("active"));
+      const page = $(`#page-${route}`);
+      if (page) page.classList.add("active");
+
+      const isAuthedPage = privateRoutes.has(route) && Boolean(currentUser);
+      $("#navbar").classList.toggle("visible", isAuthedPage);
+
+      if (isAuthedPage) {
+        updateUserNav();
+        updateCartBadge(false);
+      }
+
+      $$(".nav-link[data-route]").forEach(link => {
+        link.classList.toggle("active", link.dataset.route === route);
+      });
+
+      if (route === "home") renderHome();
+      if (route === "cart") renderCart();
+    }
+
+    function updateUserNav() {
+      if (!currentUser) return;
+      $("#user-name").textContent = currentUser.name;
+      $("#user-avatar").textContent = currentUser.name
+        .split(" ")
+        .map(part => part[0])
+        .join("")
+        .slice(0, 2)
+        .toUpperCase();
+    }
+
+    function signIn(username, password, remember) {
+      const normalized = username.trim().toLowerCase();
+      const user = USERS.find(candidate =>
+        candidate.username.toLowerCase() === normalized && candidate.password === password
+      );
+
+      if (!user) {
+        $("#signin-error").textContent = "Invalid username or password.";
+        showToast("Invalid username or password", "danger", "❌");
+        return;
+      }
+
+      currentUser = { id: user.id, username: user.username, name: user.name };
+      if (remember) {
+        persistUser(user);
+      } else {
+        sessionStorage.removeItem(AUTH_KEY);
+      }
+
+      $("#signin-error").textContent = "";
+      $("#signin-form").reset();
+      showToast("Signed in successfully!", "success", "✅");
+      navigate("home");
+    }
+
+    function signUp({ name, username, password, confirm }) {
+      const cleanName = name.trim();
+      const cleanUsername = username.trim();
+      const normalized = cleanUsername.toLowerCase();
+
+      if (!cleanName || !cleanUsername || !password || !confirm) {
+        $("#signup-error").textContent = "Please complete all fields.";
+        showToast("Please complete all fields", "danger", "❌");
+        return;
+      }
+
+      if (USERS.some(user => user.username.toLowerCase() === normalized)) {
+        $("#signup-error").textContent = "Username is already taken.";
+        showToast("Username is already taken", "danger", "❌");
+        return;
+      }
+
+      if (password !== confirm) {
+        $("#signup-error").textContent = "Passwords do not match.";
+        showToast("Passwords do not match", "danger", "❌");
+        return;
+      }
+
+      const user = {
+        id: Math.max(...USERS.map(item => item.id)) + 1,
+        username: cleanUsername,
+        password,
+        name: cleanName
+      };
+
+      USERS.push(user);
+      currentUser = { id: user.id, username: user.username, name: user.name };
+      sessionStorage.removeItem(AUTH_KEY);
+      $("#signup-error").textContent = "";
+      $("#signup-form").reset();
+      showToast("Account created!", "success", "✅");
+      navigate("home");
+    }
+
+    function signOut() {
+      currentUser = null;
+      sessionStorage.removeItem(AUTH_KEY);
+      navigate("signin");
+    }
+
+    function renderHome() {
+      const grid = $("#products-grid");
+      $("#product-count").textContent = PRODUCTS.length;
+
+      grid.innerHTML = PRODUCTS.map((product, index) => `
+        <article class="product-card" style="animation-delay: ${index * 45}ms">
+          <div class="product-visual" aria-hidden="true">${product.image}</div>
+          <span class="category-badge">${escapeHtml(product.category)}</span>
+          <h3>${escapeHtml(product.name)}</h3>
+          <p class="product-desc">${escapeHtml(product.desc)}</p>
+          <div class="card-footer">
+            <div class="price">${formatMoney(product.price)}</div>
+            <button class="btn add-btn" type="button" data-add-to-cart="${product.id}">
+              + Add to Cart
+            </button>
+          </div>
+        </article>
+      `).join("");
+    }
+
+    function addToCart(productId, button) {
+      const product = PRODUCTS.find(item => item.id === Number(productId));
+      if (!product) return;
+
+      const cart = getCart();
+      const existing = cart.find(item => item.id === product.id);
+
+      if (existing) {
+        existing.quantity += 1;
+      } else {
+        cart.push({ ...product, quantity: 1 });
+      }
+
+      saveCart(cart);
+      showToast("Added to cart!", "success", "✅");
+      flashAddButton(button);
+    }
+
+    function flashAddButton(button) {
+      if (!button) return;
+      const original = button.textContent;
+      button.textContent = "✓ Added";
+      button.classList.add("added");
+      button.disabled = true;
+
+      window.setTimeout(() => {
+        button.textContent = original;
+        button.classList.remove("added");
+        button.disabled = false;
+      }, 1200);
+    }
+
+    function updateQuantity(productId, direction) {
+      const cart = getCart();
+      const item = cart.find(cartItem => cartItem.id === Number(productId));
+      if (!item) return;
+
+      item.quantity += direction;
+      if (item.quantity < 1) item.quantity = 1;
+      saveCart(cart);
+    }
+
+    function removeFromCart(productId) {
+      const cart = getCart().filter(item => item.id !== Number(productId));
+      saveCart(cart);
+      showToast("Item removed from cart", "info", "ℹ️");
+    }
+
+    function clearCart() {
+      saveCart([]);
+      showToast("Cart cleared", "info", "ℹ️");
+    }
+
+    function renderCart() {
+      const cart = getCart();
+      const content = $("#cart-content");
+
+      if (cart.length === 0) {
+        content.innerHTML = `
+          <div class="empty-state">
+            <div>
+              <div class="empty-emoji" aria-hidden="true">🛒</div>
+              <h2>Your cart is beautifully empty.</h2>
+              <p>Curate a tighter setup by adding a phone, laptop, headphones, or any other premium drop from the showroom.</p>
+              <button class="btn btn-primary" type="button" data-route="home">Continue Shopping</button>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      const itemCount = cart.reduce((total, item) => total + item.quantity, 0);
+      const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+      content.innerHTML = `
+        <div class="cart-layout">
+          <div class="cart-list">
+            ${cart.map((item, index) => `
+              <article class="cart-row" style="animation-delay: ${index * 45}ms">
+                <div class="cart-image" aria-hidden="true">${item.image}</div>
+                <div class="cart-info">
+                  <span class="category-badge">${escapeHtml(item.category)}</span>
+                  <h3>${escapeHtml(item.name)}</h3>
+                  <p>${escapeHtml(item.desc)}</p>
+                </div>
+                <div class="cart-meta">
+                  <div class="unit-price">Unit ${formatMoney(item.price)}</div>
+                  <div class="qty-control" aria-label="Quantity controls for ${escapeHtml(item.name)}">
+                    <button type="button" data-cart-action="dec" data-id="${item.id}" aria-label="Decrease quantity">−</button>
+                    <span>${item.quantity}</span>
+                    <button type="button" data-cart-action="inc" data-id="${item.id}" aria-label="Increase quantity">+</button>
+                  </div>
+                  <div class="subtotal">${formatMoney(item.price * item.quantity)}</div>
+                  <button class="remove-btn" type="button" data-cart-action="remove" data-id="${item.id}" aria-label="Remove ${escapeHtml(item.name)}">×</button>
+                </div>
+              </article>
+            `).join("")}
+          </div>
+
+          <aside class="summary-card" aria-label="Order summary">
+            <h2>Order Summary</h2>
+            <div class="summary-line">
+              <span>Items</span>
+              <strong>${itemCount}</strong>
+            </div>
+            <div class="summary-line">
+              <span>Estimated shipping</span>
+              <strong>Included</strong>
+            </div>
+            <div class="summary-total">
+              <span>Total</span>
+              <strong>${formatMoney(total)}</strong>
+            </div>
+            <div class="summary-actions">
+              <button class="btn btn-primary" type="button" data-cart-action="checkout">Checkout</button>
+              <button class="btn btn-outline" type="button" data-cart-action="clear">Clear Cart</button>
+            </div>
+          </aside>
+        </div>
+      `;
+    }
+
+    document.addEventListener("submit", event => {
+      event.preventDefault();
+
+      if (event.target.id === "signin-form") {
+        const form = new FormData(event.target);
+        signIn(
+          String(form.get("username") || ""),
+          String(form.get("password") || ""),
+          Boolean(form.get("remember"))
+        );
+      }
+
+      if (event.target.id === "signup-form") {
+        const form = new FormData(event.target);
+        signUp({
+          name: String(form.get("name") || ""),
+          username: String(form.get("username") || ""),
+          password: String(form.get("password") || ""),
+          confirm: String(form.get("confirm") || "")
+        });
+      }
+    });
+
+    document.addEventListener("click", event => {
+      const routeButton = event.target.closest("[data-route]");
+      if (routeButton) {
+        navigate(routeButton.dataset.route);
+        return;
+      }
+
+      const addButton = event.target.closest("[data-add-to-cart]");
+      if (addButton) {
+        addToCart(addButton.dataset.addToCart, addButton);
+        return;
+      }
+
+      const cartAction = event.target.closest("[data-cart-action]");
+      if (cartAction) {
+        const action = cartAction.dataset.cartAction;
+        const id = cartAction.dataset.id;
+
+        if (action === "inc") updateQuantity(id, 1);
+        if (action === "dec") updateQuantity(id, -1);
+        if (action === "remove") removeFromCart(id);
+        if (action === "clear") clearCart();
+        if (action === "checkout") showToast("Order placed! Thank you!", "success", "🎉");
+      }
+    });
+
+    $("#signout-btn").addEventListener("click", signOut);
+    window.addEventListener("hashchange", renderRoute);
+
+    function init() {
+      currentUser = loadSessionUser();
+      updateCartBadge(false);
+      renderRoute();
+    }
+
+    init();
+  </script>
+</body>
+</html>

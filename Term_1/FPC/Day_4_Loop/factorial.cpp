@@ -7,12 +7,12 @@ int main() {
   printf("Nhap n: ");
   scanf("%d", &n);
 
-  long long factorial;
+  int factorial;
   for (int i = n; i >= 1; i--) {
     factorial *= i;
     printf("%d * ", i);
   }
-  printf("\b\b= %lld\n", factorial);
-  printf("Giai thua cua %d la %lld\n", n, factorial);
+  printf("\b\b= %d\n", factorial);
+  printf("Giai thua cua %d la %d\n", n, factorial);
   return 0;
 }

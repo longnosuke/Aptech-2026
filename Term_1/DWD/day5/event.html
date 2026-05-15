@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/digitallytailored/classless@latest/classless.min.css">
+    
+    <title>table</title>
+</head>
+
+<body>
+  <h1>Welcome To Login Page</h1>
+
+  <form action="" id="login-form">
+    <h3>Sign In</h3>
+    <div class="input-groups">
+
+      <!-- User name -->
+      <label for="username">Users name</label>
+      <input type="text" placeholder="Username" id="username" name="username" required value="Guest">
+
+      <!-- Password -->
+      <label for="username">Users name</label>
+      <input type="password" placeholder="Password" id="password" name="password" required>
+
+      <!-- Remember me -->
+      <!-- <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px">
+        <input type="checkbox" id="remember" name="remember">
+        <label for="remember" style="margin: 0">Remember me</label>
+      </div> -->
+
+      <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px">
+        <button type="submit" id="login-button">Sign In</button>
+        <button type="reset" style="background: #F03;">Reset</button></button>
+      </div>
+    </div>
+  </form>
+
+  <script>
+      let loginAttempts = 0;
+      document.getElementById("login-form").onsubmit= (event) => {
+        event.preventDefault();
+        // Cancel default of submit: not redirect
+        let username = document.getElementById("username").value.trim();
+        let password = document.getElementById("password").value.trim();
+        // console.log(`Username: ${username}`);
+        // console.log(`Password: ${password}`);
+
+        // Declare array contain all valid user
+        let validList = [
+            { "id":"admin", "pass":"admin_pass" },
+            { "id":"user", "pass":"user_pass" },
+            { "id":"guest", "pass":"guest_pass" }
+        ];
+
+        // Print validList
+        // console.log("\nValid list:");
+        // validList.forEach((user) => {
+        //   console.log(`Username: ${user.id}`);
+        //   console.log(`Password: ${user.pass}`);
+        // });
+
+        // Check login
+        for (let i = 0; i < validList.length; i++) {
+          if (username === validList[i].id && password === validList[i].pass) {
+            alert(`Login successful at ${new Date()}`);
+            document.getElementById("login-form").reset();
+
+            document.getElementById("username").focus();
+            loginAttempts = 0;
+            break;
+          } else if (loginAttempts < 3) {
+            loginAttempts++;
+            console.log(`Login attempt ${loginAttempts} failed at ${new Date()}`);
+            document.getElementById("username").focus();
+            break;
+          } else {
+            alert("Login attempt > 3. You are terminated");
+            window.close();
+            break;
+          }
+      }
+    }
+    </script>
+</body>
+
+</html>

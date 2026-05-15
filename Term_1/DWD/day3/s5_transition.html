@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>S5 Image</title>
+
+  <style>
+    div {
+      color: white;
+      font-weight: bold;
+      text-align: center;
+      margin: 20px;
+    }
+
+    .trans1 {
+      width: 100px;
+      height: 100px;
+      background-color: red;
+      transition: width 1s ease;
+    }
+    .trans1:hover {
+      width: 300px;
+    }
+    .trans2 {
+      width: 100px;
+      height: 100px;
+      background-color: red;
+      transition: height 1s;
+    }
+    .trans2:hover {
+      height: 300px;
+    }
+
+    .trans-all {
+      width: 100px;
+      height: 100px;
+      background-color: red;
+      transition: width 1s ease, height 1s;
+    }
+    .trans-all:hover {
+      width: 300px;
+      height: 300px;
+    }
+    .trans4 {
+      width: 100px;
+      height: 100px;
+      background-color: red;
+      transition: all 1s cubic-bezier(0.075, 0.82, 0.165, 1);
+    }
+    .trans4:hover {
+      transform: rotate(360deg);
+    }
+    .trans5 {
+      width: 100px;
+      height: 100px;
+      background-color: red;
+      transition: transform 1s;
+    }
+    .trans5:hover {
+      transform: rotate(360deg);
+    }
+  </style>
+</head>
+<body>
+  <h2>Transition</h2>
+  <div class="trans1">Transition Width</div>
+  <div class="trans2">Transition Heigh</div>
+  <div class="trans-all">Transition All</div>
+  <div class="trans4">Transition cubic-bezier</div>
+  <div class="trans5">Transition rotate</div>
+</body>
+</html>

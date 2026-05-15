@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LUXE Store</title>
+  </head>
+  <body>
+    <div id="pg-signin" style="display: none">
+      <b>LUXE Store</b><br /><br />
+      Username: <input id="u" /><br />
+      Password: <input id="p" type="password" /><br />
+      <label><input id="r" type="checkbox" /> Remember me</label><br /><br />
+      <button onclick="login()">Sign In</button> <br /><small
+        >admin/admin123 &nbsp;·&nbsp; john/john456</small
+      >
+    </div>
+    <div id="pg-home" style="display: none">
+      <b>LUXE Store</b> &nbsp;|&nbsp;
+      <button onclick="show('cart')">Cart (<span id="cnt">0</span>)</button>
+      &nbsp;<button onclick="logout()">Sign Out</button>
+      <hr />
+      <span id="who"></span>
+      <div id="grid"></div>
+    </div>
+    <div id="pg-cart" style="display: none">
+      <b>LUXE Store</b> &nbsp;|&nbsp;
+      <button onclick="show('home')">← Home</button> &nbsp;<button
+        onclick="logout()"
+      >
+        Sign Out
+      </button>
+      <hr />
+      <div id="cart-list"></div>
+    </div>
+    <script>
+      const USERS = [
+        { username: "admin", password: "admin123", name: "Admin User" },
+        { username: "john", password: "john456", name: "John Doe" },
+      ];
+      const PRODUCTS = [
+        {
+          id: 1,
+          name: "Xôi",
+          price: 999,
+          desc: "Xôi số 1",
+          icon: "📱",
+        },
+        {
+          id: 2,
+          name: "MacBook Air M3",
+          price: 1299,
+          desc: "Thin, light, Apple Silicon powered",
+          icon: "💻",
+        },
+        {
+          id: 3,
+          name: "Sony WH-1000XM5",
+          price: 349,
+          desc: "Industry-leading noise cancelling",
+          icon: "🎧",
+        },
+        {
+          id: 4,
+          name: 'iPad Pro 12.9"',
+          price: 1099,
+          desc: "Ultimate iPad with M2 chip",
+          icon: "📲",
+        },
+        {
+          id: 5,
+          name: "Apple Watch Ultra 2",
+          price: 799,
+          desc: "Most rugged Apple Watch ever",
+          icon: "⌚",
+        },
+        {
+          id: 6,
+          name: "AirPods Pro 2",
+          price: 249,
+          desc: "Adaptive Audio, Spatial sound",
+          icon: "🎵",
+        },
+        {
+          id: 7,
+          name: "Samsung 4K Monitor",
+          price: 599,
+          desc: '32" 4K UHD HDR600 display',
+          icon: "🖥️",
+        },
+        {
+          id: 8,
+          name: "Mechanical Keyboard",
+          price: 189,
+          desc: "TKL Cherry MX Brown switches",
+          icon: "⌨️",
+        },
+      ];
+      const CART_KEY = "cart";
+      const AUTH_KEY = "auth_user";
+      let me = null;
+      const getCart = () =>
+        JSON.parse(sessionStorage.getItem(CART_KEY) || "[]");
+      const saveCart = (c) =>
+        sessionStorage.setItem(CART_KEY, JSON.stringify(c));
+      function show(page) {
+        ["signin", "home", "cart"].forEach(
+          (p) => (document.getElementById("pg-" + p).style.display = "none"),
+        );
+        if (!me && page !== "signin") {
+          show("signin");
+          return;
+        }
+        if (me && page === "signin") {
+          show("home");
+          return;
+        }
+        document.getElementById("pg-" + page).style.display = "block";
+        if (page === "home") renderHome();
+        if (page === "cart") renderCart();
+      }
+      function login() {
+        const u = document.getElementById("u").value.trim();
+        const p = document.getElementById("p").value;
+        const found = USERS.find((x) => x.username === u && x.password === p);
+        if (!found) return;
+        me = { username: found.username, name: found.name };
+        if (document.getElementById("r").checked)
+          sessionStorage.setItem(AUTH_KEY, JSON.stringify(me));
+        show("home");
+      }
+      function logout() {
+        sessionStorage.removeItem(AUTH_KEY);
+        me = null;
+        show("signin");
+      }
+      function addToCart(pid) {
+        const prod = PRODUCTS.find((p) => p.id === pid);
+        const cart = getCart();
+        const idx = cart.findIndex((i) => i.id === pid);
+        if (idx >= 0) cart[idx].quantity++;
+        else cart.push({ ...prod, quantity: 1 });
+        saveCart(cart);
+        document.getElementById("cnt").textContent = cart.reduce(
+          (s, i) => s + i.quantity,
+          0,
+        );
+      }
+      function removeItem(pid) {
+        saveCart(getCart().filter((i) => i.id !== pid));
+        renderCart();
+      }
+      function renderHome() {
+        document.getElementById("who").textContent = "Hello, " + me.name;
+        document.getElementById("cnt").textContent = getCart().reduce(
+          (s, i) => s + i.quantity,
+          0,
+        );
+        document.getElementById("grid").innerHTML = PRODUCTS.map(
+          (p) =>
+            `     <p>${p.icon} <b>${p.name}</b> — $${p.price} — ${p.desc}     &nbsp;<button onclick="addToCart(${p.id})">Add to Cart</button></p>   `,
+        ).join("");
+      }
+      function renderCart() {
+        const cart = getCart();
+        if (!cart.length) {
+          document.getElementById("cart-list").innerHTML =
+            "<p>Cart is empty. <button onclick=\"show('home')\">Shop</button></p>";
+          return;
+        }
+        const total = cart.reduce((s, i) => s + i.price * i.quantity, 0);
+        document.getElementById("cart-list").innerHTML =
+          cart
+            .map(
+              (i) =>
+                `<p>${i.icon} <b>${i.name}</b> x${i.quantity} = $${(i.price * i.quantity).toLocaleString()}     &nbsp;<button onclick="removeItem(${i.id})">Remove</button></p>`,
+            )
+            .join("") +
+          `<hr><b>Total: $${total.toLocaleString()}</b>     <br><br><button onclick="checkout()">Place Order</button>     &nbsp;<button onclick="saveCart([]);renderCart()">Clear Cart</button>`;
+      }
+      function checkout() {
+        saveCart([]);
+        renderCart();
+        alert("Order placed! Thank you.");
+      }
+      try {
+        me = JSON.parse(sessionStorage.getItem(AUTH_KEY));
+      } catch (e) {}
+      show(me ? "home" : "signin");
+    </script>
+  </body>
+</html>

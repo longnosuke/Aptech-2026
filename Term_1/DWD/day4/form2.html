@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/digitallytailored/classless@latest/classless.min.css"> -->
+    <title>register</title>
+    <style>
+      form input {
+        display: block;
+        min-width: 320px;
+        padding: 10px;
+        border-radius: 12px;
+        font-size: 16px;
+      }
+    </style>
+</head>
+
+<body>
+    <div>
+        <form action="">
+            <h2>Register New Member</h2>
+            <div class="form-group">
+                <label for="">Username</label>
+                <input type="text" name="user" id="user" required placeholder="nhap username">
+            </div>
+
+            <div>
+                <label for="">Password</label>
+                <input type="password" name="pass" id="pass" required placeholder="nhap mat khau">
+            </div>
+
+            <div>
+                <label for="">Email</label>
+                <input type="email" name="mail" id="mail" required>
+            </div>
+
+            <div>
+                <label for="">Birthday</label>
+                <input type="date" name="dob" id="dob">
+            </div>
+
+            <div>
+                <label for="">City</label>
+                <select name="city" id="city" required>
+                    <option value="hn">Ha noi</option>
+                    <option value="sg">Saigon</option>
+                    <option value="hu" selected>Hue</option>
+                    <option value="ct">Can tho</option>
+                    <option value="dn">Da nang</option>
+                    <option value="hp">Hai phong</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="">Gender</label>
+                <input type="radio" name="gender" id="genMale" value="nam" checked> Male
+                <input type="radio" name="gender" id="genFemale" value="nu"> Female
+                <input type="radio" name="gender" id="genOther" value="khac"> Other
+            </div>
+
+            <div>
+                <label for="">Avatar</label>
+                <input type="file" name="avatar" id="avatar">
+            </div>
+
+            <div>
+                <label for="">Comment</label>
+                <textarea name="note" id="note" rows="4"> Nothing ...</textarea>
+            </div>
+
+            <div>
+                <button type="submit">Submit</button>
+                <button type="reset">Reset</button>
+            </div>
+
+        </form>
+    </div>
+</body>
+
+</html>

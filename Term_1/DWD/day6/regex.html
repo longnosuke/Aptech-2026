@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/digitallytailored/classless@latest/classless.min.css"
+    />
+
+    <title>Regex</title>
+  </head>
+  <body>
+    <h2>Regular Expression Demo</h2>
+
+    <form action="" id="form-profile" name="form-profile">
+      <label for="name">Name</label>
+      <input type="text" name="name" id="name" required />
+      <label for="phone">Phone number</label>
+      <input
+        type="text"
+        name="phone"
+        id="phone"
+        value="+840-123-456-7898"
+        required
+      />
+      <button type="submit">Submit</button>
+    </form>
+    <script>
+      const form = document.getElementById("form-profile");
+
+      (form.addEventListener.onsubmit,
+        (event) => {
+          event.preventDefault();
+          const nameInput = form.name.value.trim();
+          const phoneInput = form.phone.value.trim();
+
+          if (name === "") {
+            alert("Please enter your name.");
+          }
+          if (phone === "") {
+            alert("Please enter your phone number.");
+          }
+          // Regular expression for validate full name (at least two words)
+          // TODO: validate two word not two characters, Last Name must be at least two characters,
+          // TODO: First Name must be at least one characters
+          // TODO: Make sure suppress all empty space into one empty space
+          // TODO: Validate existance of LAST NAME and FIRST NAME
+          const nameRegex = /^[a-zA-Z]{2,}$/; // at least two characters and at least one empty space
+          if (!nameRegex.test(name)) {
+            alert("Please enter at least two words for your name.");
+          }
+
+          // Regular expression for validate phone number (+xxx-)xxx-xxx-xxxx
+          const phoneRegex = /^\(\+d{3}\)-\d{3}-\d{3}-\d{4}$/;
+          if (!phoneRegex.test(phone)) {
+            alert("Please enter a valid phone number.");
+          }
+        });
+    </script>
+  </body>
+</html>

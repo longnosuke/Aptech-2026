@@ -1,0 +1,155 @@
+Dưới đây là requirement cho website e-commerce đơn giản dùng **sessionStorage**.
+
+## Requirement: Simple E-commerce with Session Storage
+
+### 1. Mục tiêu
+
+Tạo một website e-commerce đơn giản gồm:
+
+* Trang Home (Chứa danh sách sản phẩm)
+* Danh sách sản phẩm
+* Chức năng Add to Cart
+* Trang Cart
+* Dữ liệu giỏ hàng được lưu bằng `sessionStorage`
+* Khi bấm Add to Cart nhiều lần trên cùng sản phẩm thì cập nhật số lượng, không tạo item trùng
+* Chức năng SIGN IN và SIGN OUT đơn giản ( SIGN IN Dơn giản bằng `check với json đã load sẵn`, NẾU REMEMBER ME MỚI LƯU BẰNG `sessionStorage`)
+* Refresh page vẫn giữ cart trong session hiện tại
+* Đóng tab/browser thì cart có thể mất vì dùng `sessionStorage`
+
+---
+
+### 2. Trang Home
+
+Trang Home hiển thị danh sách sản phẩm.
+
+Mỗi sản phẩm gồm các thông tin:
+
+* Product name
+* Price
+* Description
+* Button: Add to Cart
+
+Ví dụ product:
+
+```js
+{
+  id: 1,
+  name: "iPhone 15",
+  price: 999,
+  desc: "Apple smartphone"
+}
+```
+
+---
+
+### 3. Product List
+
+Danh sách sản phẩm có thể được lưu trong array JSON tĩnh trong JavaScript.
+
+Ví dụ:
+
+```js
+const products = [
+  {
+    id: 1,
+    name: "Laptop",
+    price: 1200,
+    desc: "Powerful laptop for work"
+  },
+  {
+    id: 2,
+    name: "Headphone",
+    price: 150,
+    desc: "Wireless headphone"
+  }
+];
+```
+
+---
+
+### 4. Add to Cart
+
+Khi user bấm **Add to Cart**:
+
+* Kiểm tra giỏ hàng trong `sessionStorage`
+* Nếu chưa có giỏ hàng thì tạo mới array cart
+* Nếu sản phẩm chưa tồn tại trong cart thì thêm sản phẩm vào cart với `quantity = 1`
+* Nếu sản phẩm đã tồn tại thì tăng `quantity` lên 1
+* Lưu lại cart vào `sessionStorage` dưới dạng JSON string
+
+Key lưu trong sessionStorage:
+
+```js
+cart
+```
+
+Dữ liệu cart mẫu:
+
+```js
+[
+  {
+    id: 1,
+    name: "Laptop",
+    price: 1200,
+    desc: "Powerful laptop for work",
+    quantity: 2
+  }
+]
+```
+
+---
+
+### 5. Trang Cart
+
+Trang Cart hiển thị các sản phẩm đã thêm vào giỏ hàng.
+
+Mỗi item gồm:
+
+* Product name
+* Price
+* Description
+* Quantity
+* Subtotal = price * quantity
+
+Ngoài ra hiển thị:
+
+* Tổng tiền toàn bộ cart
+* Message nếu cart rỗng
+
+---
+
+### 6. Update Cart
+
+Khi user bấm Add to Cart lại cùng sản phẩm:
+
+* Không thêm dòng mới
+* Chỉ cập nhật `quantity`
+* Cập nhật lại dữ liệu trong `sessionStorage`
+
+---
+
+### 7. Technical Requirement
+
+Website sử dụng:
+
+* HTML
+* CSS
+* JavaScript
+* `sessionStorage`
+* JSON stringify / parse
+
+Không cần backend hoặc database.
+
+---
+
+### 8. Acceptance Criteria
+
+Website được xem là hoàn thành khi:
+
+* Hiển thị được danh sách sản phẩm ở Home
+* Bấm Add to Cart thì sản phẩm được lưu vào `sessionStorage`
+* Cart được lưu dưới dạng JSON
+* Bấm Add to Cart nhiều lần thì quantity tăng
+* Trang Cart đọc dữ liệu từ `sessionStorage` và hiển thị đúng
+* Refresh page vẫn giữ cart trong session hiện tại
+* Đóng tab/browser thì cart có thể mất vì dùng `sessionStorage`

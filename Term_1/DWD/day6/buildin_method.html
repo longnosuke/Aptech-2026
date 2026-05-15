@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/digitallytailored/classless@latest/classless.min.css"
+    />
+
+    <title>table</title>
+  </head>
+  <body>
+    <h2>Build-in Method</h2>
+
+    <h2>console.log()</h2>
+    <p>
+      The <code>console.log()</code> method displays an console.log box with a
+      specified message and OK button.
+    </p>
+    <button onlick="console.log('Hello World!')">Show console.log</button>
+
+    <div>
+      <h2>Confirm()</h2>
+      <p>
+        The <code>confirm()</code> method displays a modal dialog with OK and
+        Cancel buttons.
+      </p>
+      <button onclick="showConfirm()">Show Confirm</button>
+    </div>
+
+    <h2>Show Eval</h2>
+    <p>
+      The <code>eval()</code> method evaluates the specified JavaScript code.
+    </p>
+    <button onclick="showEval()">Show Eval</button>
+
+    <h2>Show Prompt</h2>
+    <p>
+      The <code>prompt()</code> method displays a dialog box that prompts the
+      user for input.
+    </p>
+    <button onclick="showPrompt()">Show Prompt</button>
+
+    <script>
+      function showConfirm() {
+        if (confirm("Are you sure?")) {
+          console.log("You pressed OK!");
+        } else {
+          console.log("You pressed Cancel!");
+        }
+      }
+
+      function showEval() {
+        let code = prompt("Enter JavaScript code:");
+        if (code) {
+          try {
+            results = eval(code);
+            console.log(`Result: ${results}`);
+          } catch (error) {
+            console.log(`Error: ${error}`);
+          }
+        } else {
+          console.log("No code entered.");
+        }
+      }
+
+      function showPrompt() {
+        let name = prompt("Enter your name:");
+        if (name) {
+          console.log(`Hello, ${name}!`);
+        } else {
+          console.log("No name entered.");
+        }
+      }
+    </script>
+  </body>
+</html>

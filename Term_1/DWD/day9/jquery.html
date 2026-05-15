@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/digitallytailored/classless@latest/classless.min.css"
+    />
+    <script src="./jquery-3.6.0.min.js"></script>
+
+    <title></title>
+  </head>
+  <body>
+    <h1>Welcome to my website</h1>
+    <button id="button">Click me</button>
+    <div id="message" style="display: none">
+      <p>Button clicked!</p>
+    </div>
+
+    <script>
+      $(document).ready(function () {
+        // Attach click event handler to the button
+        $("#button").click(function () {
+          // Hide the message element
+          $("#message").hide();
+
+          // Show the message element after 1 second
+          setTimeout(function () {
+            $("#message").show();
+          }, 1000);
+        });
+      });
+    </script>
+  </body>
+</html>

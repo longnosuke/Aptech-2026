@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+  <style>
+    div {
+      width: 100px;
+      height: 100px;
+      margin: 20px;
+      border-radius: 100%;
+    }
+
+    .ani1 {
+      position: relative;
+      animation-name: myani;
+      animation-duration: 2s;
+      animation-timing-function: linear;
+      animation-iteration-count: infinite;
+      animation-direction: alternate;
+    }
+
+    @keyframes myani {
+      from {
+        left: 0px;
+        background-color: red;
+      }
+      to {
+        left: 300px;
+        background-color: blue;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="ani1"></div>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/digitallytailored/classless@latest/classless.min.css"
+    />
+    <style>
+      #result {
+        color: red;
+        padding: 20px;
+        border: 1px solid #333;
+        border-radius: 12px;
+        margin: 20px 0;
+      }
+    </style>
+    <script src="./demo_function.js"></script>
+    <title>Function</title>
+  </head>
+  <body>
+    <h2>Add Function</h2>
+    <button onclick="add()">Add</button>
+
+    <h2>Multiply Function</h2>
+    <div class="inputGroup">
+      <input type="number" id="n1" value="" />
+      <input type="number" id="n2" value="" />
+    </div>
+    <button onclick="multiply()" id="multiplyButton">Multiply</button>
+    <p id="result"></p>
+
+    <!-- <h2>Divide Function</h2>
+    <button onclick="divide()">Divide</button>
+
+    <h2>Subtract Function</h2>
+    <button onclick="subtract()">Subtract</button> -->
+
+    <script>
+      document
+        .getElementById("multiplyButton")
+        .addEventListener("click", () => {
+          const n1 = parseFloat(document.getElementById("n1").value);
+          const n2 = parseFloat(document.getElementById("n2").value);
+          const result = multiply(n1, n2);
+          document.getElementById("result").textContent = result;
+        });
+    </script>
+  </body>
+</html>

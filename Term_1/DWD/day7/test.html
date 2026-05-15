@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Custom Checkbox</title>
+    <style>
+      .checkbox {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+      }
+
+      /* Ẩn checkbox gốc */
+      .checkbox input {
+        display: none;
+      }
+
+      /* Custom box */
+      .checkbox .box {
+        width: 16px;
+        height: 16px;
+        border: 2px solid #999;
+        border-radius: 4px;
+        display: inline-block;
+        position: relative;
+      }
+
+      /* Khi checked */
+      .checkbox input:checked + .box {
+        background-color: #fe2e8f; /* giống accent-color */
+        border-color: #fe2e8f;
+      }
+
+      /* Dấu check */
+      .checkbox input:checked + .box::after {
+        content: "";
+        position: absolute;
+        left: 4px;
+        top: 0px;
+        width: 5px;
+        height: 10px;
+        border: solid white;
+        border-width: 0 2px 2px 0;
+        transform: rotate(45deg);
+      }
+    </style>
+  </head>
+  <body>
+    <label class="checkbox">
+      <input type="checkbox" />
+      <span class="box"></span>
+    </label>
+  </body>
+</html>

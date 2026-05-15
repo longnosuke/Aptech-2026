@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CSS Accent Color Presentation</title>
+    <style>
+      body {
+        font-family:
+          "Inter",
+          system-ui,
+          -apple-system,
+          sans-serif;
+        background-color: #f1f5f9;
+        color: #0f172a;
+        margin: 0;
+        padding: 40px 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      h1 {
+        margin-bottom: 20px;
+        font-weight: 800;
+        font-size: 2.5rem;
+      }
+
+      /* Toggle Button Styling */
+      .toggle-container {
+        margin-bottom: 40px;
+      }
+      #themeToggle {
+        padding: 10px 20px;
+        border-radius: 8px;
+        border: 1px solid #e2e8f0;
+        background: white;
+        cursor: pointer;
+        font-weight: 600;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        transition: all 0.2s;
+      }
+      #themeToggle:hover {
+        background: #f8fafc;
+      }
+
+      /* Bento Grid Layout */
+      .bento-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-auto-rows: 220px;
+        gap: 20px;
+        max-width: 1100px;
+        width: 100%;
+      }
+
+      .card {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 24px;
+        padding: 30px;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+      }
+
+      .card h3 {
+        margin: 0 0 20px 0;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        color: #94a3b8;
+      }
+
+      label {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin: 10px 0;
+        cursor: pointer;
+        font-weight: 600;
+      }
+
+      /* Accent Color Styles */
+      .green {
+        accent-color: #22c55e;
+      }
+      .red {
+        accent-color: #ef4444;
+      }
+      .purple {
+        accent-color: #a855f7;
+      }
+      .blue {
+        accent-color: #3b82f6;
+      }
+      .orange {
+        accent-color: #f97316;
+      }
+      .slider {
+        accent-color: #06b6d4;
+        width: 100%;
+      }
+
+      .hover-accent {
+        accent-color: #64748b;
+      }
+      .hover-accent:hover {
+        accent-color: #f43f5e;
+      }
+
+      .animated {
+        accent-color: #4f46e5;
+        transition: accent-color 0.4s ease;
+      }
+      .animated:checked {
+        accent-color: #db2777;
+      }
+
+      /* VANILLA FALLBACK LOGIC */
+      /* When this class is added to body, we override all specific accents */
+      body.vanilla input {
+        accent-color: auto !important;
+      }
+
+      .span-2 {
+        grid-column: span 2;
+      }
+      .row-2 {
+        grid-row: span 2;
+      }
+
+      @media (max-width: 900px) {
+        .bento-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+      @media (max-width: 600px) {
+        .bento-grid {
+          grid-template-columns: 1fr;
+        }
+        .span-2 {
+          grid-column: span 1;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1>CSS Accent Color Demo</h1>
+
+    <div class="toggle-container">
+      <button id="themeToggle">Switch to Vanilla Colors</button>
+    </div>
+
+    <div class="bento-grid">
+      <div class="card row-2">
+        <h3>01. Checkboxes</h3>
+        <label
+          ><input type="checkbox" class="green" checked /> Green Accent</label
+        >
+        <label><input type="checkbox" class="red" checked /> Red Accent</label>
+        <label
+          ><input type="checkbox" class="purple" checked /> Purple Accent</label
+        >
+      </div>
+
+      <div class="card">
+        <h3>02. Radio Buttons</h3>
+        <label
+          ><input type="radio" name="plan" class="blue" checked /> Basic
+          Plan</label
+        >
+        <label
+          ><input type="radio" name="plan" class="orange" /> Premium Plan</label
+        >
+      </div>
+
+      <div class="card">
+        <h3>03. States</h3>
+        <label
+          ><input type="checkbox" class="hover-accent" /> Hover Accent</label
+        >
+        <label><input type="checkbox" class="animated" /> Animated</label>
+      </div>
+
+      <div class="card span-2">
+        <h3>04. Form Elements</h3>
+        <label>Range Slider</label>
+        <input type="range" class="slider" />
+      </div>
+    </div>
+
+    <script>
+      const btn = document.getElementById("themeToggle");
+
+      btn.addEventListener("click", () => {
+        // Toggle the class on the body
+        const isVanilla = document.body.classList.toggle("vanilla");
+
+        // Update button text
+        btn.textContent = isVanilla
+          ? "Restore Accent Colors"
+          : "Switch to Vanilla Colors";
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Amazing Bridges - Home</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: auto;
+        padding: 24px;
+      }
+
+      .header {
+        display: flex;
+        justify-content: center;
+        gap: 16px;
+      }
+
+      .logo {
+        width: 190px;
+        height: 125px;
+        object-fit: cover;
+      }
+
+      .menu {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 54px;
+        margin: 30px 4px 28px;
+        padding: 20px 0;
+        border-top: 2px solid #333;
+        border-bottom: 1px solid #333;
+      }
+
+      .menu a {
+        text-decoration: none;
+        color: #101010;
+        font-size: clamp(24px, 1vw, 49px);
+        font-weight: 700;
+      }
+
+      .options {
+        display: inline;
+      }
+
+      .menu a:hover {
+        color: #0063b3;
+      }
+
+      .row {
+        display: flex;
+        justify-content: stretch;
+        margin-bottom: 10px;
+      }
+
+      label {
+        min-width: 200px;
+        display: inline-flex;
+      }
+
+      .form-shell {
+        border: 1px solid #333;
+
+        h1 {
+          margin: auto;
+          width: fit-content;
+          padding: 10px 0;
+        }
+      }
+
+      form {
+        padding: 10px;
+        width: 100;
+
+        input[type="text"],
+        input[type="email"] {
+          width: 100%;
+          border-color: red;
+        }
+
+        label {
+          margin-bottom: 10px;
+        }
+      }
+
+      .full-label {
+        display: block;
+      }
+
+      .minlabel {
+        min-width: unset;
+      }
+
+      textarea {
+        width: 100%;
+        min-height: 100px;
+        margin-bottom: 10px;
+      }
+
+      .buttons {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+
+        .btn {
+          padding: 6px 20px;
+          border: 2px solid #333;
+          border-radius: 20px;
+        }
+      }
+
+      footer {
+        text-align: center;
+        font-size: 18px;
+        margin: 30px 0 10px;
+      }
+
+      @media (max-width: 900px) {
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header class="header">
+        <img class="main" src="./images/logo.gif" alt="Logo" />
+      </header>
+
+      <nav class="menu">
+        <a href="./index.html">HOME</a>
+        <a href="#">FOR SALE</a>
+        <a href="#">REPAIRS</a>
+        <a href="#">SIGNIN</a>
+        <a href="./register.html">REGISTER</a>
+        <a href="#">CONTACT</a>
+      </nav>
+
+      <section class="form-shell">
+        <div style="background: lightblue">
+          <h1>ENTER DETAILS YOUR ACCOUNT</h1>
+        </div>
+
+        <form id="contactForm" novalidate>
+          <div class="row">
+            <label for="firtname">First Name</label>
+            <input id="firstname" class="text-input" type="text" />
+          </div>
+
+          <div class="row">
+            <label for="email">Email</label>
+            <input id="email" class="text-input" type="email" />
+          </div>
+
+          <div class="row">
+            <label for="lastname">Last Name</label>
+            <input id="lastname" class="text-input" type="text" />
+          </div>
+
+          <div class="dateofbirth">
+            <label for="dateofbirth">Date of Birth</label>
+            <input type="date" />
+          </div>
+
+          <div class="employ">
+            <label>Are you employed</label>
+            <div class="options">
+              <label class="minlabel"
+                ><input type="radio" name="employ" value="Yes" />Yes</label
+              >
+              <label class="minlabel"
+                ><input type="radio" name="employ" value="No" />No</label
+              >
+            </div>
+          </div>
+
+          <div class="review-row">
+            <label class="full-label" for="review"
+              >How did you know about this website?</label
+            >
+            <label class="minlabel" for="newspaper"
+              ><input id="newspaper" type="checkbox" />Newspaper</label
+            >
+            <label class="minlabel" for="magazine"
+              ><input id="magazine" type="checkbox" />Magazine</label
+            >
+            <label class="minlabel" for="from a friend"
+              ><input id="from a friend" type="checkbox" />From a friend</label
+            >
+            <label class="minlabel" for="from a website"
+              ><input id="from a website" type="checkbox" />From a
+              website</label
+            >
+          </div>
+
+          <label class="full-label">Contents</label>
+          <textarea id="content"></textarea>
+          <div class="buttons">
+            <button class="btn" type="submit">Submit review</button>
+            <button class="btn" type="reset">Reset</button>
+          </div>
+        </form>
+      </section>
+
+      <footer>
+        We specialized in the sale and repair of classic keyboards, in
+        particular the Fender Rhodes, Wurlitzer Ep200, and Hohner Clavinet
+      </footer>
+    </div>
+
+    <script>
+      const form = document.getElementById("contactForm");
+
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const email = document.getElementById("email").value.trim();
+        const firstName = document.getElementById("firstname").value.trim();
+        const lastName = document.getElementById("lastname").value.trim();
+
+        // Member age must be 18- year old or above
+        const ageInput = document.querySelector('input[type="date"]');
+        const ageValue = ageInput.value;
+        if (ageValue) {
+          const today = new Date();
+          const birthDate = new Date(ageValue);
+          age = today.getFullYear() - birthDate.getFullYear();
+          const monthDifference = today.getMonth() - birthDate.getMonth();
+          if (
+            monthDifference < 0 ||
+            (monthDifference === 0 && today.getDate() < birthDate.getDate())
+          ) {
+            age--;
+          }
+          if (age < 18) {
+            alert("You must be at least 18 years old.");
+          }
+        }
+
+        // Email field must be in format xxxx@xxx.xxx (example: abc@yahoo.com)
+        const emailRegex = /^\w+@\w+\.\w+$/;
+        if (!emailRegex.test(email)) {
+          alert("Please enter a valid email address.");
+        }
+
+        if (firstName === "") {
+          alert("Please enter your fist name.");
+        }
+
+        if (lastName === "") {
+          alert("Please enter your last name.");
+        }
+
+        if (email === "") {
+          alert("Please enter your email.");
+        }
+        // construct a alert message with all the data entered by users
+        const employ = document.querySelector('input[name="employ"]:checked');
+        const reviewOptions = [];
+        if (document.getElementById("newspaper").checked) {
+          reviewOptions.push("Newspaper");
+        }
+        if (document.getElementById("magazine").checked) {
+          reviewOptions.push("Magazine");
+        }
+        if (document.getElementById("from a friend").checked) {
+          reviewOptions.push("From a friend");
+        }
+        if (document.getElementById("from a website").checked) {
+          reviewOptions.push("From a website");
+        }
+        const content = document.getElementById("content").value.trim();
+
+        if (
+          firstName !== "" &&
+          lastName !== "" &&
+          email !== "" &&
+          emailRegex.test(email) &&
+          age >= 18
+        )
+          alert(
+            `First Name: ${firstName}\nLast Name: ${lastName}\nEmail: ${email}\nAge: ${age}\nEmployed: ${
+              employ ? employ.value : "Not specified"
+            }\nHow did you know about this website?: ${
+              reviewOptions.length > 0 ? reviewOptions.join(", ") : "None"
+            }\nContents: ${content}`,
+          );
+      });
+
+      // If data is valid -> hit submit -> alert widow will show with all the data enter by users
+    </script>
+  </body>
+</html>

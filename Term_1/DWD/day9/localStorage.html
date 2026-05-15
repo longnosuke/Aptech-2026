@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/digitallytailored/classless@latest/classless.min.css"
+    />
+
+    <title>Local Storage</title>
+  </head>
+  <body>
+    <div>
+      <h2>Local Storage Example</h2>
+
+      <form action="">
+        <h3>Sign-in</h3>
+        <div class="input-group">
+          <label for="username">Username:</label>
+          <input
+            type="text"
+            id="username"
+            name="username"
+            required
+            value="aptech"
+          />
+        </div>
+        <div class="input-group">
+          <label for="password">Password:</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            required
+            value="123456"
+          />
+        </div>
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+    <script type="module">
+      var data = [];
+      try {
+        const res = await fetch("../data/users.json");
+        data = await res.json();
+        console.log("Data from fetch:", JSON.stringify(data, null, 2));
+      } catch (error) {
+        console.error("Error fetching users:", error);
+      }
+
+      const form = document.querySelector("form");
+      form.addEventListener("submit", function (event) {
+        event.preventDefault(); // Prevent form submission
+
+        const username = document.getElementById("username").value.trim();
+        const password = document.getElementById("password").value.trim();
+
+        const user = data.find(
+          (item) => item.username === username && item.password === password,
+        );
+
+        if (user) {
+          alert("Login successful!");
+
+          // Save data to local storage
+          localStorage.setItem("username", username);
+          localStorage.setItem("password", password);
+
+          alert("Data saved to local storage!");
+          window.location.href = "d09_session_storage.html"; // Redirect to session storage page
+        } else {
+          alert("Invalid username or password.");
+          return; // Exit the function if login fails
+        }
+      });
+    </script>
+    <!-- Add check remember me (when checked -> store to LocalStorage ) -->
+    <!-- After login success -> redirect to /product-page -->
+    <!-- If Signed in -> auto redirect to /product-page -->
+    <!-- Add sign up in login page if possible-->
+    <!-- Add logout ->> clear all data -->
+  </body>
+</html>

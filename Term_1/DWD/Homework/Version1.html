@@ -1,0 +1,910 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Scaffold Team Tracking - Noctra Store</title>
+    <style>
+      :root {
+        --bg: #f7f2ea;
+        --surface: #fffdf9;
+        --surface-2: #f1e7d9;
+        --line: #dbcdb8;
+        --text: #231d16;
+        --muted: #6f6254;
+        --accent: #c96f3b;
+        --accent-soft: rgba(201, 111, 59, 0.12);
+        --ok: #1f9f73;
+        --warn: #d45454;
+        --radius-lg: 18px;
+        --radius-md: 12px;
+        --radius-sm: 10px;
+        --shadow: 0 18px 40px rgba(94, 67, 41, 0.08);
+        --container: 1180px;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        min-height: 100vh;
+        font-family: "Segoe UI", Arial, sans-serif;
+        background: linear-gradient(180deg, #fbf7f1 0%, var(--bg) 100%);
+        color: var(--text);
+        line-height: 1.5;
+      }
+
+      .app-shell {
+        width: min(calc(100% - 32px), var(--container));
+        margin: 0 auto;
+        padding: 24px 0 48px;
+      }
+
+      .page-header {
+        margin-bottom: 24px;
+        padding: 24px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius-lg);
+        background: var(--surface);
+        box-shadow: var(--shadow);
+      }
+
+      .page-header h1 {
+        font-size: 2rem;
+        margin-bottom: 8px;
+      }
+
+      .page-header p {
+        color: var(--muted);
+      }
+
+      .owner-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+        gap: 12px;
+        margin: 18px 0 0;
+      }
+
+      .owner-card {
+        padding: 14px;
+        border-radius: var(--radius-md);
+        border: 1px solid var(--line);
+        background: var(--surface-2);
+      }
+
+      .owner-card strong {
+        display: block;
+        margin-bottom: 6px;
+      }
+
+      .module-section {
+        margin-bottom: 20px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius-lg);
+        background: var(--surface);
+        box-shadow: var(--shadow);
+        overflow: hidden;
+      }
+
+      .module-head {
+        padding: 18px 20px;
+        background: var(--accent-soft);
+        border-bottom: 1px solid var(--line);
+      }
+
+      .module-head h2 {
+        font-size: 1.15rem;
+        margin-bottom: 6px;
+      }
+
+      .module-head p,
+      .module-head li,
+      .module-body p,
+      .module-body li {
+        color: var(--muted);
+      }
+
+      .module-head ul,
+      .module-body ul {
+        margin: 8px 0 0 18px;
+      }
+
+      .module-body {
+        padding: 20px;
+        display: grid;
+        gap: 16px;
+      }
+
+      .placeholder-box {
+        padding: 16px;
+        border: 1px dashed var(--line);
+        border-radius: var(--radius-md);
+        background: #fffcf7;
+      }
+
+      .placeholder-box h3 {
+        font-size: 1rem;
+        margin-bottom: 8px;
+      }
+
+      .placeholder-row {
+        display: grid;
+        gap: 12px;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      }
+
+      .html-block,
+      .js-block,
+      .handoff-block {
+        padding: 14px;
+        border-radius: var(--radius-sm);
+        border: 1px solid var(--line);
+        background: var(--surface);
+      }
+
+      .html-block code,
+      .js-block code,
+      .contract-list code,
+      .test-card code {
+        font-family: "Courier New", monospace;
+        font-size: 0.92rem;
+        color: var(--text);
+      }
+
+      .contract-section,
+      .test-section {
+        margin-top: 20px;
+        padding: 20px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius-lg);
+        background: var(--surface);
+        box-shadow: var(--shadow);
+      }
+
+      .contract-list,
+      .test-grid {
+        display: grid;
+        gap: 10px;
+        margin-top: 14px;
+      }
+
+      .contract-item,
+      .test-card {
+        padding: 14px;
+        border-radius: var(--radius-md);
+        border: 1px solid var(--line);
+        background: #fffaf4;
+      }
+
+      .status-inline {
+        display: inline-flex;
+        align-items: center;
+        padding: 4px 10px;
+        border-radius: 999px;
+        background: rgba(31, 159, 115, 0.1);
+        color: var(--ok);
+        font-size: 0.86rem;
+        font-weight: 600;
+      }
+
+      .status-warn {
+        background: rgba(212, 84, 84, 0.1);
+        color: var(--warn);
+      }
+
+      .footer-note {
+        margin-top: 20px;
+        padding: 18px;
+        border-radius: var(--radius-lg);
+        border: 1px solid var(--line);
+        background: var(--surface-2);
+      }
+
+      @media (max-width: 768px) {
+        .app-shell {
+          width: min(calc(100% - 20px), var(--container));
+          padding-top: 18px;
+        }
+
+        .page-header,
+        .module-head,
+        .module-body,
+        .contract-section,
+        .test-section,
+        .footer-note {
+          padding: 16px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="page-header">
+        <h1>Scaffold Team Tracking - Noctra Store</h1>
+        <p>
+          Mục tiêu của file này là làm khung chia việc cho cả team. Mọi phần ở đây là
+          placeholder có chủ đích để từng người biết rõ mình làm ở đâu, gọi hàm nào,
+          phụ thuộc vào ai và bàn giao cho ai.
+        </p>
+
+        <div class="owner-grid">
+          <article class="owner-card">
+            <strong>Khang / A</strong>
+            <span>Dữ liệu + constants + route guard + navigation</span>
+          </article>
+          <article class="owner-card">
+            <strong>Member B</strong>
+            <span>Đăng nhập / đăng ký / lưu auth theo sessionStorage</span>
+          </article>
+          <article class="owner-card">
+            <strong>Member C</strong>
+            <span>Danh sách sản phẩm + render + add to cart</span>
+          </article>
+          <article class="owner-card">
+            <strong>Member D</strong>
+            <span>Giỏ hàng + chỉnh số lượng + tổng tiền + clear cart</span>
+          </article>
+          <article class="owner-card">
+            <strong>Long</strong>
+            <span>Styling system + integration + debug + nghiệm thu cuối</span>
+          </article>
+        </div>
+      </header>
+
+      <!-- KHU VỰC 1: DỮ LIỆU + ĐIỀU HƯỚNG -->
+      <section class="module-section" id="module-data-routing">
+        <div class="module-head">
+          <h2>KHU VỰC 1: DỮ LIỆU + ĐIỀU HƯỚNG</h2>
+          <p>Phụ trách chính: Khang / A</p>
+          <ul>
+            <li>Mục tiêu: dựng constants, state chung, route guard và navigation shell.</li>
+            <li>Phụ thuộc: chưa phụ thuộc module khác, đây là phần nền để các bạn còn lại bám vào.</li>
+            <li>Bàn giao cho: Member B, C, D và Long để dùng đúng ID, route name, storage key.</li>
+          </ul>
+        </div>
+        <div class="module-body">
+          <div class="placeholder-box">
+            <h3>Placeholder HTML cần dựng</h3>
+            <div class="placeholder-row">
+              <div class="html-block">
+                <code>&lt;header id="app-navbar"&gt;...&lt;/header&gt;</code>
+                <p>Thanh điều hướng chung cho Home / Cart / Sign Out / User name.</p>
+              </div>
+              <div class="html-block">
+                <code>&lt;main id="app-pages"&gt;...&lt;/main&gt;</code>
+                <p>Nơi chứa các page container như sign-in, sign-up, home, cart.</p>
+              </div>
+              <div class="html-block">
+                <code>&lt;div id="toast-container"&gt;&lt;/div&gt;</code>
+                <p>Vùng dùng chung cho thông báo hệ thống nếu team cần.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="placeholder-box">
+            <h3>Placeholder JS cần triển khai</h3>
+            <div class="placeholder-row">
+              <div class="js-block">
+                <code>const AUTH_KEY = "auth_user";</code>
+                <p>TODO: Chốt key dùng chung để lưu người dùng đăng nhập trong sessionStorage.</p>
+              </div>
+              <div class="js-block">
+                <code>const CART_KEY = "cart";</code>
+                <p>TODO: Chốt key dùng chung để lưu giỏ hàng trong sessionStorage.</p>
+              </div>
+              <div class="js-block">
+                <code>function restoreAuth() { /* TODO */ }</code>
+                <p>TODO: Đọc auth từ sessionStorage khi load trang và cập nhật currentUser.</p>
+              </div>
+              <div class="js-block">
+                <code>function normalizeRoute(page) { /* TODO */ }</code>
+                <p>TODO: Chuẩn hóa route để tránh sai tên page khi điều hướng.</p>
+              </div>
+              <div class="js-block">
+                <code>function routeTo(page) { /* TODO */ }</code>
+                <p>TODO: Điều hướng giữa các page dựa trên trạng thái đăng nhập hiện tại.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="handoff-block">
+            <strong>Checklist bàn giao của Khang / A</strong>
+            <ul>
+              <li>Chốt trước tên các page: <code>signin</code>, <code>signup</code>, <code>home</code>, <code>cart</code>.</li>
+              <li>Chốt trước IDs HTML để các module khác gắn event đúng vị trí.</li>
+              <li>Thông báo shape dữ liệu <code>currentUser</code>, <code>PRODUCTS</code>, <code>cart item</code>.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- KHU VỰC 2: ĐĂNG NHẬP / ĐĂNG KÝ -->
+      <section class="module-section" id="module-auth">
+        <div class="module-head">
+          <h2>KHU VỰC 2: ĐĂNG NHẬP / ĐĂNG KÝ</h2>
+          <p>Phụ trách chính: Member B</p>
+          <ul>
+            <li>Mục tiêu: dựng form đăng nhập / đăng ký, xử lý auth flow và redirect logic.</li>
+            <li>Phụ thuộc: dùng route names, constants và <code>currentUser</code> từ Khang / A.</li>
+            <li>Bàn giao cho: Long để tích hợp UI cuối và Member D nếu cần chặn cart page khi chưa đăng nhập.</li>
+          </ul>
+        </div>
+        <div class="module-body">
+          <div class="placeholder-box">
+            <h3>Placeholder HTML cần dựng</h3>
+            <div class="placeholder-row">
+              <div class="html-block">
+                <code>&lt;section id="page-signin"&gt;...&lt;/section&gt;</code>
+                <p>Form đăng nhập gồm username, password, remember me, nút Sign In.</p>
+              </div>
+              <div class="html-block">
+                <code>&lt;section id="page-signup"&gt;...&lt;/section&gt;</code>
+                <p>Form đăng ký gồm name, username, password, confirm password.</p>
+              </div>
+              <div class="html-block">
+                <code>&lt;button id="signout-btn"&gt;Sign Out&lt;/button&gt;</code>
+                <p>Nút đăng xuất dùng chung ở navbar.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="placeholder-box">
+            <h3>Placeholder JS cần triển khai</h3>
+            <div class="placeholder-row">
+              <div class="js-block">
+                <code>function signIn(username, password, remember) { /* TODO */ }</code>
+                <p>TODO: Kiểm tra USERS, cập nhật currentUser, lưu sessionStorage nếu remember bằng true.</p>
+              </div>
+              <div class="js-block">
+                <code>function signUp(name, username, password, confirmPassword) { /* TODO */ }</code>
+                <p>TODO: Kiểm tra username trùng, mật khẩu khớp, thêm user mới vào USERS.</p>
+              </div>
+              <div class="js-block">
+                <code>function signOut() { /* TODO */ }</code>
+                <p>TODO: Xóa auth trong state và sessionStorage, sau đó redirect về sign in.</p>
+              </div>
+              <div class="js-block">
+                <code>function syncUserChip() { /* TODO */ }</code>
+                <p>TODO: Cập nhật tên người dùng / avatar / trạng thái ở navbar sau khi auth đổi.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="handoff-block">
+            <strong>Checklist bàn giao của Member B</strong>
+            <ul>
+              <li>Chốt IDs input để Long không phải sửa lại CSS selector.</li>
+              <li>Đảm bảo sau login thành công thì gọi <code>routeTo("home")</code>.</li>
+              <li>Đảm bảo sign out xong thì gọi <code>routeTo("signin")</code>.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- KHU VỰC 3: DANH SÁCH SẢN PHẨM -->
+      <section class="module-section" id="module-products">
+        <div class="module-head">
+          <h2>KHU VỰC 3: DANH SÁCH SẢN PHẨM</h2>
+          <p>Phụ trách chính: Member C</p>
+          <ul>
+            <li>Mục tiêu: render danh sách products từ JSON và xử lý add to cart.</li>
+            <li>Phụ thuộc: cần shape <code>PRODUCTS</code> rõ ràng từ Khang / A.</li>
+            <li>Bàn giao cho: Member D để cart logic nhận đúng object, Long để polish phần giao diện.</li>
+          </ul>
+        </div>
+        <div class="module-body">
+          <div class="placeholder-box">
+            <h3>Placeholder HTML cần dựng</h3>
+            <div class="placeholder-row">
+              <div class="html-block">
+                <code>&lt;section id="page-home"&gt;...&lt;/section&gt;</code>
+                <p>Trang Home chứa hero nhỏ, product grid và các nút Add to Cart.</p>
+              </div>
+              <div class="html-block">
+                <code>&lt;div id="product-grid"&gt;&lt;/div&gt;</code>
+                <p>Container để render danh sách card sản phẩm bằng JavaScript.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="placeholder-box">
+            <h3>Placeholder JS cần triển khai</h3>
+            <div class="placeholder-row">
+              <div class="js-block">
+                <code>function renderProducts() { /* TODO */ }</code>
+                <p>TODO: Duyệt mảng PRODUCTS và dựng HTML card bằng forEach hoặc map.</p>
+              </div>
+              <div class="js-block">
+                <code>function addToCart(productId) { /* TODO */ }</code>
+                <p>TODO: Kiểm tra item trùng hay chưa, nếu trùng thì tăng quantity, nếu chưa có thì push mới.</p>
+              </div>
+              <div class="js-block">
+                <code>function bindProductEvents() { /* TODO */ }</code>
+                <p>TODO: Gắn event click cho nút Add to Cart sau khi render xong danh sách sản phẩm.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="handoff-block">
+            <strong>Checklist bàn giao của Member C</strong>
+            <ul>
+              <li>Mỗi product card phải có <code>data-product-id</code> hoặc ID rõ ràng để dễ bắt sự kiện.</li>
+              <li>Phải thống nhất object thêm vào cart với Member D trước khi code.</li>
+              <li>Sau add to cart xong phải có hook gọi cập nhật badge nav.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- KHU VỰC 4: GIỎ HÀNG -->
+      <section class="module-section" id="module-cart">
+        <div class="module-head">
+          <h2>KHU VỰC 4: GIỎ HÀNG</h2>
+          <p>Phụ trách chính: Member D</p>
+          <ul>
+            <li>Mục tiêu: dựng cart page, lưu / đọc cart từ sessionStorage, xử lý quantity và clear cart.</li>
+            <li>Phụ thuộc: cần shape product / cart item từ Member C và constants từ Khang / A.</li>
+            <li>Bàn giao cho: Long để debug merge và hoàn thiện phần responsive / UI / edge cases.</li>
+          </ul>
+        </div>
+        <div class="module-body">
+          <div class="placeholder-box">
+            <h3>Placeholder HTML cần dựng</h3>
+            <div class="placeholder-row">
+              <div class="html-block">
+                <code>&lt;section id="page-cart"&gt;...&lt;/section&gt;</code>
+                <p>Trang giỏ hàng chứa danh sách item, quantity controls, total summary.</p>
+              </div>
+              <div class="html-block">
+                <code>&lt;div id="cart-content"&gt;&lt;/div&gt;</code>
+                <p>Container để render cart state động bằng JavaScript.</p>
+              </div>
+              <div class="html-block">
+                <code>&lt;span id="cart-badge"&gt;0&lt;/span&gt;</code>
+                <p>Badge hiển thị tổng số lượng item trên navigation.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="placeholder-box">
+            <h3>Placeholder JS cần triển khai</h3>
+            <div class="placeholder-row">
+              <div class="js-block">
+                <code>function getCart() { /* TODO */ }</code>
+                <p>TODO: Đọc mảng cart từ sessionStorage, trả về mảng rỗng nếu chưa có dữ liệu.</p>
+              </div>
+              <div class="js-block">
+                <code>function saveCart(cart) { /* TODO */ }</code>
+                <p>TODO: Ghi cart xuống sessionStorage và gọi các hàm render liên quan.</p>
+              </div>
+              <div class="js-block">
+                <code>function renderCart() { /* TODO */ }</code>
+                <p>TODO: Hiển thị cart items, empty state, subtotal, total, quantity controls.</p>
+              </div>
+              <div class="js-block">
+                <code>function updateQuantity(productId, delta) { /* TODO */ }</code>
+                <p>TODO: Tăng / giảm số lượng, nếu quantity nhỏ hơn 1 thì xóa item khỏi cart.</p>
+              </div>
+              <div class="js-block">
+                <code>function removeFromCart(productId) { /* TODO */ }</code>
+                <p>TODO: Xóa đúng item theo productId rồi render lại cart.</p>
+              </div>
+              <div class="js-block">
+                <code>function clearCart() { /* TODO */ }</code>
+                <p>TODO: Xóa toàn bộ cart trong sessionStorage và cập nhật badge về 0.</p>
+              </div>
+              <div class="js-block">
+                <code>function updateCartBadge() { /* TODO */ }</code>
+                <p>TODO: Tính tổng quantity của cart và cập nhật badge nav.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="handoff-block">
+            <strong>Checklist bàn giao của Member D</strong>
+            <ul>
+              <li>Đảm bảo mọi thay đổi quantity đều cập nhật sessionStorage ngay lập tức.</li>
+              <li>Đảm bảo total tiền tính theo <code>price * quantity</code> của từng item.</li>
+              <li>Đảm bảo badge nav luôn đồng bộ sau add, remove, clear.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- KHU VỰC 5: STYLE + DEBUG + TÍCH HỢP -->
+      <section class="module-section" id="module-integration">
+        <div class="module-head">
+          <h2>KHU VỰC 5: STYLE + DEBUG + TÍCH HỢP</h2>
+          <p>Phụ trách chính: Long</p>
+          <ul>
+            <li>Mục tiêu: dựng style system chung, gộp code từ các bạn còn lại và debug toàn bộ luồng.</li>
+            <li>Phụ thuộc: nhận code từ Khang / A, Member B, Member C, Member D.</li>
+            <li>Bàn giao cho: cả team khi hoàn thiện bản chạy cuối để kiểm thử.</li>
+          </ul>
+        </div>
+        <div class="module-body">
+          <div class="placeholder-box">
+            <h3>Nhiệm vụ tích hợp của Long</h3>
+            <div class="placeholder-row">
+              <div class="handoff-block">
+                <strong>Style system</strong>
+                <p>TODO: Chốt màu, spacing, button, input, card, navbar, responsive rules dùng chung.</p>
+              </div>
+              <div class="handoff-block">
+                <strong>Debug merge</strong>
+                <p>TODO: Bắt lỗi trùng tên hàm, lệch route name, sai storage key, sai shape cart object.</p>
+              </div>
+              <div class="handoff-block">
+                <strong>Nghiệm thu cuối</strong>
+                <p>TODO: Chạy lại toàn bộ flow auth, route guard, product render, cart, signout, refresh.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="contract-section">
+        <h2>Public Contracts Chốt Trước</h2>
+        <p>
+          Mọi bạn phải bám đúng tên biến và tên hàm dưới đây để Long merge cuối không bị vỡ.
+        </p>
+        <div class="contract-list">
+          <div class="contract-item"><code>const AUTH_KEY</code> - Key lưu auth trong sessionStorage.</div>
+          <div class="contract-item"><code>const CART_KEY</code> - Key lưu giỏ hàng trong sessionStorage.</div>
+          <div class="contract-item"><code>const USERS</code> - Mảng người dùng mẫu để đăng nhập / đăng ký.</div>
+          <div class="contract-item"><code>const PRODUCTS</code> - Mảng sản phẩm mẫu dùng để render Home page.</div>
+          <div class="contract-item"><code>let currentUser</code> - State người dùng hiện tại trong phiên làm việc.</div>
+          <div class="contract-item"><code>restoreAuth()</code> - Khôi phục trạng thái đăng nhập từ sessionStorage.</div>
+          <div class="contract-item"><code>routeTo(page)</code> - Điều hướng page theo route name đã chốt.</div>
+          <div class="contract-item"><code>signIn(username, password, remember)</code> - Xử lý đăng nhập.</div>
+          <div class="contract-item"><code>signOut()</code> - Xử lý đăng xuất.</div>
+          <div class="contract-item"><code>renderProducts()</code> - Render danh sách sản phẩm.</div>
+          <div class="contract-item"><code>addToCart(productId)</code> - Thêm sản phẩm vào cart.</div>
+          <div class="contract-item"><code>getCart()</code> - Đọc cart từ sessionStorage.</div>
+          <div class="contract-item"><code>saveCart(cart)</code> - Ghi cart vào sessionStorage.</div>
+          <div class="contract-item"><code>renderCart()</code> - Render toàn bộ giao diện giỏ hàng.</div>
+          <div class="contract-item"><code>updateQuantity(productId, delta)</code> - Chỉnh số lượng theo nút cộng / trừ.</div>
+          <div class="contract-item"><code>removeFromCart(productId)</code> - Xóa item khỏi giỏ hàng.</div>
+          <div class="contract-item"><code>clearCart()</code> - Xóa toàn bộ cart.</div>
+        </div>
+      </section>
+
+      <section class="test-section">
+        <h2>Điểm Neo Để Track Test</h2>
+        <p>
+          File test stub chi tiết nằm ở <code>Homework/test-stub.js</code>. Khu vực này chỉ tóm tắt
+          nhanh để cả team nhớ các nhóm test quan trọng.
+        </p>
+        <div class="test-grid">
+          <div class="test-card">
+            <strong>Auth Flow</strong>
+            <p>Đăng nhập đúng / sai, remember me, sign out, redirect sau login.</p>
+          </div>
+          <div class="test-card">
+            <strong>Route Guard</strong>
+            <p>Chưa đăng nhập vào Home/Cart bị đẩy về Sign In, đã đăng nhập không quay lại auth pages.</p>
+          </div>
+          <div class="test-card">
+            <strong>Products + Cart</strong>
+            <p>Render đủ sản phẩm, add to cart, tăng quantity, xóa item, clear cart, badge nav đúng.</p>
+          </div>
+          <div class="test-card">
+            <strong>Integration</strong>
+            <p>Refresh vẫn giữ cart, auth chỉ giữ khi remember me bật, các module không đạp nhau.</p>
+          </div>
+        </div>
+      </section>
+
+      <div class="footer-note">
+        <strong>Ghi chú cuối:</strong>
+        <p>
+          File này cố tình giữ ở dạng scaffold để team chia việc và merge dễ hơn. Khi từng bạn bắt đầu code,
+          hãy triển khai đúng khu vực mình phụ trách và không đổi tên contracts đã chốt nếu chưa thống nhất với cả team.
+        </p>
+      </div>
+    </div>
+
+    <script src="./test-stub.js"></script>
+    <script>
+      /*
+        ==============================================================
+        KHU VỰC SCRIPT SCAFFOLD CHUNG
+        Mục tiêu: Chốt trước contracts để các bạn code đồng bộ.
+        Lưu ý: Đây là placeholder có comment chi tiết, chưa phải logic hoàn chỉnh.
+        ==============================================================
+      */
+
+      /* =============================================================
+         KHU VỰC 1: DỮ LIỆU + ĐIỀU HƯỚNG
+         Phụ trách: Khang / A
+         Phụ thuộc: Không phụ thuộc module khác.
+         Bàn giao cho: Member B, C, D và Long.
+      ============================================================= */
+
+      // TODO: Chốt key lưu trạng thái đăng nhập trong sessionStorage.
+      const AUTH_KEY = "auth_user";
+
+      // TODO: Chốt key lưu giỏ hàng trong sessionStorage.
+      const CART_KEY = "cart";
+
+      // TODO: Mảng USERS mẫu để Member B dùng cho đăng nhập / đăng ký.
+      // Gợi ý shape: { id, username, password, name }
+      const USERS = [];
+
+      // TODO: Mảng PRODUCTS mẫu để Member C và D cùng dùng.
+      // Gợi ý shape: { id, name, price, desc, category, image }
+      const PRODUCTS = [];
+
+      // TODO: State người dùng hiện tại sau khi restore auth hoặc sign in thành công.
+      let currentUser = null;
+
+      // TODO: Chốt trước danh sách route hợp lệ để route guard dùng thống nhất.
+      const PAGE_IDS = ["signin", "signup", "home", "cart"];
+
+      // TODO: Chốt trước public pages để route guard dễ kiểm tra.
+      const PUBLIC_ROUTES = ["signin", "signup"];
+
+      /**
+       * restoreAuth
+       * Chức năng: Khôi phục trạng thái đăng nhập từ sessionStorage khi load trang.
+       * Input: Không nhận tham số.
+       * Output: Cập nhật biến currentUser trong bộ nhớ.
+       * Khi nào gọi: Gọi ở bước khởi tạo trang.
+       * Module dùng tiếp: routeTo, syncUserChip, auth guard.
+       */
+      function restoreAuth() {
+        /* TODO: Đọc sessionStorage theo AUTH_KEY và gán vào currentUser nếu có dữ liệu hợp lệ. */
+      }
+
+      /**
+       * normalizeRoute
+       * Chức năng: Chuẩn hóa route name để tránh truyền sai giá trị.
+       * Input: page - tên page thô, có thể đến từ hash hoặc button.
+       * Output: Trả về route hợp lệ trong PAGE_IDS.
+       * Khi nào gọi: Gọi trước routeTo.
+       * Module dùng tiếp: routeTo, listener hashchange.
+       */
+      function normalizeRoute(page) {
+        /* TODO: Chuẩn hóa chuỗi route, fallback về home hoặc signin tùy quy ước team chốt. */
+      }
+
+      /**
+       * routeTo
+       * Chức năng: Điều hướng giữa các page dựa trên route và trạng thái đăng nhập.
+       * Input: page - tên page đích cần đi tới.
+       * Output: Không trả về, nhưng cập nhật giao diện active page.
+       * Khi nào gọi: Sau signIn, signOut, click nav, load trang, hashchange.
+       * Module dùng tiếp: Toàn bộ app.
+       */
+      function routeTo(page) {
+        /* TODO: Kiểm tra auth guard, active page đúng, cập nhật navigation đúng. */
+      }
+
+      /* =============================================================
+         KHU VỰC 2: ĐĂNG NHẬP / ĐĂNG KÝ
+         Phụ trách: Member B
+         Phụ thuộc: AUTH_KEY, currentUser, routeTo, USERS.
+         Bàn giao cho: Long và Member D.
+      ============================================================= */
+
+      /**
+       * signIn
+       * Chức năng: Kiểm tra thông tin đăng nhập và lưu auth theo remember me.
+       * Input: username, password, remember.
+       * Output: Có thể trả về true / false hoặc object user tùy team chốt.
+       * Khi nào gọi: Khi submit form Sign In.
+       * Module dùng tiếp: routeTo, syncUserChip, UI toast / error.
+       */
+      function signIn(username, password, remember) {
+        /* TODO: Kiểm tra USERS, cập nhật currentUser, lưu sessionStorage nếu remember = true. */
+      }
+
+      /**
+       * signUp
+       * Chức năng: Tạo user mới trong USERS và tự động đăng nhập nếu hợp lệ.
+       * Input: name, username, password, confirmPassword.
+       * Output: Có thể trả về object trạng thái hoặc boolean.
+       * Khi nào gọi: Khi submit form Sign Up.
+       * Module dùng tiếp: signIn, routeTo, UI error / success message.
+       */
+      function signUp(name, username, password, confirmPassword) {
+        /* TODO: Kiểm tra username trùng, kiểm tra confirmPassword, thêm user mới vào USERS. */
+      }
+
+      /**
+       * signOut
+       * Chức năng: Xóa auth state và đưa người dùng về trang đăng nhập.
+       * Input: Không nhận tham số.
+       * Output: Không trả về.
+       * Khi nào gọi: Khi click nút Sign Out.
+       * Module dùng tiếp: routeTo, syncUserChip.
+       */
+      function signOut() {
+        /* TODO: Xóa currentUser, xóa sessionStorage và điều hướng về signin. */
+      }
+
+      /**
+       * syncUserChip
+       * Chức năng: Cập nhật hiển thị tên người dùng / avatar trên nav.
+       * Input: Không nhận tham số, dùng currentUser hiện tại.
+       * Output: Không trả về.
+       * Khi nào gọi: Sau restoreAuth, signIn, signOut.
+       * Module dùng tiếp: UI navbar.
+       */
+      function syncUserChip() {
+        /* TODO: Đổi text / avatar / trạng thái hiển thị theo currentUser. */
+      }
+
+      /* =============================================================
+         KHU VỰC 3: DANH SÁCH SẢN PHẨM
+         Phụ trách: Member C
+         Phụ thuộc: PRODUCTS, getCart, saveCart, updateCartBadge.
+         Bàn giao cho: Member D và Long.
+      ============================================================= */
+
+      /**
+       * renderProducts
+       * Chức năng: Dựng danh sách card sản phẩm từ mảng PRODUCTS.
+       * Input: Không nhận tham số, dùng PRODUCTS toàn cục.
+       * Output: Không trả về, nhưng cập nhật HTML của product grid.
+       * Khi nào gọi: Khi vào Home page hoặc khi PRODUCTS thay đổi.
+       * Module dùng tiếp: bindProductEvents, addToCart.
+       */
+      function renderProducts() {
+        /* TODO: Duyệt PRODUCTS và inject HTML vào #product-grid. */
+      }
+
+      /**
+       * addToCart
+       * Chức năng: Thêm sản phẩm vào cart hoặc tăng quantity nếu đã có.
+       * Input: productId - ID sản phẩm được click Add to Cart.
+       * Output: Có thể trả về cart mới hoặc không trả về.
+       * Khi nào gọi: Khi click nút Add to Cart trong product card.
+       * Module dùng tiếp: saveCart, renderCart, updateCartBadge.
+       */
+      function addToCart(productId) {
+        /* TODO: Tìm product trong PRODUCTS, merge vào cart và gọi saveCart. */
+      }
+
+      /**
+       * bindProductEvents
+       * Chức năng: Gắn sự kiện cho các nút Add to Cart sau khi render xong.
+       * Input: Không nhận tham số.
+       * Output: Không trả về.
+       * Khi nào gọi: Sau renderProducts.
+       * Module dùng tiếp: addToCart.
+       */
+      function bindProductEvents() {
+        /* TODO: Bắt click từ product grid hoặc dùng event delegation. */
+      }
+
+      /* =============================================================
+         KHU VỰC 4: GIỎ HÀNG
+         Phụ trách: Member D
+         Phụ thuộc: CART_KEY, PRODUCTS, updateCartBadge.
+         Bàn giao cho: Long.
+      ============================================================= */
+
+      /**
+       * getCart
+       * Chức năng: Đọc mảng cart hiện tại từ sessionStorage.
+       * Input: Không nhận tham số.
+       * Output: Trả về mảng cart item.
+       * Khi nào gọi: Trước mọi thao tác với cart.
+       * Module dùng tiếp: addToCart, renderCart, updateQuantity, clearCart.
+       */
+      function getCart() {
+        /* TODO: Parse sessionStorage theo CART_KEY, fallback [] nếu chưa có dữ liệu. */
+      }
+
+      /**
+       * saveCart
+       * Chức năng: Ghi mảng cart xuống sessionStorage và đồng bộ UI liên quan.
+       * Input: cart - mảng cart item mới.
+       * Output: Không trả về.
+       * Khi nào gọi: Sau add / remove / quantity update / clear.
+       * Module dùng tiếp: renderCart, updateCartBadge.
+       */
+      function saveCart(cart) {
+        /* TODO: Stringify cart, lưu vào sessionStorage, render lại UI cần thiết. */
+      }
+
+      /**
+       * renderCart
+       * Chức năng: Hiển thị cart items, empty state, subtotal và total.
+       * Input: Không nhận tham số, dùng getCart để lấy dữ liệu.
+       * Output: Không trả về, nhưng cập nhật HTML cart page.
+       * Khi nào gọi: Khi vào trang cart hoặc sau mọi thay đổi cart.
+       * Module dùng tiếp: updateQuantity, removeFromCart, clearCart.
+       */
+      function renderCart() {
+        /* TODO: Render danh sách item, nút cộng trừ, tổng tiền và nút clear cart. */
+      }
+
+      /**
+       * updateQuantity
+       * Chức năng: Tăng hoặc giảm số lượng của 1 item trong cart.
+       * Input: productId, delta.
+       * Output: Không trả về.
+       * Khi nào gọi: Khi click nút cộng / trừ trong cart.
+       * Module dùng tiếp: saveCart, renderCart, updateCartBadge.
+       */
+      function updateQuantity(productId, delta) {
+        /* TODO: Nếu quantity về 0 thì xóa item, nếu còn > 0 thì cập nhật số lượng mới. */
+      }
+
+      /**
+       * removeFromCart
+       * Chức năng: Xóa 1 sản phẩm khỏi giỏ hàng theo productId.
+       * Input: productId.
+       * Output: Không trả về.
+       * Khi nào gọi: Khi click nút xóa item trong cart.
+       * Module dùng tiếp: saveCart.
+       */
+      function removeFromCart(productId) {
+        /* TODO: Lọc item ra khỏi cart và lưu lại cart mới. */
+      }
+
+      /**
+       * clearCart
+       * Chức năng: Xóa toàn bộ giỏ hàng.
+       * Input: Không nhận tham số.
+       * Output: Không trả về.
+       * Khi nào gọi: Khi click nút Clear Cart.
+       * Module dùng tiếp: saveCart, renderCart, updateCartBadge.
+       */
+      function clearCart() {
+        /* TODO: Đặt cart về mảng rỗng và cập nhật lại toàn bộ UI liên quan. */
+      }
+
+      /**
+       * updateCartBadge
+       * Chức năng: Đồng bộ số lượng item trên badge navigation.
+       * Input: Không nhận tham số, tự tính từ cart hiện tại.
+       * Output: Không trả về.
+       * Khi nào gọi: Sau add / remove / quantity update / clear.
+       * Module dùng tiếp: UI nav.
+       */
+      function updateCartBadge() {
+        /* TODO: Tính tổng quantity và cập nhật text cho #cart-badge. */
+      }
+
+      /* =============================================================
+         KHU VỰC 5: STYLE + DEBUG + TÍCH HỢP
+         Phụ trách: Long
+         Phụ thuộc: Toàn bộ module còn lại.
+         Bàn giao cho: Bản chạy cuối của team.
+      ============================================================= */
+
+      /**
+       * initApp
+       * Chức năng: Điểm khởi động chung để gọi restoreAuth, renderProducts, updateCartBadge và route mặc định.
+       * Input: Không nhận tham số.
+       * Output: Không trả về.
+       * Khi nào gọi: Sau khi DOM load xong.
+       * Module dùng tiếp: Toàn bộ hệ thống.
+       */
+      function initApp() {
+        /* TODO: Gọi các bước khởi tạo tối thiểu để app vào trạng thái sẵn sàng. */
+      }
+
+      /**
+       * bindGlobalEvents
+       * Chức năng: Gắn các sự kiện dùng chung như click nav, submit form, hashchange nếu team dùng.
+       * Input: Không nhận tham số.
+       * Output: Không trả về.
+       * Khi nào gọi: Trong initApp.
+       * Module dùng tiếp: Tất cả luồng chính của app.
+       */
+      function bindGlobalEvents() {
+        /* TODO: Tập trung các listener toàn cục để Long dễ debug và team dễ theo dõi. */
+      }
+
+      // TODO: Gọi initApp khi cả team bắt đầu tích hợp logic thật.
+      // initApp();
+    </script>
+  </body>
+</html>
