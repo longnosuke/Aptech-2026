@@ -9,19 +9,23 @@ export default function Products() {
       <table>
         <thead>
           <tr>
+            <th>No.</th>
             <th>Id</th>
             <th>Name</th>
-            <th>Price</th>
+            <th style={{ textAlign: "right" }}>Price</th>
           </tr>
         </thead>
         <tbody>
-          {productDB.map((product) => (
-            <tr key={product.id}>
-              <td>{product.id}</td>
-              <td>{product.name}</td>
-              <td>{product.price}</td>
-            </tr>
-          ))}
+          {productDB.map((product, index) => {
+            return (
+              <tr>
+                <td>{index + 1}</td>
+                <td>{product.id}</td>
+                <td>{product.name}</td>
+                <td style={{ textAlign: "right" }}>{product.price}</td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </div>

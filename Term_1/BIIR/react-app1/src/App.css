@@ -1,10 +1,7 @@
-.App {
-  width: 100%;
-  max-width: 720px;
-  margin: 0 auto;
-  padding: 2rem 1.5rem 3rem;
-  box-sizing: border-box;
-  text-align: left;
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
 }
 
 .app-header {
