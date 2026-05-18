@@ -1,40 +1,45 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "./assets/vite.svg";
-import heroImg from "./assets/hero.png";
+import profileImg from "./assets/cun.jpg";
 import "./App.css";
+import Ciao, { Greeting, Hello } from "./Welcome";
+import Products from "./Products";
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    <div className="App">
+      <header className="app-header">
+        <Ciao />
+      </header>
 
-      <div className="ticks"></div>
+      <main className="app-main">
+        <section className="profile-card">
+          <h2>My Profile</h2>
+          <img className="profile-avatar" src={profileImg} alt="Cun profile" />
+          <ul className="profile-details">
+            <li>
+              <strong>Name</strong>
+              <span>Cun</span>
+            </li>
+            <li>
+              <strong>Age</strong>
+              <span>5</span>
+            </li>
+            <li>
+              <strong>Location</strong>
+              <span>Vietnam</span>
+            </li>
+          </ul>
+        </section>
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
+        <section className="greetings">
+          <Greeting />
+          <Hello name="Kitty" country="Vuong quoc Meo" age={1.5} />
+        </section>
+
+        <section className="products-section">
+          <Products />
+        </section>
+      </main>
+    </div>
   );
 }
 
