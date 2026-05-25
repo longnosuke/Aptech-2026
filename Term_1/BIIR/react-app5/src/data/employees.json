@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "empID": "E001",
+    "name": "John Doe",
+    "yob": 1993,
+    "position": "Software Engineer",
+    "salary": 60000
+  },
+  {
+    "id": 2,
+    "empID": "E002",
+    "name": "Jane Smith",
+    "yob": 1998,
+    "position": "Product Manager",
+    "salary": 75000
+  },
+  {
+    "id": 3,
+    "empID": "E003",
+    "name": "Alice Johnson",
+    "yob": 1995,
+    "position": "UX Designer",
+    "salary": 65000
+  }
+]
