@@ -1,0 +1,109 @@
+.products-section {
+  padding-top: 0.5rem;
+}
+
+.products-section h2 {
+  text-align: center;
+  margin-bottom: 1.25rem;
+}
+
+.products-section table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+
+.products-section th,
+.products-section td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+
+.products-section th {
+  background: var(--accent);
+  color: #fff;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+.products-section tbody tr {
+  background: var(--bg);
+  transition: background 0.15s ease;
+}
+
+.products-section tbody tr:hover {
+  background: var(--accent-bg);
+}
+
+.products-section tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.products-section td:last-child {
+  font-family: var(--mono);
+  font-weight: 500;
+  color: var(--accent);
+}
+
+.nav-list {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.nav-list a {
+  text-decoration: none;
+  color: var(--text);
+  text-transform: uppercase;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 16px;
+  border: 1px solid var(--border);
+  transition: background 0.15s ease;
+}
+
+.nav-list a:hover {
+  background: var(--accent-bg);
+}
+
+.counter {
+  font-size: 16px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  color: var(--accent);
+  background: var(--accent-bg);
+  border: 2px solid transparent;
+  transition: border-color 0.3s;
+  margin-bottom: 24px;
+
+  &:hover {
+    border-color: var(--accent-border);
+  }
+  &:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+}
+
+@media (max-width: 480px) {
+  .App {
+    padding: 1.5rem 1rem 2rem;
+  }
+
+  .profile-avatar {
+    width: 120px;
+    height: 120px;
+  }
+
+  .products-section th,
+  .products-section td {
+    padding: 0.6rem 0.75rem;
+    font-size: 0.875rem;
+  }
+}
