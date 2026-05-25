@@ -73,8 +73,19 @@ th {
   flex-wrap: wrap;
 }
 
+.form-container {
+  max-width: 400px;
+}
+
+.input-group,
 form > div {
   margin-bottom: 12px;
+}
+
+.error {
+  color: #b91c1c;
+  font-size: 14px;
+  margin-top: 4px;
 }
 
 form label {

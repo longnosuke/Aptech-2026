@@ -1,101 +1,39 @@
-import { useState } from "react";
+import { useFormik } from 'formik'
+import EmployeeFormFields from './EmployeeFormFields'
+import { getEmployeeValidationSchema } from '../validation/employeeSchema'
 
-const emptyForm = {
-  empID: "",
-  name: "",
-  yob: "",
-  position: "",
-  salary: "",
-};
+const emptyValues = {
+  empID: '',
+  name: '',
+  yob: '',
+  position: '',
+  salary: '',
+}
 
 export default function EmployeeCreate({ onCreate, onCancel }) {
-  const [form, setForm] = useState(emptyForm);
-
-  function handleChange(e) {
-    const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
-  }
-
-  function handleSubmit(e) {
-    e.preventDefault();
-    onCreate({
-      empID: form.empID.trim(),
-      name: form.name.trim(),
-      yob: Number(form.yob),
-      position: form.position.trim(),
-      salary: Number(form.salary),
-    });
-    setForm(emptyForm);
-  }
-
-  const currentYear = new Date().getFullYear();
+  const formik = useFormik({
+    initialValues: emptyValues,
+    validationSchema: getEmployeeValidationSchema(),
+    onSubmit: (values) => {
+      const newEmployee = {
+        empID: values.empID.trim(),
+        name: values.name.trim(),
+        yob: Number(values.yob),
+        position: values.position.trim(),
+        salary: Number(values.salary),
+      }
+      console.log('nhan vien moi:', newEmployee)
+      onCreate(newEmployee)
+      formik.resetForm()
+    },
+  })
 
   return (
-    <div>
+    <div className="form-container">
       <h3>Create New Employee</h3>
 
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Employee ID:</label>
-          <input
-            type="text"
-            name="empID"
-            value={form.empID}
-            onChange={handleChange}
-            placeholder="Enter Employee ID"
-            pattern="^E[0-9]{3}$"
-            title="Please enter a 3-digit employee ID starting with 'E'"
-            required
-          />
-        </div>
-
-        <div>
-          <label>Name:</label>
-          <input
-            type="text"
-            name="name"
-            value={form.name}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
-        <div>
-          <label>Year of Birth:</label>
-          <input
-            type="number"
-            name="yob"
-            value={form.yob}
-            onChange={handleChange}
-            min="1900"
-            max={currentYear - 15}
-            required
-          />
-        </div>
-
-        <div>
-          <label>Position:</label>
-          <input
-            type="text"
-            name="position"
-            value={form.position}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
-        <div>
-          <label>Salary:</label>
-          <input
-            type="number"
-            name="salary"
-            value={form.salary}
-            onChange={handleChange}
-            required
-            min="0"
-            step="0.01"
-          />
-        </div>
+      <form onSubmit={formik.handleSubmit}>
+        <EmployeeFormFields formik={formik} />
 
         <div className="form-actions">
           <button type="submit">Create</button>
@@ -105,5 +43,5 @@ export default function EmployeeCreate({ onCreate, onCancel }) {
         </div>
       </form>
     </div>
-  );
+  )
 }
