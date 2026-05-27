@@ -45,6 +45,33 @@ nav a.active {
   color: #b91c1c;
 }
 
+.toast-confirm {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 280px;
+}
+
+.toast-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.toast-actions button {
+  font: inherit;
+  padding: 6px 10px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text-h);
+  cursor: pointer;
+}
+
+.toast-actions .toast-danger {
+  color: #b91c1c;
+}
+
 main h3 {
   margin-top: 0;
   color: var(--text-h);

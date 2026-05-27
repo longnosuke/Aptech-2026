@@ -6,6 +6,7 @@ import {
   useNavigate,
   useParams,
 } from "react-router-dom";
+import toast, { Toaster } from "react-hot-toast";
 import "./App.css";
 import {
   createEmployee,
@@ -18,6 +19,60 @@ import Employee from "./components/Employee";
 import EmployeeCreate from "./components/EmployeeCreate";
 import EmployeeEdit from "./components/EmployeeEdit";
 import Nav from "./components/Nav";
+
+const toastOptions = {
+  style: {
+    background: "var(--code-bg)",
+    border: "1px solid var(--border)",
+    color: "var(--text-h)",
+  },
+  success: {
+    duration: 2500,
+  },
+  error: {
+    duration: 4000,
+  },
+};
+
+function getErrorMessage(err) {
+  return err instanceof Error ? err.message : "Something went wrong.";
+}
+
+function confirmDeleteEmployee(emp) {
+  return new Promise((resolve) => {
+    toast(
+      (t) => (
+        <div className="toast-confirm">
+          <p>
+            Delete employee {emp.name} ({emp.empID})?
+          </p>
+          <div className="toast-actions">
+            <button
+              type="button"
+              onClick={() => {
+                toast.dismiss(t.id);
+                resolve(false);
+              }}
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              className="toast-danger"
+              onClick={() => {
+                toast.dismiss(t.id);
+                resolve(true);
+              }}
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+      ),
+      { duration: Infinity },
+    );
+  });
+}
 
 function EmployeeEditPage({ employees, onUpdate }) {
   const { id } = useParams();
@@ -61,7 +116,9 @@ function App() {
         }
       } catch (err) {
         if (!cancelled) {
-          setError(err.message);
+          const message = getErrorMessage(err);
+          setError(message);
+          toast.error(message, { id: "employees-load-error" });
         }
       } finally {
         if (!cancelled) {
@@ -79,7 +136,9 @@ function App() {
   async function handleCreate(data) {
     const duplicate = employees.some((emp) => emp.empID === data.empID);
     if (duplicate) {
-      alert("Employee ID already exists.");
+      toast.error("Employee ID already exists.", {
+        id: "employee-id-duplicate",
+      });
       return;
     }
 
@@ -87,8 +146,9 @@ function App() {
       const created = await createEmployee(data);
       setEmployees((prev) => [...prev, created]);
       navigate("/employees");
+      toast.success("Employee created.");
     } catch (err) {
-      alert(err.message);
+      toast.error(getErrorMessage(err));
     }
   }
 
@@ -97,7 +157,9 @@ function App() {
       (emp) => emp.empID === updated.empID && emp.id !== updated.id,
     );
     if (duplicate) {
-      alert("Employee ID already exists.");
+      toast.error("Employee ID already exists.", {
+        id: "employee-id-duplicate",
+      });
       return false;
     }
 
@@ -106,9 +168,10 @@ function App() {
       setEmployees((prev) =>
         prev.map((emp) => (emp.id === saved.id ? saved : emp)),
       );
+      toast.success("Employee updated.");
       return true;
     } catch (err) {
-      alert(err.message);
+      toast.error(getErrorMessage(err));
       return false;
     }
   }
@@ -116,21 +179,28 @@ function App() {
   async function handleDelete(id) {
     const emp = employees.find((e) => String(e.id) === String(id));
     if (!emp) return;
-    if (!window.confirm(`Delete employee ${emp.name} (${emp.empID})?`)) {
+    const confirmed = await confirmDeleteEmployee(emp);
+    if (!confirmed) {
       return;
     }
 
     try {
       await deleteEmployee(id);
       setEmployees((prev) => prev.filter((e) => String(e.id) !== String(id)));
+      toast.success("Employee deleted.");
     } catch (err) {
-      alert(err.message);
+      toast.error(getErrorMessage(err));
     }
   }
 
   if (loading) {
     return (
       <div className="app">
+        <Toaster
+          position="bottom-right"
+          reverseOrder={false}
+          toastOptions={toastOptions}
+        />
         <header>
           <h1>Demo Api</h1>
           <Nav />
@@ -145,6 +215,11 @@ function App() {
   if (error) {
     return (
       <div className="app">
+        <Toaster
+          position="bottom-right"
+          reverseOrder={false}
+          toastOptions={toastOptions}
+        />
         <header>
           <h1>Demo Api</h1>
           <Nav />
@@ -158,6 +233,11 @@ function App() {
 
   return (
     <div className="app">
+      <Toaster
+        position="bottom-right"
+        reverseOrder={false}
+        toastOptions={toastOptions}
+      />
       <header>
         <h1>Demo Api</h1>
         <Nav />
