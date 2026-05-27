@@ -33,6 +33,7 @@ nav a,
   cursor: pointer;
   text-decoration: none;
   display: inline-block;
+  font-size: 16px;
 }
 
 nav a.active {
@@ -70,7 +71,6 @@ th {
 .actions {
   display: flex;
   gap: 8px;
-  flex-wrap: wrap;
 }
 
 .form-container {

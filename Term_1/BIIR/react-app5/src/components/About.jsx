@@ -1,7 +1,7 @@
 export default function About() {
   return (
     <div>
-      <h3>About Employee Management System</h3>
+      <h3>About</h3>
 
       <p>
         This is a simple CRUD application built with React to manage employee

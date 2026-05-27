@@ -27,7 +27,7 @@ export default function Employee({ employees, onDelete }) {
                 <td>{emp.name}</td>
                 <td>{emp.yob}</td>
                 <td>{emp.position}</td>
-                <td>{emp.salary.toLocaleString()}</td>
+                <td>{Number(emp.salary).toLocaleString()}</td>
                 <td className="actions">
                   <Link to={`/employees/${emp.id}/edit`} className="btn-link">
                     Edit

@@ -1,0 +1,1532 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tailwind CSS Slideshow</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],
+              mono: [
+                "JetBrains Mono",
+                "SFMono-Regular",
+                "Consolas",
+                "monospace",
+              ],
+            },
+            boxShadow: {
+              slide: "0 24px 80px rgba(15, 23, 42, 0.16)",
+              soft: "0 10px 30px rgba(15, 23, 42, 0.10)",
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap");
+
+      :root {
+        color-scheme: light;
+      }
+
+      body {
+        min-height: 100vh;
+        background:
+          radial-gradient(
+            circle at top left,
+            rgba(14, 165, 233, 0.16),
+            transparent 30rem
+          ),
+          linear-gradient(135deg, #f8fafc 0%, #eef6ff 45%, #f8fafc 100%);
+        overflow: hidden;
+      }
+
+      .noise {
+        background-image:
+          linear-gradient(rgba(15, 23, 42, 0.035) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(15, 23, 42, 0.035) 1px, transparent 1px);
+        background-size: 42px 42px;
+        mask-image: linear-gradient(
+          to bottom,
+          rgba(0, 0, 0, 0.9),
+          transparent 85%
+        );
+      }
+
+      pre {
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+      }
+
+      code {
+        font-variant-ligatures: none;
+      }
+
+      .code-token-tag {
+        color: #7dd3fc;
+      }
+
+      .code-token-attr {
+        color: #fbbf24;
+      }
+
+      .code-token-string {
+        color: #86efac;
+      }
+
+      .code-token-keyword {
+        color: #c4b5fd;
+      }
+
+      .code-token-comment {
+        color: #94a3b8;
+        font-style: italic;
+      }
+
+      .code-token-number {
+        color: #fca5a5;
+      }
+
+      button:focus-visible {
+        outline: 3px solid rgba(14, 165, 233, 0.45);
+        outline-offset: 3px;
+      }
+    </style>
+  </head>
+  <body class="font-sans text-slate-950">
+    <div class="noise pointer-events-none fixed inset-0"></div>
+
+    <main
+      class="relative flex min-h-screen items-center justify-center px-4 py-5 sm:px-6 lg:px-8"
+    >
+      <section
+        id="slideCard"
+        class="grid h-[min(760px,calc(100vh-40px))] w-full max-w-6xl grid-rows-[auto_1fr_auto] rounded-[2rem] border border-white/80 bg-white/78 p-5 shadow-slide backdrop-blur-xl sm:p-7 lg:p-9"
+        aria-live="polite"
+      >
+        <div class="flex items-center justify-between gap-4">
+          <div>
+            <p
+              id="kicker"
+              class="text-sm font-bold uppercase tracking-[0.18em] text-sky-700"
+            ></p>
+            <p id="count" class="mt-1 text-base font-bold text-slate-500">
+              1 / 15
+            </p>
+          </div>
+          <button
+            id="copyBtn"
+            class="hidden rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-bold text-slate-700 shadow-soft transition hover:-translate-y-0.5 hover:border-sky-200 hover:text-sky-700 active:translate-y-0"
+            type="button"
+          ></button>
+        </div>
+
+        <div
+          class="grid min-h-0 grid-cols-1 content-center gap-5 py-5 lg:grid-cols-[1.05fr_0.95fr] lg:gap-8 lg:py-8"
+        >
+          <div class="min-w-0">
+            <h1
+              id="title"
+              class="text-balance text-4xl font-extrabold leading-[1.05] tracking-normal text-slate-950 sm:text-5xl lg:text-6xl"
+            >
+              Tailwind CSS là gì?
+            </h1>
+            <p
+              id="lead"
+              class="mt-5 max-w-3xl text-pretty text-xl font-semibold leading-8 text-slate-650 sm:text-2xl sm:leading-9"
+            >
+              Framework CSS utility-first giúp build UI nhanh bằng class nhỏ, rõ
+              ý nghĩa, nằm trực tiếp trong markup.
+            </p>
+            <ul
+              id="bullets"
+              class="mt-7 grid gap-3 text-lg font-semibold leading-7 text-slate-700 sm:text-xl"
+            ></ul>
+            <div
+              id="speakerNotes"
+              class="mt-6 hidden rounded-2xl border border-sky-100 bg-sky-50/80 p-4 text-base font-semibold leading-7 text-slate-700"
+            ></div>
+          </div>
+
+          <div class="grid min-h-0 content-center gap-4">
+            <div
+              id="visual"
+              class="rounded-3xl border border-slate-200 bg-slate-50 p-4 shadow-soft"
+            ></div>
+            <div
+              id="codeWrap"
+              class="hidden min-w-0 overflow-hidden rounded-3xl border border-slate-800 bg-slate-950 shadow-soft"
+            >
+              <div
+                class="flex items-center justify-between gap-3 border-b border-white/10 px-4 py-3"
+              >
+                <div class="flex gap-1.5">
+                  <span class="h-3 w-3 rounded-full bg-red-400"></span>
+                  <span class="h-3 w-3 rounded-full bg-yellow-300"></span>
+                  <span class="h-3 w-3 rounded-full bg-emerald-400"></span>
+                </div>
+                <div class="flex items-center gap-3">
+                  <span
+                    id="codeLabel"
+                    class="text-xs font-bold uppercase tracking-[0.16em] text-slate-400"
+                    >Example</span
+                  >
+                  <button
+                    id="openCodeBtn"
+                    class="rounded-full bg-white/10 px-3 py-1.5 text-xs font-extrabold text-white transition hover:bg-white/20"
+                    type="button"
+                  >
+                    Mở lớn
+                  </button>
+                </div>
+              </div>
+              <div
+                id="codeTabs"
+                class="hidden flex-wrap gap-2 border-b border-white/10 px-4 py-3"
+              ></div>
+              <button
+                id="codePreviewBtn"
+                class="block w-full cursor-zoom-in text-left"
+                type="button"
+                aria-label="Mở code example lớn"
+              >
+                <pre
+                  class="max-h-[300px] overflow-y-auto overflow-x-hidden p-4 text-[14px] font-semibold leading-7 text-slate-100 sm:text-[15px] lg:max-h-[360px]"
+                ><code id="code"></code></pre>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid gap-4">
+          <div class="flex items-center justify-between gap-4">
+            <button
+              id="prevBtn"
+              class="rounded-2xl border border-slate-200 bg-white px-5 py-3 text-base font-extrabold text-slate-700 shadow-soft transition hover:-translate-y-0.5 hover:border-slate-300 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:translate-y-0"
+              type="button"
+            >
+              Previous
+            </button>
+            <button
+              id="nextBtn"
+              class="rounded-2xl bg-slate-950 px-6 py-3 text-base font-extrabold text-white shadow-soft transition hover:-translate-y-0.5 hover:bg-sky-700 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:translate-y-0"
+              type="button"
+            >
+              Next
+            </button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div
+      id="codeLightbox"
+      class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/70 p-4 backdrop-blur-sm"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="lightboxTitle"
+    >
+      <div
+        class="grid max-h-[92vh] w-full max-w-6xl grid-rows-[auto_1fr] overflow-hidden rounded-[2rem] border border-white/15 bg-slate-950 shadow-slide"
+      >
+        <div
+          class="flex items-center justify-between gap-4 border-b border-white/10 px-5 py-4"
+        >
+          <div class="min-w-0">
+            <p
+              class="text-xs font-extrabold uppercase tracking-[0.18em] text-sky-300"
+            >
+              Code example
+            </p>
+            <h2
+              id="lightboxTitle"
+              class="mt-1 truncate text-xl font-extrabold text-white"
+            >
+              Example
+            </h2>
+          </div>
+          <div class="flex shrink-0 items-center gap-2">
+            <button
+              id="lightboxCopyBtn"
+              class="rounded-full bg-white px-4 py-2 text-sm font-extrabold text-slate-950 transition hover:bg-sky-100"
+              type="button"
+            >
+              Copy
+            </button>
+            <button
+              id="closeLightboxBtn"
+              class="rounded-full bg-white/10 px-4 py-2 text-sm font-extrabold text-white transition hover:bg-white/20"
+              type="button"
+            >
+              Đóng
+            </button>
+          </div>
+        </div>
+        <pre
+          class="min-h-0 overflow-auto p-5 text-[16px] font-semibold leading-8 text-slate-100 sm:p-7 sm:text-[18px] lg:text-[20px]"
+        ><code id="lightboxCode"></code></pre>
+      </div>
+    </div>
+
+    <script>
+      const slides = [
+        {
+          title: "Tailwind CSS là gì?",
+          lead: "Framework CSS utility-first giúp build UI nhanh bằng class nhỏ, rõ ý nghĩa, nằm trực tiếp trong markup.",
+          bullets: [
+            "Không cần đặt tên class cho mọi thứ",
+            "Style nằm gần HTML nên dễ đọc context",
+            "Sinh CSS cuối cùng nhỏ khi build production",
+          ],
+          visual: "utility",
+        },
+        {
+          title: "Utility-first nghĩa là gì?",
+          lead: "Thay vì viết class riêng rồi vào file CSS, ta ghép nhiều utility nhỏ để tạo giao diện.",
+          bullets: [
+            "p-4 là padding",
+            "rounded-xl là bo góc",
+            "text-slate-900 là màu chữ",
+            "hover:bg-sky-700 là trạng thái hover",
+          ],
+          codeLabel: "HTML",
+          code: `<button class="rounded-xl bg-sky-600 px-5 py-3 font-bold text-white hover:bg-sky-700">
+  Lưu thay đổi
+</button>`,
+          visual: "button",
+        },
+        {
+          title: "Nhóm class cơ bản cần nhớ",
+          lead: "Không cần học hết Tailwind ngay. Nắm vài nhóm class là đã build được đa số UI thường gặp.",
+          bullets: [
+            "Spacing: m, p, gap, space-y",
+            "Layout: flex, grid, items-center, justify-between",
+            "Size: w, h, min-h, max-w",
+            "Typography: text, font, leading",
+            "Color/state: bg, text, border, hover, focus",
+          ],
+          codeLabel: "Class groups",
+          code: `<div class="max-w-xl rounded-2xl border bg-white p-6 shadow-sm">
+  <h2 class="text-2xl font-extrabold">Profile</h2>
+  <p class="mt-2 text-slate-600">Thông tin người dùng</p>
+  <button class="mt-5 rounded-xl bg-sky-600 px-5 py-3 font-bold text-white">
+    Cập nhật
+  </button>
+</div>`,
+          visual: "classGroups",
+        },
+        {
+          title: "Spacing: margin, padding, gap",
+          lead: "Spacing là thứ dùng nhiều nhất. Tailwind giúp spacing nhất quán theo scale có sẵn.",
+          bullets: [
+            "p-6: padding bốn phía",
+            "mt-4: margin-top",
+            "gap-3: khoảng cách giữa item trong flex/grid",
+            "space-y-2: khoảng cách dọc giữa children",
+          ],
+          codeLabel: "Spacing",
+          code: `<div class="space-y-3 rounded-2xl bg-white p-6">
+  <h3 class="text-xl font-bold">Thông báo</h3>
+  <p class="text-slate-600">Đơn hàng đã được tạo.</p>
+  <div class="flex gap-3 pt-2">
+    <button class="rounded-lg bg-slate-950 px-4 py-2 text-white">Xem</button>
+    <button class="rounded-lg border px-4 py-2">Đóng</button>
+  </div>
+</div>`,
+          visual: "spacing",
+        },
+        {
+          title: "Layout: flex và grid",
+          lead: "Flex dùng cho hàng/cột nhỏ. Grid dùng cho layout nhiều vùng hoặc danh sách card.",
+          bullets: [
+            "flex items-center justify-between: header/card row",
+            "grid gap-4 md:grid-cols-3: list responsive",
+            "min-w-0 giúp text không phá layout",
+            "max-w-* giúp nội dung dễ đọc",
+          ],
+          codeLabel: "Layout",
+          code: `<div class="grid gap-4 md:grid-cols-3">
+  <article class="rounded-2xl border bg-white p-5">Card 1</article>
+  <article class="rounded-2xl border bg-white p-5">Card 2</article>
+  <article class="rounded-2xl border bg-white p-5">Card 3</article>
+</div>`,
+          visual: "layout",
+        },
+        {
+          title: "Typography: chữ dễ đọc",
+          lead: "Khi thuyết trình hoặc làm dashboard, typography quyết định UI có đọc được hay không.",
+          bullets: [
+            "text-sm, text-lg, text-3xl: cỡ chữ",
+            "font-semibold, font-bold, font-extrabold: độ đậm",
+            "leading-7, leading-tight: chiều cao dòng",
+            "text-balance / max-w giúp headline đẹp hơn",
+          ],
+          codeLabel: "Typography",
+          code: `<section class="max-w-2xl">
+  <p class="text-sm font-bold uppercase tracking-widest text-sky-700">Dashboard</p>
+  <h1 class="mt-3 text-4xl font-extrabold leading-tight">
+    Doanh thu theo thời gian thực
+  </h1>
+  <p class="mt-4 text-lg leading-8 text-slate-600">
+    Theo dõi biến động theo ngày, khu vực và kênh bán.
+  </p>
+</section>`,
+          visual: "typeScale",
+        },
+        {
+          title: "State: hover, focus, disabled",
+          lead: "Class state giúp UI có cảm giác thật, không chỉ là ảnh tĩnh.",
+          bullets: [
+            "hover:* cho mouse",
+            "focus-visible:* cho keyboard",
+            "disabled:* cho trạng thái không thể bấm",
+            "aria-* dùng tốt với accessibility state",
+          ],
+          codeLabel: "Button states",
+          code: `<button
+  class="rounded-xl bg-slate-950 px-5 py-3 font-bold text-white transition hover:bg-sky-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-500 disabled:cursor-not-allowed disabled:bg-slate-300"
+>
+  Lưu
+</button>`,
+          visual: "states",
+        },
+        {
+          title: "Tại sao Tailwind tồn tại?",
+          lead: "Nó giải quyết khoảng cách giữa thiết kế nhanh và code production có hệ thống.",
+          bullets: [
+            "Không phải nhảy liên tục giữa HTML và CSS",
+            "Giảm CSS chết sau nhiều lần đổi UI",
+            "Ép dùng design token thay vì giá trị tùy hứng",
+          ],
+          visual: "tokens",
+        },
+        {
+          title: "Pain points của CSS truyền thống",
+          lead: "CSS truyền thống mạnh, nhưng dự án lớn dễ bị phình nếu không có kỷ luật cao.",
+          bullets: [
+            "Tên class khó đặt và khó thống nhất",
+            "Cascade làm bug style lan xa",
+            "File CSS dài nhưng không rõ đoạn nào còn dùng",
+            "Override nhiều lớp gây khó debug",
+          ],
+          codeLabel: "CSS",
+          code: `.card .button.primary:hover {
+  background: #0369a1;
+}
+
+.checkout-page .card .button.primary {
+  padding: 12px 20px;
+}`,
+          visual: "warning",
+        },
+        {
+          title: "CSS truyền thống vs Tailwind",
+          lead: "Khác biệt chính nằm ở nơi ta mô tả style: file CSS riêng hay ngay trong markup.",
+          bullets: [
+            "CSS thường: semantic class + stylesheet",
+            "Tailwind: utility class + design system",
+            "Cả hai đều dùng được production nếu có convention tốt",
+          ],
+          visual: "compare",
+        },
+        {
+          title: "Button bằng CSS thường",
+          lead: "Cách này sạch khi component ổn định, nhưng cần thêm CSS và naming.",
+          codeLabel: "HTML + CSS",
+          code: `<button class="btn-primary">Thanh toán</button>
+
+<style>
+.btn-primary {
+  border-radius: 12px;
+  background: #0284c7;
+  padding: 12px 20px;
+  font-weight: 700;
+  color: white;
+}
+.btn-primary:hover {
+  background: #0369a1;
+}
+</style>`,
+          bullets: [
+            "Dễ đọc tên component",
+            "Style tách riêng",
+            "Cần quản lý naming và scope",
+          ],
+          visual: "cssButton",
+        },
+        {
+          title: "Button bằng Tailwind",
+          lead: "Style nằm ngay trên element. Rất nhanh khi cần chỉnh spacing, màu, hover, responsive.",
+          codeLabel: "Tailwind",
+          code: `<button
+  class="rounded-xl bg-sky-600 px-5 py-3 font-bold text-white shadow-sm transition hover:bg-sky-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-500"
+>
+  Thanh toán
+</button>`,
+          bullets: [
+            "Không viết CSS mới",
+            "Không cần nghĩ tên class",
+            "State và responsive nằm cùng chỗ",
+          ],
+          visual: "button",
+        },
+        {
+          title: "Vì sao Tailwind phổ biến?",
+          lead: "Vì nó khớp rất tự nhiên với React: UI được chia thành component nhỏ, mỗi component tự giữ layout, state và responsive style.",
+          bullets: [
+            "React component đổi liên tục theo props/state",
+            "Tailwind giúp style nằm cùng markup nên review nhanh",
+            "Không cần invent class name cho từng component nhỏ",
+            "Dễ tạo variant: active, disabled, selected, error",
+            "Hợp với shadcn/ui, Next.js, dashboard, SaaS, admin app",
+          ],
+          codeLabel: "React product code",
+          code: `function ProductCard({ product, selected, onSelect }) {
+  return (
+    <article
+      className={
+        "rounded-2xl border bg-white p-5 shadow-sm transition " +
+        (selected
+          ? "border-sky-500 ring-4 ring-sky-100"
+          : "border-slate-200 hover:border-slate-300")
+      }
+    >
+      <div className="flex items-start justify-between gap-4">
+        <div className="min-w-0">
+          <h3 className="truncate text-lg font-extrabold">
+            {product.name}
+          </h3>
+          <p className="mt-1 text-sm font-semibold text-slate-500">
+            SKU: {product.sku}
+          </p>
+        </div>
+        <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold text-emerald-700">
+          In stock
+        </span>
+      </div>
+
+      <button
+        onClick={() => onSelect(product.id)}
+        className="mt-5 w-full rounded-xl bg-slate-950 px-4 py-3 font-bold text-white hover:bg-sky-700"
+      >
+        Chọn sản phẩm
+      </button>
+    </article>
+  );
+}`,
+          visual: "popular",
+        },
+        {
+          title: "Dev ngoài kia đang gặp gì?",
+          lead: "Vấn đề thường không phải thiếu CSS. Vấn đề là UI đổi nhanh hơn tốc độ team giữ CSS sạch.",
+          bullets: [
+            "Prototype xong thành production luôn",
+            "Mỗi màn hình một kiểu spacing",
+            "Button, input, modal mỗi nơi một biến thể",
+            "CSS global sửa một chỗ vỡ nhiều chỗ",
+          ],
+          codeLabel: "Reality",
+          code: `/* Sau vài tháng */
+.button {}
+.button-primary {}
+.primary-button {}
+.checkout-button {}
+.new-primary-button-v2 {}`,
+          visual: "devPain",
+        },
+        {
+          title: "shadcn/ui liên quan gì?",
+          lead: "shadcn/ui phổ biến vì nó dùng Tailwind + Radix để tạo component copy được, sửa được, không bị lock vào thư viện đóng.",
+          bullets: [
+            "Không install component kiểu black box",
+            "Code nằm trong project của mình",
+            "Tailwind class rõ nên sửa visual nhanh",
+            "Radix lo phần behavior/accessibility khó",
+          ],
+          codeLabel: "shadcn style",
+          code: `import { Button } from "@/components/ui/button";
+
+export function CheckoutAction() {
+  return (
+    <Button className="w-full" size="lg">
+      Thanh toán ngay
+    </Button>
+  );
+}`,
+          visual: "shadcn",
+        },
+        {
+          title: "Vấn đề class dài",
+          lead: "Class dài không tự xấu. Xấu khi class dài bị copy khắp nơi mà không có component hoặc helper.",
+          bullets: [
+            "Một lần dùng: viết utility trực tiếp",
+            "Lặp lại nhiều: tạo component",
+            "Nhiều variant: dùng map hoặc class helper",
+            "Review code để tránh class tùy tiện",
+          ],
+          codeLabel: "Class helper",
+          code: `const base =
+  "inline-flex items-center justify-center rounded-xl font-bold transition";
+
+const size = {
+  sm: "h-9 px-3 text-sm",
+  lg: "h-12 px-5 text-base",
+};`,
+          visual: "classLong",
+        },
+        {
+          title: "clsx / tailwind-merge",
+          lead: "Khi component có nhiều state, dev thường dùng helper để ghép class rõ ràng và tránh conflict.",
+          bullets: [
+            "clsx: bật/tắt class theo điều kiện",
+            "tailwind-merge: xử lý conflict như p-2 và p-4",
+            "Phù hợp button, badge, input, alert",
+            "Production code dễ đọc hơn nối string thủ công",
+          ],
+          codeLabel: "cn helper",
+          code: `import { clsx } from "clsx";
+import { twMerge } from "tailwind-merge";
+
+export function cn(...inputs) {
+  return twMerge(clsx(inputs));
+}
+
+cn("p-2 text-sm", isActive && "p-4 text-sky-700");`,
+          visual: "merge",
+        },
+        {
+          title: "Responsive thực tế",
+          lead: "Tailwind giúp responsive nằm ngay cạnh layout, nên review breakpoint nhanh hơn.",
+          bullets: [
+            "Mobile trước, desktop sau",
+            "Không cần file CSS riêng cho media query nhỏ",
+            "Dễ thấy grid đổi cột ở đâu",
+            "Tránh magic breakpoint tùy hứng",
+          ],
+          codeLabel: "Responsive card",
+          code: `<section class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+  <article class="rounded-2xl border bg-white p-5">
+    <h3 class="text-lg font-bold">Orders</h3>
+    <p class="mt-2 text-3xl font-extrabold">128</p>
+  </article>
+</section>`,
+          visual: "responsive",
+        },
+        {
+          title: "Form state trong app thật",
+          lead: "Production UI cần hover, focus, disabled, error. Tailwind viết các state này trực tiếp và dễ kiểm tra.",
+          bullets: [
+            "focus-visible cho keyboard user",
+            "disabled không chỉ đổi màu, còn đổi cursor",
+            "error cần border, text, message",
+            "State nên nằm trong component form",
+          ],
+          codeLabel: "Input state",
+          code: `<input
+  class="w-full rounded-xl border border-slate-300 px-4 py-3 font-semibold outline-none focus:border-sky-500 focus:ring-4 focus:ring-sky-100 disabled:cursor-not-allowed disabled:bg-slate-100 aria-invalid:border-red-500"
+  aria-invalid="true"
+/>`,
+          visual: "form",
+        },
+        {
+          title: "Dark mode không phải đổi màu bừa",
+          lead: "Tailwind hỗ trợ dark variant, nhưng production cần token và contrast rõ.",
+          bullets: [
+            "Đừng invert màu toàn bộ app máy móc",
+            "Ưu tiên semantic token: background, foreground, border",
+            "Kiểm tra contrast trên text nhỏ",
+            "Test cả chart, code block, disabled state",
+          ],
+          codeLabel: "Dark variant",
+          code: `<div class="rounded-2xl border bg-white p-6 text-slate-950 dark:border-slate-800 dark:bg-slate-950 dark:text-white">
+  <p class="text-sm font-bold text-slate-500 dark:text-slate-400">
+    System status
+  </p>
+</div>`,
+          visual: "darkMode",
+        },
+        {
+          title: "Design system với Tailwind",
+          lead: "Tailwind không thay thế design system. Nó là ngôn ngữ để design system đi vào code.",
+          bullets: [
+            "Token nằm trong config hoặc CSS variables",
+            "Component quyết định API",
+            "Tailwind quyết định implementation style",
+            "shadcn/ui là ví dụ rất gần production workflow này",
+          ],
+          codeLabel: "Token idea",
+          code: `:root {
+  --radius: 0.75rem;
+  --brand: 199 89% 48%;
+}
+
+<button className="rounded-[var(--radius)] bg-[hsl(var(--brand))]">
+  Save
+</button>`,
+          visual: "system",
+        },
+        {
+          title: "Customize Tailwind bằng config",
+          lead: "Trong project thật, team thường customize theme để màu, font, shadow, radius khớp brand.",
+          bullets: [
+            "theme.extend thêm token mới",
+            "Không sửa lung tung từng component",
+            "Tên token nên rõ nghĩa",
+            "Design đổi thì chỉnh config/token trước",
+          ],
+          codeLabel: "tailwind.config.js",
+          code: `module.exports = {
+  theme: {
+    extend: {
+      colors: {
+        brand: {
+          50: "#eff6ff",
+          600: "#0284c7",
+          900: "#0c4a6e",
+        },
+      },
+      borderRadius: {
+        card: "1.25rem",
+      },
+    },
+  },
+};`,
+          visual: "customConfig",
+        },
+        {
+          title: "Customize ngay trong file CDN",
+          lead: "Với demo HTML một file, có thể cấu hình Tailwind qua tailwind.config trước khi render.",
+          bullets: [
+            "Hợp cho bài thuyết trình, prototype, demo nhanh",
+            "Không cần build tool",
+            "Production lớn vẫn nên dùng build pipeline",
+            "Token vẫn dùng được trong class",
+          ],
+          codeLabel: "CDN config",
+          code: `<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: { brand: "#0284c7" },
+        boxShadow: { soft: "0 10px 30px rgba(15,23,42,.12)" },
+      },
+    },
+  };
+<\/script>`,
+          visual: "cdnConfig",
+        },
+        {
+          title: "Arbitrary values: dùng khi cần",
+          lead: "Tailwind cho phép giá trị tùy chỉnh, nhưng production nên dùng tiết chế.",
+          bullets: [
+            "Tốt cho trường hợp đặc biệt",
+            "Không nên biến mọi thứ thành value random",
+            "Nếu lặp lại nhiều, đưa vào config/token",
+            "Ví dụ: w-[min(720px,100%)]",
+          ],
+          codeLabel: "Arbitrary",
+          code: `<div class="w-[min(720px,100%)] rounded-[1.25rem] bg-[#0f172a] p-[22px] text-white">
+  Card có kích thước custom
+</div>`,
+          visual: "arbitrary",
+        },
+        {
+          title: "CSS variables + Tailwind",
+          lead: "Cách production hay dùng: token sống trong CSS variables, Tailwind dùng token đó trong class.",
+          bullets: [
+            "Dễ đổi theme runtime",
+            "Hợp dark mode và nhiều brand",
+            "Component vẫn viết bằng utility",
+            "shadcn/ui dùng hướng này rất nhiều",
+          ],
+          codeLabel: "CSS variables",
+          code: `:root {
+  --primary: 199 89% 48%;
+  --radius: 0.75rem;
+}
+
+<button className="rounded-[var(--radius)] bg-[hsl(var(--primary))] px-5 py-3 text-white">
+  Save
+</button>`,
+          visual: "cssVars",
+        },
+        {
+          title: "Tailwind trong production",
+          lead: "Production không phải viết class dài vô hạn. Production là component hóa, token hóa, review được.",
+          codeLabel: "React",
+          code: `function SaveButton({ children }) {
+  return (
+    <button className="rounded-xl bg-slate-950 px-5 py-3 font-bold text-white transition hover:bg-sky-700">
+      {children}
+    </button>
+  );
+}`,
+          bullets: [
+            "Class lặp nhiều thì đưa vào component",
+            "Không dùng màu random ngoài design system",
+            "Review UI bằng trạng thái thật: loading, disabled, error",
+          ],
+          visual: "production",
+        },
+        {
+          title: "Component hóa với Tailwind",
+          lead: "Tailwind không thay thế component. Nó làm phần style của component nhanh và nhất quán hơn.",
+          codeLabel: "Component",
+          code: `const tone = {
+  primary: "bg-sky-600 text-white hover:bg-sky-700",
+  danger: "bg-red-600 text-white hover:bg-red-700",
+};
+
+function Button({ variant = "primary", children }) {
+  return (
+    <button className={"rounded-xl px-5 py-3 font-bold " + tone[variant]}>
+      {children}
+    </button>
+  );
+}`,
+          bullets: [
+            "Logic variant nằm trong component",
+            "Markup dùng API rõ ràng",
+            "Không duplicate class khắp app",
+          ],
+          visual: "components",
+        },
+        {
+          category: "REACT PRODUCTION",
+          title: "Product card trong React",
+          lead: "Đây là kiểu code Tailwind xuất hiện trong app thật: data, selected state, responsive layout, badge, CTA.",
+          bullets: [
+            "Style đi cùng JSX nên đọc component biết UI hoạt động ra sao",
+            "selected/error/disabled dùng class theo state",
+            "min-w-0 + truncate xử lý tên sản phẩm dài",
+            "Code phù hợp dashboard, admin, ecommerce",
+          ],
+          speakerNotes:
+            "Slide này nên nói theo góc nhìn product code: Tailwind không chỉ để làm demo đẹp. Nó giúp component React chứa cả cấu trúc, trạng thái và style trong cùng một nơi, dễ review hơn khi team làm feature thật.",
+          codeExamples: [
+            {
+              title: "ProductCard",
+              language: "tsx",
+              code: `type Product = {
+  id: string;
+  name: string;
+  sku: string;
+  price: number;
+  inStock: boolean;
+};
+
+export function ProductCard({ product, selected, onSelect }) {
+  return (
+    <article
+      className={
+        "rounded-2xl border bg-white p-5 shadow-sm transition " +
+        (selected
+          ? "border-sky-500 ring-4 ring-sky-100"
+          : "border-slate-200 hover:border-slate-300")
+      }
+    >
+      <div className="flex items-start justify-between gap-4">
+        <div className="min-w-0">
+          <h3 className="truncate text-lg font-extrabold">{product.name}</h3>
+          <p className="mt-1 text-sm font-semibold text-slate-500">
+            SKU: {product.sku}
+          </p>
+        </div>
+        <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold text-emerald-700">
+          {product.inStock ? "In stock" : "Out"}
+        </span>
+      </div>
+
+      <button
+        onClick={() => onSelect(product.id)}
+        className="mt-5 w-full rounded-xl bg-slate-950 px-4 py-3 font-bold text-white hover:bg-sky-700"
+      >
+        Chọn sản phẩm
+      </button>
+    </article>
+  );
+}`,
+            },
+            {
+              title: "Grid List",
+              language: "tsx",
+              code: `export function ProductGrid({ products, selectedId, onSelect }) {
+  return (
+    <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+      {products.map((product) => (
+        <ProductCard
+          key={product.id}
+          product={product}
+          selected={selectedId === product.id}
+          onSelect={onSelect}
+        />
+      ))}
+    </section>
+  );
+}`,
+            },
+          ],
+          visual: "production",
+        },
+        {
+          category: "REACT COMPONENT",
+          title: "Button component kiểu shadcn/ui",
+          lead: "Trong production, class Tailwind dài thường được đóng gói thành component có variant và size rõ ràng.",
+          bullets: [
+            "Không copy class button khắp nơi",
+            "Variant giúp product UI nhất quán",
+            "className vẫn cho phép override có kiểm soát",
+            "Dùng `cn()` để merge class an toàn",
+          ],
+          speakerNotes:
+            "Liên hệ shadcn/ui ở đây: nó không bán component đóng kín. Nó đưa code component vào project để team sửa được. Tailwind là phần style, Radix thường lo behavior/accessibility.",
+          codeExamples: [
+            {
+              title: "cn helper",
+              language: "ts",
+              code: `import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}`,
+            },
+            {
+              title: "Button.tsx",
+              language: "tsx",
+              code: `const variants = {
+  primary: "bg-sky-600 text-white hover:bg-sky-700",
+  secondary: "bg-slate-100 text-slate-900 hover:bg-slate-200",
+  danger: "bg-red-600 text-white hover:bg-red-700",
+};
+
+const sizes = {
+  sm: "h-9 px-3 text-sm",
+  md: "h-11 px-4 text-base",
+  lg: "h-12 px-5 text-base",
+};
+
+export function Button({
+  variant = "primary",
+  size = "md",
+  className,
+  ...props
+}) {
+  return (
+    <button
+      className={cn(
+        "inline-flex items-center justify-center rounded-xl font-bold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 disabled:pointer-events-none disabled:opacity-50",
+        variants[variant],
+        sizes[size],
+        className
+      )}
+      {...props}
+    />
+  );
+}`,
+            },
+          ],
+          visual: "shadcn",
+        },
+        {
+          category: "FORM THỰC TẾ",
+          title: "Form field có error state",
+          lead: "Form là nơi Tailwind rất thực dụng: label, input, hint, error, disabled, focus đều nằm trong component.",
+          bullets: [
+            "`aria-invalid` giúp state rõ cho accessibility",
+            "focus-visible/ring giúp keyboard user thấy vị trí",
+            "Error text không cần CSS riêng",
+            "Có thể tái dùng cho login, checkout, admin form",
+          ],
+          speakerNotes:
+            "Đây là ví dụ sát với app thật hơn button đơn giản. Khi làm form, developer thường cần nhiều trạng thái. Tailwind cho phép viết các trạng thái này trực tiếp, rõ ràng và dễ review.",
+          codeExamples: [
+            {
+              title: "TextField",
+              language: "tsx",
+              code: `export function TextField({ label, error, ...props }) {
+  return (
+    <label className="grid gap-2">
+      <span className="text-sm font-bold text-slate-700">{label}</span>
+      <input
+        aria-invalid={Boolean(error)}
+        className="h-12 rounded-xl border border-slate-300 px-4 font-semibold outline-none transition placeholder:text-slate-400 focus:border-sky-500 focus:ring-4 focus:ring-sky-100 disabled:cursor-not-allowed disabled:bg-slate-100 aria-invalid:border-red-500 aria-invalid:focus:ring-red-100"
+        {...props}
+      />
+      {error && (
+        <span className="text-sm font-bold text-red-600">{error}</span>
+      )}
+    </label>
+  );
+}`,
+            },
+            {
+              title: "Usage",
+              language: "tsx",
+              code: `<TextField
+  label="Email khách hàng"
+  placeholder="name@company.com"
+  error={emailError}
+  value={email}
+  onChange={(event) => setEmail(event.target.value)}
+/>`,
+            },
+          ],
+          visual: "form",
+        },
+        {
+          category: "COMPILER RULE",
+          title: "Dynamic class: sai và đúng",
+          lead: "Một lỗi Tailwind rất hay gặp: build class bằng string động khiến compiler không nhìn thấy class cần sinh.",
+          bullets: [
+            "Compiler quét chuỗi class tĩnh trong source",
+            "Không viết `bg-${color}-600`",
+            "Map rõ các class có thể xuất hiện",
+            "Cách này dễ review và không mất CSS khi deploy",
+          ],
+          speakerNotes:
+            "Nên nhấn mạnh đây là lỗi production thật. Local đôi khi nhìn như ổn, nhưng khi build/deploy class không có trong output CSS thì UI mất màu.",
+          codeExamples: [
+            {
+              title: "Sai",
+              language: "tsx",
+              code: `const color = "sky";
+
+// Sai: compiler không thấy đủ bg-sky-600
+return (
+  <button className={"bg-" + color + "-600 text-white"}>
+    Save
+  </button>
+);`,
+            },
+            {
+              title: "Đúng",
+              language: "tsx",
+              code: `const colorClass = {
+  sky: "bg-sky-600 text-white hover:bg-sky-700",
+  red: "bg-red-600 text-white hover:bg-red-700",
+  slate: "bg-slate-950 text-white hover:bg-slate-800",
+};
+
+return (
+  <button className={cn("rounded-xl px-5 py-3 font-bold", colorClass[color])}>
+    Save
+  </button>
+);`,
+            },
+          ],
+          visual: "mistakes",
+        },
+        {
+          title: "Lợi ích của Tailwind",
+          lead: "Giá trị lớn nhất là tốc độ phát triển UI mà vẫn giữ được hệ thống.",
+          bullets: [
+            "Prototype nhanh",
+            "Ít CSS chết",
+            "Responsive tiện",
+            "Dễ kiểm soát spacing và màu",
+            "Refactor component ít đụng global CSS",
+          ],
+          visual: "benefits",
+        },
+        {
+          title: "Hạn chế của Tailwind",
+          lead: "Tailwind không miễn phí về tư duy. Class dài, markup dày, và cần convention team.",
+          bullets: [
+            "HTML nhìn rối nếu không component hóa",
+            "Người mới cần học tên utility",
+            "Không phù hợp nếu team muốn CSS semantic hoàn toàn",
+            "Dynamic class sai cách có thể không build ra CSS",
+          ],
+          visual: "limits",
+        },
+        {
+          title: "Sai lầm thường gặp",
+          lead: "Dùng Tailwind tốt nghĩa là biết lúc nào viết utility, lúc nào tách component.",
+          codeLabel: "Bad pattern",
+          code: `// Không nên build class động kiểu này nếu compiler không thấy đủ class
+const color = "sky";
+const className = "bg-" + color + "-600 text-white";
+
+// Nên map rõ các class có thể xuất hiện
+const colorClass = {
+  sky: "bg-sky-600 text-white",
+  red: "bg-red-600 text-white",
+};`,
+          bullets: [
+            "Copy class dài mà không tạo component",
+            "Dùng arbitrary value quá nhiều",
+            "Bỏ qua accessibility state",
+            "Build class động khiến CSS bị thiếu",
+          ],
+          visual: "mistakes",
+        },
+        {
+          title: "Tailwind + AI",
+          lead: "AI tạo UI bằng Tailwind rất tốt vì class mô tả trực tiếp layout, màu, spacing, state.",
+          bullets: [
+            "Prompt dễ chuyển thành markup",
+            "Dễ yêu cầu chỉnh: nhỏ hơn, tương phản hơn, ít bo góc hơn",
+            "Vẫn cần người review accessibility, overflow, responsive, state",
+          ],
+          codeLabel: "Prompt-to-UI",
+          code: `<section class="grid gap-4 rounded-2xl border bg-white p-6 shadow-sm md:grid-cols-3">
+  <div class="rounded-xl bg-slate-50 p-4">
+    <p class="text-sm font-bold text-slate-500">Revenue</p>
+    <p class="mt-2 text-3xl font-extrabold">$48k</p>
+  </div>
+</section>`,
+          visual: "ai",
+        },
+        {
+          title: "AI sinh Tailwind: cần review gì?",
+          lead: "AI tạo code nhanh, nhưng dev vẫn phải bắt lỗi production: overflow, spacing, a11y, state và component boundary.",
+          bullets: [
+            "Check mobile trước",
+            "Check text dài tiếng Việt",
+            "Check keyboard focus",
+            "Check class lặp lại có nên tách component",
+            "Check màu có đủ contrast",
+          ],
+          codeLabel: "Review checklist",
+          code: `// Sau khi AI sinh UI
+// 1. Resize mobile / desktop
+// 2. Tab qua toàn bộ controls
+// 3. Thử data dài
+// 4. Thử loading / disabled / error
+// 5. Tách component nếu class lặp`,
+          visual: "aiReview",
+        },
+        {
+          title: "Kết luận",
+          lead: "Tailwind không chỉ là class ngắn. Nó là workflow build UI nhanh, nhất quán, dễ đưa vào component production.",
+          bullets: [
+            "Dùng utility để đi nhanh",
+            "Dùng component để giữ sạch",
+            "Dùng design token để giữ nhất quán",
+            "Review responsive và accessibility như production thật",
+          ],
+          visual: "finish",
+        },
+      ];
+
+      const state = { index: 0, codeExampleIndex: 0 };
+      const el = {
+        card: document.querySelector("#slideCard"),
+        kicker: document.querySelector("#kicker"),
+        count: document.querySelector("#count"),
+        title: document.querySelector("#title"),
+        lead: document.querySelector("#lead"),
+        bullets: document.querySelector("#bullets"),
+        speakerNotes: document.querySelector("#speakerNotes"),
+        visual: document.querySelector("#visual"),
+        codeWrap: document.querySelector("#codeWrap"),
+        code: document.querySelector("#code"),
+        codeLabel: document.querySelector("#codeLabel"),
+        codeTabs: document.querySelector("#codeTabs"),
+        openCodeBtn: document.querySelector("#openCodeBtn"),
+        codePreviewBtn: document.querySelector("#codePreviewBtn"),
+        copyBtn: document.querySelector("#copyBtn"),
+        lightbox: document.querySelector("#codeLightbox"),
+        lightboxTitle: document.querySelector("#lightboxTitle"),
+        lightboxCode: document.querySelector("#lightboxCode"),
+        lightboxCopyBtn: document.querySelector("#lightboxCopyBtn"),
+        closeLightboxBtn: document.querySelector("#closeLightboxBtn"),
+        prevBtn: document.querySelector("#prevBtn"),
+        nextBtn: document.querySelector("#nextBtn"),
+        dots: document.querySelector("#dots"),
+      };
+
+      function visualTemplate(type) {
+        const templates = {
+          utility: `<div class="grid gap-3">
+          <div class="rounded-2xl bg-white p-4 shadow-sm">
+            <div class="h-4 w-24 rounded bg-sky-200"></div>
+            <div class="mt-4 h-3 w-full rounded bg-slate-200"></div>
+            <div class="mt-2 h-3 w-3/4 rounded bg-slate-200"></div>
+          </div>
+          <div class="flex flex-wrap gap-2 text-sm font-extrabold text-sky-800">
+            <span class="rounded-full bg-sky-100 px-3 py-2">p-4</span>
+            <span class="rounded-full bg-sky-100 px-3 py-2">rounded-2xl</span>
+            <span class="rounded-full bg-sky-100 px-3 py-2">shadow-sm</span>
+          </div>
+        </div>`,
+          button: `<div class="grid place-items-center rounded-2xl bg-white p-8">
+          <button class="rounded-xl bg-sky-600 px-6 py-4 text-lg font-extrabold text-white shadow-lg shadow-sky-200 transition hover:bg-sky-700">Thanh toán</button>
+        </div>`,
+          classGroups: `<div class="grid gap-3">
+          ${["spacing", "layout", "size", "type", "color"].map((item) => `<div class="rounded-2xl bg-white p-4 text-center font-extrabold shadow-sm">${item}</div>`).join("")}
+        </div>`,
+          spacing: `<div class="rounded-2xl bg-white p-5 shadow-sm">
+          <div class="rounded-xl bg-sky-100 p-5">
+            <div class="rounded-lg bg-sky-600 p-4 text-center font-extrabold text-white">p-5</div>
+          </div>
+          <div class="mt-4 flex gap-3">
+            <div class="h-10 flex-1 rounded-lg bg-slate-200"></div>
+            <div class="h-10 flex-1 rounded-lg bg-slate-200"></div>
+          </div>
+        </div>`,
+          layout: `<div class="grid grid-cols-3 gap-3">
+          <div class="col-span-2 h-20 rounded-2xl bg-white shadow-sm"></div>
+          <div class="h-20 rounded-2xl bg-sky-100 shadow-sm"></div>
+          <div class="h-20 rounded-2xl bg-sky-100 shadow-sm"></div>
+          <div class="col-span-2 h-20 rounded-2xl bg-white shadow-sm"></div>
+        </div>`,
+          typeScale: `<div class="rounded-2xl bg-white p-5 shadow-sm">
+          <p class="text-sm font-bold text-sky-700">text-sm</p>
+          <p class="mt-2 text-2xl font-extrabold">text-2xl</p>
+          <p class="mt-2 text-4xl font-extrabold">text-4xl</p>
+          <p class="mt-3 text-base leading-7 text-slate-600">leading-7 giúp đoạn văn dễ đọc hơn.</p>
+        </div>`,
+          states: `<div class="grid gap-3">
+          <button class="rounded-xl bg-slate-950 px-5 py-3 font-extrabold text-white shadow-sm">Default</button>
+          <button class="rounded-xl bg-sky-700 px-5 py-3 font-extrabold text-white shadow-sm">Hover</button>
+          <button class="rounded-xl bg-slate-300 px-5 py-3 font-extrabold text-white shadow-sm">Disabled</button>
+        </div>`,
+          tokens: `<div class="grid grid-cols-3 gap-3">
+          ${["#0f172a", "#0284c7", "#e2e8f0", "8px", "16px", "24px"].map((item) => `<div class="rounded-2xl bg-white p-4 text-center text-lg font-extrabold shadow-sm">${item}</div>`).join("")}
+        </div>`,
+          warning: `<div class="rounded-2xl bg-white p-5 shadow-sm">
+          <div class="mb-4 h-3 w-28 rounded bg-red-200"></div>
+          <div class="space-y-3">
+            <div class="h-4 rounded bg-slate-200"></div>
+            <div class="h-4 w-5/6 rounded bg-slate-200"></div>
+            <div class="h-4 w-2/3 rounded bg-red-100"></div>
+          </div>
+        </div>`,
+          compare: `<div class="grid gap-3 sm:grid-cols-2">
+          <div class="rounded-2xl bg-white p-4 shadow-sm"><p class="font-extrabold">CSS thường</p><p class="mt-2 text-sm font-bold text-slate-500">.btn-primary</p></div>
+          <div class="rounded-2xl bg-slate-950 p-4 text-white shadow-sm"><p class="font-extrabold">Tailwind</p><p class="mt-2 text-sm font-bold text-slate-300">px-5 py-3 bg-sky-600</p></div>
+        </div>`,
+          cssButton: `<div class="grid place-items-center rounded-2xl bg-white p-8">
+          <button style="border-radius:12px;background:#0284c7;padding:12px 20px;font-weight:800;color:white;box-shadow:0 12px 26px rgba(2,132,199,.25)">Thanh toán</button>
+        </div>`,
+          popular: `<div class="grid grid-cols-2 gap-3">
+          ${["React", "Vue", "Svelte", "Rails"].map((item) => `<div class="rounded-2xl bg-white p-5 text-center text-xl font-extrabold shadow-sm">${item}</div>`).join("")}
+        </div>`,
+          devPain: `<div class="grid gap-3">
+          <div class="rounded-2xl bg-white p-4 shadow-sm"><p class="font-extrabold text-red-700">Global CSS</p><p class="mt-1 text-sm font-bold text-slate-500">Sửa modal, vỡ checkout</p></div>
+          <div class="rounded-2xl bg-white p-4 shadow-sm"><p class="font-extrabold text-amber-700">Naming</p><p class="mt-1 text-sm font-bold text-slate-500">button-new-final-v3</p></div>
+          <div class="rounded-2xl bg-white p-4 shadow-sm"><p class="font-extrabold text-sky-700">Design drift</p><p class="mt-1 text-sm font-bold text-slate-500">Mỗi page một spacing</p></div>
+        </div>`,
+          shadcn: `<div class="rounded-2xl bg-slate-950 p-5 text-white shadow-sm">
+          <div class="flex items-center justify-between">
+            <p class="font-extrabold">shadcn/ui</p>
+            <span class="rounded-full bg-white/10 px-3 py-1 text-xs font-extrabold">Tailwind + Radix</span>
+          </div>
+          <div class="mt-5 grid gap-3">
+            <button class="rounded-xl bg-white px-4 py-3 font-extrabold text-slate-950">Button</button>
+            <div class="rounded-xl border border-white/15 p-4 font-bold text-slate-300">Dialog, Select, Tabs</div>
+          </div>
+        </div>`,
+          classLong: `<div class="grid gap-3">
+          <div class="rounded-2xl bg-white p-4 text-sm font-extrabold leading-6 shadow-sm text-slate-500">rounded-xl bg-sky-600 px-5 py-3 font-bold text-white hover:bg-sky-700...</div>
+          <div class="rounded-2xl bg-sky-50 p-4 font-extrabold text-sky-800">Tách base + variant + size</div>
+        </div>`,
+          merge: `<div class="rounded-2xl bg-white p-5 shadow-sm">
+          <div class="flex items-center gap-2 font-extrabold"><span class="rounded-lg bg-slate-100 px-2 py-1">p-2</span><span>+</span><span class="rounded-lg bg-sky-100 px-2 py-1 text-sky-700">p-4</span></div>
+          <div class="mt-5 rounded-xl bg-slate-950 p-4 font-mono text-sm font-bold text-white">twMerge -> p-4</div>
+        </div>`,
+          responsive: `<div class="grid gap-3">
+          <div class="grid grid-cols-1 gap-2 rounded-2xl bg-white p-4 shadow-sm sm:grid-cols-2">
+            <div class="h-12 rounded-xl bg-sky-100"></div>
+            <div class="h-12 rounded-xl bg-slate-200"></div>
+            <div class="h-12 rounded-xl bg-slate-200"></div>
+            <div class="h-12 rounded-xl bg-sky-100"></div>
+          </div>
+          <p class="text-center text-sm font-extrabold text-slate-500">md:grid-cols-2 / xl:grid-cols-4</p>
+        </div>`,
+          form: `<div class="rounded-2xl bg-white p-5 shadow-sm">
+          <label class="text-sm font-extrabold text-slate-500">Email</label>
+          <input class="mt-2 w-full rounded-xl border-2 border-red-400 px-4 py-3 font-bold outline-none" value="wrong@email" readonly />
+          <p class="mt-2 text-sm font-extrabold text-red-600">Email không hợp lệ</p>
+        </div>`,
+          darkMode: `<div class="grid gap-3 sm:grid-cols-2">
+          <div class="rounded-2xl bg-white p-5 font-extrabold text-slate-950 shadow-sm">Light</div>
+          <div class="rounded-2xl bg-slate-950 p-5 font-extrabold text-white shadow-sm">Dark</div>
+        </div>`,
+          system: `<div class="grid gap-3">
+          <div class="rounded-2xl bg-white p-4 shadow-sm"><p class="font-extrabold">Token</p><p class="mt-1 text-sm font-bold text-slate-500">color, radius, spacing</p></div>
+          <div class="rounded-2xl bg-white p-4 shadow-sm"><p class="font-extrabold">Component API</p><p class="mt-1 text-sm font-bold text-slate-500">variant, size, state</p></div>
+          <div class="rounded-2xl bg-sky-50 p-4 font-extrabold text-sky-800">Tailwind implementation</div>
+        </div>`,
+          customConfig: `<div class="grid gap-3">
+          <div class="rounded-2xl bg-white p-4 shadow-sm"><p class="font-extrabold text-sky-700">brand.600</p><p class="mt-1 text-sm font-bold text-slate-500">#0284c7</p></div>
+          <div class="rounded-2xl bg-white p-4 shadow-sm"><p class="font-extrabold">radius.card</p><p class="mt-1 text-sm font-bold text-slate-500">1.25rem</p></div>
+          <div class="rounded-[1.25rem] bg-sky-600 p-4 text-center font-extrabold text-white">Token applied</div>
+        </div>`,
+          cdnConfig: `<div class="rounded-2xl bg-slate-950 p-5 font-mono text-sm font-bold leading-7 text-slate-100 shadow-sm">
+          <p>tailwind.config = {</p>
+          <p class="pl-4 text-sky-300">theme: { extend: ... }</p>
+          <p>}</p>
+          <div class="mt-4 rounded-xl bg-sky-600 p-3 text-center font-sans text-white">bg-brand</div>
+        </div>`,
+          arbitrary: `<div class="rounded-2xl bg-white p-5 shadow-sm">
+          <div class="mx-auto w-[min(260px,100%)] rounded-[1.25rem] bg-slate-950 p-[22px] text-center font-extrabold text-white">w-[min(...)]</div>
+          <p class="mt-4 text-center text-sm font-bold text-slate-500">Dùng ít, dùng có chủ đích</p>
+        </div>`,
+          cssVars: `<div class="grid gap-3">
+          <div class="rounded-2xl bg-white p-4 font-mono text-sm font-bold shadow-sm">--primary: 199 89% 48%</div>
+          <button class="rounded-xl bg-sky-600 px-5 py-3 font-extrabold text-white shadow-sm">bg-[hsl(var(--primary))]</button>
+        </div>`,
+          production: `<div class="rounded-2xl bg-white p-5 shadow-sm">
+          <div class="flex items-center justify-between gap-3"><strong>Button</strong><span class="rounded-full bg-emerald-100 px-3 py-1 text-sm font-extrabold text-emerald-700">Reusable</span></div>
+          <div class="mt-5 grid gap-3"><button class="rounded-xl bg-slate-950 px-5 py-3 font-extrabold text-white">Save</button><button class="rounded-xl border px-5 py-3 font-extrabold text-slate-700">Cancel</button></div>
+        </div>`,
+          components: `<div class="grid gap-3">
+          <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">Button variant="primary"</div>
+          <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">Button variant="danger"</div>
+          <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">Button disabled</div>
+        </div>`,
+          benefits: `<div class="grid grid-cols-2 gap-3">
+          ${["Nhanh", "Ít CSS chết", "Responsive", "Token"].map((item) => `<div class="rounded-2xl bg-white p-5 text-center font-extrabold shadow-sm">${item}</div>`).join("")}
+        </div>`,
+          limits: `<div class="rounded-2xl bg-white p-5 shadow-sm">
+          <div class="text-5xl font-extrabold text-slate-300">class=""</div>
+          <p class="mt-4 text-lg font-bold text-slate-600">Cần component + convention để không rối.</p>
+        </div>`,
+          mistakes: `<div class="grid gap-3">
+          <div class="rounded-2xl bg-red-50 p-4 font-extrabold text-red-700">Dynamic class mơ hồ</div>
+          <div class="rounded-2xl bg-amber-50 p-4 font-extrabold text-amber-700">Arbitrary value quá tay</div>
+          <div class="rounded-2xl bg-sky-50 p-4 font-extrabold text-sky-700">Thiếu state accessibility</div>
+        </div>`,
+          ai: `<div class="rounded-2xl bg-white p-5 shadow-sm">
+          <p class="text-sm font-extrabold uppercase tracking-widest text-sky-700">AI prompt</p>
+          <p class="mt-3 text-2xl font-extrabold">Make this card calmer, denser, production-ready.</p>
+        </div>`,
+          aiReview: `<div class="grid gap-3">
+          ${["Mobile", "Focus", "Long text", "Loading", "Error"].map((item) => `<div class="flex items-center justify-between rounded-2xl bg-white p-4 font-extrabold shadow-sm"><span>${item}</span><span class="rounded-full bg-emerald-100 px-3 py-1 text-sm text-emerald-700">check</span></div>`).join("")}
+        </div>`,
+          finish: `<div class="rounded-2xl bg-slate-950 p-6 text-white shadow-sm">
+          <p class="text-sm font-extrabold uppercase tracking-widest text-sky-300">Rule</p>
+          <p class="mt-3 text-3xl font-extrabold leading-tight">Utility để nhanh. Component để bền.</p>
+        </div>`,
+        };
+
+        return templates[type] || templates.utility;
+      }
+
+      function renderDots() {
+        el.dots.innerHTML = slides
+          .map(
+            (_, i) =>
+              `<button class="h-2.5 rounded-full transition ${i === state.index ? "w-8 bg-sky-600" : "w-2.5 bg-slate-300 hover:bg-slate-400"}" type="button" aria-label="Đi tới slide ${i + 1}" data-dot="${i}"></button>`,
+          )
+          .join("");
+      }
+
+      function getCodeExamples(slide) {
+        if (slide.codeExamples?.length) return slide.codeExamples;
+        if (!slide.code) return [];
+        return [
+          {
+            title: slide.codeLabel || "Example",
+            language: slide.codeLabel || "code",
+            code: slide.code,
+          },
+        ];
+      }
+
+      function getCurrentCodeExample() {
+        const examples = getCodeExamples(slides[state.index]);
+        return examples[state.codeExampleIndex] || examples[0];
+      }
+
+      function renderCodeTabs(examples) {
+        if (examples.length <= 1) {
+          el.codeTabs.classList.add("hidden");
+          el.codeTabs.classList.remove("flex");
+          el.codeTabs.innerHTML = "";
+          return;
+        }
+
+        el.codeTabs.classList.remove("hidden");
+        el.codeTabs.classList.add("flex");
+        el.codeTabs.innerHTML = examples
+          .map(
+            (example, index) => `
+        <button
+          class="rounded-full px-3 py-1.5 text-xs font-extrabold transition ${index === state.codeExampleIndex ? "bg-sky-500 text-white" : "bg-white/10 text-slate-300 hover:bg-white/20"}"
+          type="button"
+          data-code-tab="${index}"
+        >
+          ${example.title}
+        </button>
+      `,
+          )
+          .join("");
+      }
+
+      function escapeHtml(text) {
+        return text
+          .replaceAll("&", "&amp;")
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;");
+      }
+
+      function highlightCode(rawCode) {
+        let html = escapeHtml(rawCode);
+        const tokens = [];
+        const tokenName = (index) => {
+          let name = "";
+          let value = index;
+          do {
+            name = String.fromCharCode(65 + (value % 26)) + name;
+            value = Math.floor(value / 26) - 1;
+          } while (value >= 0);
+          return `@@CODETOKEN_${name}@@`;
+        };
+        const storeToken = (type, value) => {
+          const key = tokenName(tokens.length);
+          tokens.push({ key, type, value });
+          return key;
+        };
+
+        html = html.replace(/(\/\/.*|\/\*[\s\S]*?\*\/)/g, (match) =>
+          storeToken("comment", match),
+        );
+        html = html.replace(/(".*?"|'.*?'|`.*?`)/g, (match) =>
+          storeToken("string", match),
+        );
+        html = html.replace(
+          /\b(const|let|var|function|return|import|from|export|default|module|theme|extend|colors|borderRadius|className|class|style)\b/g,
+          '<span class="code-token-keyword">$1</span>',
+        );
+        html = html.replace(
+          /\b(\d+(?:\.\d+)?)(px|rem|%|vh|vw)?\b/g,
+          '<span class="code-token-number">$1$2</span>',
+        );
+        html = html.replace(
+          /(&lt;\/?)([a-zA-Z][\w:-]*)/g,
+          '$1<span class="code-token-tag">$2</span>',
+        );
+        html = html.replace(
+          /\s([a-zA-Z_:][-a-zA-Z0-9_:.]*)(=)/g,
+          ' <span class="code-token-attr">$1</span>$2',
+        );
+
+        tokens.forEach(({ key, type, value }) => {
+          html = html.replaceAll(
+            key,
+            `<span class="code-token-${type}">${value}</span>`,
+          );
+        });
+
+        return html;
+      }
+
+      function renderSlide() {
+        const slide = slides[state.index];
+        el.kicker.textContent = slide.category || "Tailwind CSS";
+        el.count.textContent = `${state.index + 1} / ${slides.length}`;
+        el.title.textContent = slide.title;
+        el.lead.textContent = slide.lead;
+        el.bullets.innerHTML = slide.bullets
+          .map(
+            (item) =>
+              `<li class="flex gap-3"><span class="mt-2.5 h-2.5 w-2.5 shrink-0 rounded-full bg-sky-500"></span><span>${item}</span></li>`,
+          )
+          .join("");
+        if (slide.speakerNotes) {
+          el.speakerNotes.classList.remove("hidden");
+          el.speakerNotes.textContent = slide.speakerNotes;
+        } else {
+          el.speakerNotes.classList.add("hidden");
+          el.speakerNotes.textContent = "";
+        }
+        el.visual.innerHTML = visualTemplate(slide.visual);
+        el.prevBtn.disabled = state.index === 0;
+        el.nextBtn.disabled = state.index === slides.length - 1;
+
+        const examples = getCodeExamples(slide);
+        const example = getCurrentCodeExample();
+        renderCodeTabs(examples);
+
+        if (example) {
+          el.codeWrap.classList.remove("hidden");
+          el.copyBtn.classList.remove("hidden");
+          el.codeLabel.textContent =
+            example.language || example.title || "Code";
+          el.code.innerHTML = highlightCode(example.code);
+        } else {
+          el.codeWrap.classList.add("hidden");
+          el.copyBtn.classList.add("hidden");
+          el.code.innerHTML = "";
+        }
+
+        renderDots();
+      }
+
+      function goTo(index) {
+        state.index = Math.max(0, Math.min(slides.length - 1, index));
+        state.codeExampleIndex = 0;
+        renderSlide();
+      }
+
+      function openLightbox() {
+        const example = getCurrentCodeExample();
+        if (!example) return;
+        el.lightboxTitle.textContent =
+          example.title || example.language || slides[state.index].title;
+        el.lightboxCode.innerHTML = highlightCode(example.code);
+        el.lightbox.classList.remove("hidden");
+        el.lightbox.classList.add("flex");
+        document.body.classList.add("overflow-hidden");
+        el.closeLightboxBtn.focus();
+      }
+
+      function closeLightbox() {
+        el.lightbox.classList.add("hidden");
+        el.lightbox.classList.remove("flex");
+        document.body.classList.remove("overflow-hidden");
+        el.openCodeBtn.focus();
+      }
+
+      async function copyCurrentCode(button) {
+        const example = getCurrentCodeExample();
+        if (!example) return;
+        await navigator.clipboard.writeText(example.code);
+        const oldText = button.textContent;
+        button.textContent = "Copied";
+        setTimeout(() => {
+          button.textContent = oldText;
+        }, 900);
+      }
+
+      el.prevBtn.addEventListener("click", () => goTo(state.index - 1));
+      el.nextBtn.addEventListener("click", () => goTo(state.index + 1));
+      el.codeTabs.addEventListener("click", (event) => {
+        const tab = event.target.closest("[data-code-tab]");
+        if (!tab) return;
+        state.codeExampleIndex = Number(tab.dataset.codeTab);
+        renderSlide();
+      });
+      el.openCodeBtn.addEventListener("click", openLightbox);
+      el.codePreviewBtn.addEventListener("click", openLightbox);
+      el.closeLightboxBtn.addEventListener("click", closeLightbox);
+      el.copyBtn.addEventListener("click", () => copyCurrentCode(el.copyBtn));
+      el.lightboxCopyBtn.addEventListener("click", () =>
+        copyCurrentCode(el.lightboxCopyBtn),
+      );
+      el.lightbox.addEventListener("click", (event) => {
+        if (event.target === el.lightbox) closeLightbox();
+      });
+
+      window.addEventListener("keydown", (event) => {
+        if (!el.lightbox.classList.contains("hidden")) {
+          if (event.key === "Escape") closeLightbox();
+          return;
+        }
+        if (event.key === "ArrowRight") goTo(state.index + 1);
+        if (event.key === "ArrowLeft") goTo(state.index - 1);
+      });
+
+      renderSlide();
+    </script>
+  </body>
+</html>

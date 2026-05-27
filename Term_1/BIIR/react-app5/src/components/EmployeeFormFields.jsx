@@ -1,79 +1,60 @@
-export default function EmployeeFormFields({ formik, empIDReadOnly = false }) {
+import { ErrorMessage, Field } from "formik";
+
+export default function EmployeeFormFields() {
   return (
     <>
       <div className="input-group">
-        <label>Employee ID:</label>
-        <input
+        <label htmlFor="empID">Employee ID:</label>
+        <Field
+          id="empID"
           type="text"
           name="empID"
           placeholder="Enter Employee ID (e.g. E004)"
-          value={formik.values.empID}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          readOnly={empIDReadOnly}
         />
-        {formik.touched.empID && formik.errors.empID && (
-          <div className="error">{formik.errors.empID}</div>
-        )}
+        <ErrorMessage name="empID" component="div" className="error" />
       </div>
 
       <div className="input-group">
-        <label>Name:</label>
-        <input
+        <label htmlFor="name">Name:</label>
+        <Field
+          id="name"
           type="text"
           name="name"
-          value={formik.values.name}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
         />
-        {formik.touched.name && formik.errors.name && (
-          <div className="error">{formik.errors.name}</div>
-        )}
+        <ErrorMessage name="name" component="div" className="error" />
       </div>
 
       <div className="input-group">
-        <label>Year of Birth:</label>
-        <input
+        <label htmlFor="yob">Year of Birth:</label>
+        <Field
+          id="yob"
           type="number"
           name="yob"
-          value={formik.values.yob}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
         />
-        {formik.touched.yob && formik.errors.yob && (
-          <div className="error">{formik.errors.yob}</div>
-        )}
+        <ErrorMessage name="yob" component="div" className="error" />
       </div>
 
       <div className="input-group">
-        <label>Position:</label>
-        <input
+        <label htmlFor="position">Position:</label>
+        <Field
+          id="position"
           type="text"
           name="position"
-          value={formik.values.position}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
         />
-        {formik.touched.position && formik.errors.position && (
-          <div className="error">{formik.errors.position}</div>
-        )}
+        <ErrorMessage name="position" component="div" className="error" />
       </div>
 
       <div className="input-group">
-        <label>Salary:</label>
-        <input
+        <label htmlFor="salary">Salary:</label>
+        <Field
+          id="salary"
           type="number"
           name="salary"
-          value={formik.values.salary}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
           min="0"
           step="0.01"
         />
-        {formik.touched.salary && formik.errors.salary && (
-          <div className="error">{formik.errors.salary}</div>
-        )}
+        <ErrorMessage name="salary" component="div" className="error" />
       </div>
     </>
-  )
+  );
 }
