@@ -148,10 +148,6 @@
               id="bullets"
               class="mt-6 grid gap-2.5 text-lg font-semibold leading-7 text-slate-700 sm:text-xl"
             ></ul>
-            <div
-              id="speakerNotes"
-              class="mt-5 hidden rounded-2xl border border-sky-100 bg-sky-50/80 p-3 text-sm font-semibold leading-6 text-slate-700"
-            ></div>
           </div>
 
           <div class="grid min-h-0 content-center gap-3">
@@ -836,8 +832,6 @@ function Button({ variant = "primary", children }) {
             "min-w-0 + truncate xử lý tên sản phẩm dài",
             "Code phù hợp dashboard, admin, ecommerce",
           ],
-          speakerNotes:
-            "Slide này nên nói theo góc nhìn product code: Tailwind không chỉ để làm demo đẹp. Nó giúp component React chứa cả cấu trúc, trạng thái và style trong cùng một nơi, dễ review hơn khi team làm feature thật.",
           codeExamples: [
             {
               title: "ProductCard",
@@ -913,8 +907,6 @@ export function ProductCard({ product, selected, onSelect }) {
             "AI sinh ít class hơn, ít lỗi visual hơn",
             "Team vẫn giữ token và variant nhất quán",
           ],
-          speakerNotes:
-            "Thông điệp chính: Tailwind đã dễ cho AI vì context nằm trong markup. Component kit làm thêm một tầng API rõ ràng, giúp AI không phải viết lại toàn bộ class dài cho mỗi button, card, modal.",
           codeExamples: [
             {
               title: "Raw Tailwind",
@@ -952,8 +944,6 @@ export function CheckoutAction() {
             "Error text không cần CSS riêng",
             "Có thể tái dùng cho login, checkout, admin form",
           ],
-          speakerNotes:
-            "Đây là ví dụ sát với app thật hơn button đơn giản. Khi làm form, developer thường cần nhiều trạng thái. Tailwind cho phép viết các trạng thái này trực tiếp, rõ ràng và dễ review.",
           codeExamples: [
             {
               title: "TextField",
@@ -998,8 +988,6 @@ export function CheckoutAction() {
             "Map rõ các class có thể xuất hiện",
             "Cách này dễ review và không mất CSS khi deploy",
           ],
-          speakerNotes:
-            "Nên nhấn mạnh đây là lỗi production thật. Local đôi khi nhìn như ổn, nhưng khi build/deploy class không có trong output CSS thì UI mất màu.",
           codeExamples: [
             {
               title: "Sai",
@@ -1106,7 +1094,6 @@ const colorClass = {
         title: document.querySelector("#title"),
         lead: document.querySelector("#lead"),
         bullets: document.querySelector("#bullets"),
-        speakerNotes: document.querySelector("#speakerNotes"),
         visual: document.querySelector("#visual"),
         codeWrap: document.querySelector("#codeWrap"),
         code: document.querySelector("#code"),
@@ -1556,13 +1543,6 @@ const colorClass = {
               `<li class="flex gap-3"><span class="mt-2.5 h-2.5 w-2.5 shrink-0 rounded-full bg-sky-500"></span><span>${item}</span></li>`,
           )
           .join("");
-        if (slide.speakerNotes) {
-          el.speakerNotes.classList.remove("hidden");
-          el.speakerNotes.textContent = slide.speakerNotes;
-        } else {
-          el.speakerNotes.classList.add("hidden");
-          el.speakerNotes.textContent = "";
-        }
         el.visual.innerHTML = visualTemplate(slide.visual);
         initAiCostCalculator();
         el.prevBtn.disabled = state.index === 0;
