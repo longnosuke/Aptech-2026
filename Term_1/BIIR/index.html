@@ -92,7 +92,8 @@
         color: #fca5a5;
       }
 
-      button:focus-visible {
+      button:focus-visible,
+      .codePreviewBtn:focus-visible {
         outline: 3px solid rgba(14, 165, 233, 0.45);
         outline-offset: 3px;
       }
@@ -127,7 +128,7 @@
         </div>
 
         <div
-          class="grid min-h-0 grid-cols-1 content-center gap-5 py-5 lg:grid-cols-[1.05fr_0.95fr] lg:gap-8 lg:py-8"
+          class="grid min-h-0 grid-cols-1 content-center gap-5 py-4 lg:grid-cols-[1.05fr_0.95fr] lg:gap-8 lg:py-5"
         >
           <div class="min-w-0">
             <h1
@@ -145,27 +146,27 @@
             </p>
             <ul
               id="bullets"
-              class="mt-7 grid gap-3 text-lg font-semibold leading-7 text-slate-700 sm:text-xl"
+              class="mt-6 grid gap-2.5 text-lg font-semibold leading-7 text-slate-700 sm:text-xl"
             ></ul>
             <div
               id="speakerNotes"
-              class="mt-6 hidden rounded-2xl border border-sky-100 bg-sky-50/80 p-4 text-base font-semibold leading-7 text-slate-700"
+              class="mt-5 hidden rounded-2xl border border-sky-100 bg-sky-50/80 p-3 text-sm font-semibold leading-6 text-slate-700"
             ></div>
           </div>
 
-          <div class="grid min-h-0 content-center gap-4">
+          <div class="grid min-h-0 content-center gap-3">
             <div
               id="visual"
-              class="rounded-3xl border border-slate-200 bg-slate-50 p-4 shadow-soft"
+              class="rounded-[1.75rem] border border-slate-200 bg-slate-50 p-4 shadow-soft"
             ></div>
             <div
               id="codeWrap"
-              class="hidden min-w-0 overflow-hidden rounded-3xl border border-slate-800 bg-slate-950 shadow-soft"
+              class="hidden min-w-0 overflow-hidden rounded-[1.75rem] border border-slate-800 bg-slate-950 shadow-soft"
             >
               <div
-                class="flex items-center justify-between gap-3 border-b border-white/10 px-4 py-3"
+                class="flex items-center justify-between gap-3 border-b border-white/10 px-5 py-4"
               >
-                <div class="flex gap-1.5">
+                <div class="flex gap-2">
                   <span class="h-3 w-3 rounded-full bg-red-400"></span>
                   <span class="h-3 w-3 rounded-full bg-yellow-300"></span>
                   <span class="h-3 w-3 rounded-full bg-emerald-400"></span>
@@ -189,16 +190,17 @@
                 id="codeTabs"
                 class="hidden flex-wrap gap-2 border-b border-white/10 px-4 py-3"
               ></div>
-              <button
+              <div
                 id="codePreviewBtn"
-                class="block w-full cursor-zoom-in text-left"
-                type="button"
+                class="codePreviewBtn block w-full cursor-zoom-in text-left"
+                role="button"
+                tabindex="0"
                 aria-label="Mở code example lớn"
               >
                 <pre
-                  class="max-h-[300px] overflow-y-auto overflow-x-hidden p-4 text-[14px] font-semibold leading-7 text-slate-100 sm:text-[15px] lg:max-h-[360px]"
+                  class="max-h-[190px] overflow-y-auto overflow-x-hidden p-5 text-[15px] font-semibold leading-8 text-slate-100 sm:text-[16px] lg:max-h-[190px] lg:text-[17px]"
                 ><code id="code"></code></pre>
-              </button>
+              </div>
             </div>
           </div>
         </div>
@@ -296,7 +298,7 @@
           ],
           codeLabel: "HTML",
           code: `<button class="rounded-xl bg-sky-600 px-5 py-3 font-bold text-white hover:bg-sky-700">
-  Lưu thay đổi
+  Thanh toán
 </button>`,
           visual: "button",
         },
@@ -388,11 +390,23 @@
             "aria-* dùng tốt với accessibility state",
           ],
           codeLabel: "Button states",
-          code: `<button
-  class="rounded-xl bg-slate-950 px-5 py-3 font-bold text-white transition hover:bg-sky-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-500 disabled:cursor-not-allowed disabled:bg-slate-300"
->
-  Lưu
-</button>`,
+          code: `<div class="grid gap-3">
+  <button class="rounded-xl bg-slate-950 px-5 py-3 font-bold text-white">
+    Default
+  </button>
+
+  <button class="rounded-xl bg-sky-600 px-5 py-3 font-bold text-white hover:bg-sky-700">
+    Hover me
+  </button>
+
+  <button class="rounded-xl border px-5 py-3 font-bold focus-visible:outline focus-visible:outline-2 focus-visible:outline-sky-500">
+    Focus me
+  </button>
+
+  <button class="rounded-xl bg-slate-300 px-5 py-3 font-bold text-white" disabled>
+    Disabled
+  </button>
+</div>`,
           visual: "states",
         },
         {
@@ -415,12 +429,28 @@
             "Override nhiều lớp gây khó debug",
           ],
           codeLabel: "CSS",
-          code: `.card .button.primary:hover {
-  background: #0369a1;
+          code: `.checkout-page .card .button.primary {
+  padding: 12px 20px;
+  background: #0284c7;
 }
 
-.checkout-page .card .button.primary {
-  padding: 12px 20px;
+.checkout-page .summary .card .button.primary:hover {
+  background: #0369a1 !important;
+}
+
+body.dark .checkout-page .button.primary {
+  background: #0f172a;
+}
+
+@media (max-width: 768px) {
+  .checkout-page .summary .card .button.primary {
+    width: 100%;
+    padding: 16px 24px !important;
+  }
+}
+
+.legacy-sale-page .checkout-page .button.primary {
+  background: #dc2626 !important;
 }`,
           visual: "warning",
         },
@@ -464,7 +494,7 @@
           lead: "Style nằm ngay trên element. Rất nhanh khi cần chỉnh spacing, màu, hover, responsive.",
           codeLabel: "Tailwind",
           code: `<button
-  class="rounded-xl bg-sky-600 px-5 py-3 font-bold text-white shadow-sm transition hover:bg-sky-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-500"
+  class="rounded-xl bg-sky-600 px-5 py-3 font-bold text-white"
 >
   Thanh toán
 </button>`,
@@ -558,7 +588,7 @@ export function CheckoutAction() {
     </Button>
   );
 }`,
-          visual: "shadcn",
+          visual: "shadcnCheckout",
         },
         {
           title: "Vấn đề class dài",
@@ -631,7 +661,7 @@ cn("p-2 text-sm", isActive && "p-4 text-sky-700");`,
   class="w-full rounded-xl border border-slate-300 px-4 py-3 font-semibold outline-none focus:border-sky-500 focus:ring-4 focus:ring-sky-100 disabled:cursor-not-allowed disabled:bg-slate-100 aria-invalid:border-red-500"
   aria-invalid="true"
 />`,
-          visual: "form",
+          visual: "inputState",
         },
         {
           title: "Dark mode không phải đổi màu bừa",
@@ -771,7 +801,7 @@ cn("p-2 text-sm", isActive && "p-4 text-sky-700");`,
             "Không dùng màu random ngoài design system",
             "Review UI bằng trạng thái thật: loading, disabled, error",
           ],
-          visual: "production",
+          visual: "saveButton",
         },
         {
           title: "Component hóa với Tailwind",
@@ -875,63 +905,42 @@ export function ProductCard({ product, selected, onSelect }) {
         },
         {
           category: "REACT COMPONENT",
-          title: "Button component kiểu shadcn/ui",
-          lead: "Trong production, class Tailwind dài thường được đóng gói thành component có variant và size rõ ràng.",
+          title: "Component kit: shadcn/ui, daisyUI",
+          lead: "Tailwind đi nhanh hơn nữa khi dùng kit: AI chỉ cần gọi component hoặc class API có sẵn.",
           bullets: [
-            "Không copy class button khắp nơi",
-            "Variant giúp product UI nhất quán",
-            "className vẫn cho phép override có kiểm soát",
-            "Dùng `cn()` để merge class an toàn",
+            "shadcn/ui: copy component vào project, sửa được",
+            "daisyUI: class ngắn kiểu btn, card, modal",
+            "AI sinh ít class hơn, ít lỗi visual hơn",
+            "Team vẫn giữ token và variant nhất quán",
           ],
           speakerNotes:
-            "Liên hệ shadcn/ui ở đây: nó không bán component đóng kín. Nó đưa code component vào project để team sửa được. Tailwind là phần style, Radix thường lo behavior/accessibility.",
+            "Thông điệp chính: Tailwind đã dễ cho AI vì context nằm trong markup. Component kit làm thêm một tầng API rõ ràng, giúp AI không phải viết lại toàn bộ class dài cho mỗi button, card, modal.",
           codeExamples: [
             {
-              title: "cn helper",
-              language: "ts",
-              code: `import { clsx, type ClassValue } from "clsx";
-import { twMerge } from "tailwind-merge";
+              title: "Raw Tailwind",
+              language: "tsx",
+              code: `<button className="rounded-xl bg-sky-600 px-5 py-3 font-bold text-white hover:bg-sky-700">
+  Thanh toán
+</button>`,
+            },
+            {
+              title: "shadcn/ui",
+              language: "tsx",
+              code: `import { Button } from "@/components/ui/button";
 
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
+export function CheckoutAction() {
+  return <Button size="lg">Thanh toán</Button>;
 }`,
             },
             {
-              title: "Button.tsx",
-              language: "tsx",
-              code: `const variants = {
-  primary: "bg-sky-600 text-white hover:bg-sky-700",
-  secondary: "bg-slate-100 text-slate-900 hover:bg-slate-200",
-  danger: "bg-red-600 text-white hover:bg-red-700",
-};
-
-const sizes = {
-  sm: "h-9 px-3 text-sm",
-  md: "h-11 px-4 text-base",
-  lg: "h-12 px-5 text-base",
-};
-
-export function Button({
-  variant = "primary",
-  size = "md",
-  className,
-  ...props
-}) {
-  return (
-    <button
-      className={cn(
-        "inline-flex items-center justify-center rounded-xl font-bold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 disabled:pointer-events-none disabled:opacity-50",
-        variants[variant],
-        sizes[size],
-        className
-      )}
-      {...props}
-    />
-  );
-}`,
+              title: "daisyUI",
+              language: "html",
+              code: `<button class="btn btn-primary">
+  Thanh toán
+</button>`,
             },
           ],
-          visual: "shadcn",
+          visual: "componentKits",
         },
         {
           category: "FORM THỰC TẾ",
@@ -1067,40 +1076,14 @@ const colorClass = {
           visual: "mistakes",
         },
         {
-          title: "Tailwind + AI",
-          lead: "AI tạo UI bằng Tailwind rất tốt vì class mô tả trực tiếp layout, màu, spacing, state.",
+          title: "Tailwind + AI: rẻ hơn để sinh UI",
+          lead: "AI hiểu Tailwind dễ hơn CSS rời vì context nằm ngay trong markup: layout, màu, spacing, state.",
           bullets: [
-            "Prompt dễ chuyển thành markup",
-            "Dễ yêu cầu chỉnh: nhỏ hơn, tương phản hơn, ít bo góc hơn",
-            "Vẫn cần người review accessibility, overflow, responsive, state",
+            "HTML + CSS cần mô tả markup, selector, cascade và file style",
+            "Tailwind cho AI thấy intent ngay trên element",
+            "Ít vòng sửa hơn khi đổi spacing, màu, responsive, state",
           ],
-          codeLabel: "Prompt-to-UI",
-          code: `<section class="grid gap-4 rounded-2xl border bg-white p-6 shadow-sm md:grid-cols-3">
-  <div class="rounded-xl bg-slate-50 p-4">
-    <p class="text-sm font-bold text-slate-500">Revenue</p>
-    <p class="mt-2 text-3xl font-extrabold">$48k</p>
-  </div>
-</section>`,
-          visual: "ai",
-        },
-        {
-          title: "AI sinh Tailwind: cần review gì?",
-          lead: "AI tạo code nhanh, nhưng dev vẫn phải bắt lỗi production: overflow, spacing, a11y, state và component boundary.",
-          bullets: [
-            "Check mobile trước",
-            "Check text dài tiếng Việt",
-            "Check keyboard focus",
-            "Check class lặp lại có nên tách component",
-            "Check màu có đủ contrast",
-          ],
-          codeLabel: "Review checklist",
-          code: `// Sau khi AI sinh UI
-// 1. Resize mobile / desktop
-// 2. Tab qua toàn bộ controls
-// 3. Thử data dài
-// 4. Thử loading / disabled / error
-// 5. Tách component nếu class lặp`,
-          visual: "aiReview",
+          visual: "aiCost",
         },
         {
           title: "Kết luận",
@@ -1156,47 +1139,51 @@ const colorClass = {
             <span class="rounded-full bg-sky-100 px-3 py-2">shadow-sm</span>
           </div>
         </div>`,
-          button: `<div class="grid place-items-center rounded-2xl bg-white p-8">
-          <button class="rounded-xl bg-sky-600 px-6 py-4 text-lg font-extrabold text-white shadow-lg shadow-sky-200 transition hover:bg-sky-700">Thanh toán</button>
+          button: `<div class="grid place-items-center rounded-[1.35rem] bg-white px-8 py-10 sm:py-12">
+          <button class="rounded-xl bg-sky-600 px-5 py-3 font-bold text-white">Thanh toán</button>
         </div>`,
-          classGroups: `<div class="grid gap-3">
-          ${["spacing", "layout", "size", "type", "color"].map((item) => `<div class="rounded-2xl bg-white p-4 text-center font-extrabold shadow-sm">${item}</div>`).join("")}
+          classGroups: `<div class="max-w-xl rounded-2xl border bg-white p-6 shadow-sm">
+          <h2 class="text-2xl font-extrabold">Profile</h2>
+          <p class="mt-2 text-slate-600">Thông tin người dùng</p>
+          <button class="mt-5 rounded-xl bg-sky-600 px-5 py-3 font-bold text-white">Cập nhật</button>
         </div>`,
           spacing: `<div class="rounded-2xl bg-white p-5 shadow-sm">
-          <div class="rounded-xl bg-sky-100 p-5">
-            <div class="rounded-lg bg-sky-600 p-4 text-center font-extrabold text-white">p-5</div>
-          </div>
-          <div class="mt-4 flex gap-3">
-            <div class="h-10 flex-1 rounded-lg bg-slate-200"></div>
-            <div class="h-10 flex-1 rounded-lg bg-slate-200"></div>
+          <h3 class="text-xl font-bold">Thông báo</h3>
+          <p class="mt-3 text-slate-600">Đơn hàng đã được tạo.</p>
+          <div class="mt-5 flex gap-3 pt-2">
+            <button class="rounded-lg bg-slate-950 px-4 py-2 font-bold text-white">Xem</button>
+            <button class="rounded-lg border px-4 py-2 font-bold">Đóng</button>
           </div>
         </div>`,
-          layout: `<div class="grid grid-cols-3 gap-3">
-          <div class="col-span-2 h-20 rounded-2xl bg-white shadow-sm"></div>
-          <div class="h-20 rounded-2xl bg-sky-100 shadow-sm"></div>
-          <div class="h-20 rounded-2xl bg-sky-100 shadow-sm"></div>
-          <div class="col-span-2 h-20 rounded-2xl bg-white shadow-sm"></div>
+          layout: `<div class="grid gap-4 md:grid-cols-3">
+          <article class="rounded-2xl border bg-white p-5 text-center font-extrabold shadow-sm">Card 1</article>
+          <article class="rounded-2xl border bg-white p-5 text-center font-extrabold shadow-sm">Card 2</article>
+          <article class="rounded-2xl border bg-white p-5 text-center font-extrabold shadow-sm">Card 3</article>
         </div>`,
           typeScale: `<div class="rounded-2xl bg-white p-5 shadow-sm">
-          <p class="text-sm font-bold text-sky-700">text-sm</p>
-          <p class="mt-2 text-2xl font-extrabold">text-2xl</p>
-          <p class="mt-2 text-4xl font-extrabold">text-4xl</p>
-          <p class="mt-3 text-base leading-7 text-slate-600">leading-7 giúp đoạn văn dễ đọc hơn.</p>
+          <p class="text-sm font-bold uppercase tracking-widest text-sky-700">Dashboard</p>
+          <h1 class="mt-3 text-4xl font-extrabold leading-tight">Doanh thu theo thời gian thực</h1>
+          <p class="mt-4 text-lg leading-8 text-slate-600">Theo dõi biến động theo ngày, khu vực và kênh bán.</p>
         </div>`,
-          states: `<div class="grid gap-3">
-          <button class="rounded-xl bg-slate-950 px-5 py-3 font-extrabold text-white shadow-sm">Default</button>
-          <button class="rounded-xl bg-sky-700 px-5 py-3 font-extrabold text-white shadow-sm">Hover</button>
-          <button class="rounded-xl bg-slate-300 px-5 py-3 font-extrabold text-white shadow-sm">Disabled</button>
+          states: `<div class="grid gap-3 rounded-2xl bg-white p-6 shadow-sm">
+          <button class="rounded-xl bg-slate-950 px-5 py-3 font-bold text-white shadow-sm">Default</button>
+          <button class="rounded-xl bg-sky-600 px-5 py-3 font-bold text-white shadow-sm hover:bg-sky-700">Hover me</button>
+          <button class="rounded-xl border px-5 py-3 font-bold shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-sky-500">Focus me</button>
+          <button class="rounded-xl bg-slate-300 px-5 py-3 font-bold text-white shadow-sm" disabled>Disabled</button>
         </div>`,
           tokens: `<div class="grid grid-cols-3 gap-3">
           ${["#0f172a", "#0284c7", "#e2e8f0", "8px", "16px", "24px"].map((item) => `<div class="rounded-2xl bg-white p-4 text-center text-lg font-extrabold shadow-sm">${item}</div>`).join("")}
         </div>`,
           warning: `<div class="rounded-2xl bg-white p-5 shadow-sm">
-          <div class="mb-4 h-3 w-28 rounded bg-red-200"></div>
+          <div class="mb-4 flex items-center gap-2">
+            <div class="h-3 w-28 rounded bg-red-300"></div>
+            <span class="rounded-full bg-red-100 px-2 py-1 text-xs font-extrabold text-red-700">!important</span>
+          </div>
           <div class="space-y-3">
             <div class="h-4 rounded bg-slate-200"></div>
+            <div class="h-4 w-11/12 rounded bg-red-100"></div>
             <div class="h-4 w-5/6 rounded bg-slate-200"></div>
-            <div class="h-4 w-2/3 rounded bg-red-100"></div>
+            <div class="h-4 w-2/3 rounded bg-red-200"></div>
           </div>
         </div>`,
           compare: `<div class="grid gap-3 sm:grid-cols-2">
@@ -1206,22 +1193,49 @@ const colorClass = {
           cssButton: `<div class="grid place-items-center rounded-2xl bg-white p-8">
           <button style="border-radius:12px;background:#0284c7;padding:12px 20px;font-weight:800;color:white;box-shadow:0 12px 26px rgba(2,132,199,.25)">Thanh toán</button>
         </div>`,
-          popular: `<div class="grid grid-cols-2 gap-3">
-          ${["React", "Vue", "Svelte", "Rails"].map((item) => `<div class="rounded-2xl bg-white p-5 text-center text-xl font-extrabold shadow-sm">${item}</div>`).join("")}
-        </div>`,
+          popular: `<article class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+          <div class="flex items-start justify-between gap-4">
+            <div class="min-w-0">
+              <h3 class="truncate text-lg font-extrabold">Áo thun Tailwind</h3>
+              <p class="mt-1 text-sm font-semibold text-slate-500">SKU: TW-001</p>
+            </div>
+            <span class="rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold text-emerald-700">In stock</span>
+          </div>
+          <button class="mt-5 w-full rounded-xl bg-slate-950 px-4 py-3 font-bold text-white hover:bg-sky-700">Chọn sản phẩm</button>
+        </article>`,
           devPain: `<div class="grid gap-3">
           <div class="rounded-2xl bg-white p-4 shadow-sm"><p class="font-extrabold text-red-700">Global CSS</p><p class="mt-1 text-sm font-bold text-slate-500">Sửa modal, vỡ checkout</p></div>
           <div class="rounded-2xl bg-white p-4 shadow-sm"><p class="font-extrabold text-amber-700">Naming</p><p class="mt-1 text-sm font-bold text-slate-500">button-new-final-v3</p></div>
           <div class="rounded-2xl bg-white p-4 shadow-sm"><p class="font-extrabold text-sky-700">Design drift</p><p class="mt-1 text-sm font-bold text-slate-500">Mỗi page một spacing</p></div>
         </div>`,
-          shadcn: `<div class="rounded-2xl bg-slate-950 p-5 text-white shadow-sm">
-          <div class="flex items-center justify-between">
-            <p class="font-extrabold">shadcn/ui</p>
-            <span class="rounded-full bg-white/10 px-3 py-1 text-xs font-extrabold">Tailwind + Radix</span>
+          shadcnCheckout: `<div class="grid place-items-center rounded-2xl bg-slate-950 p-8 text-white shadow-sm">
+          <button class="w-full rounded-xl bg-white px-5 py-3 font-extrabold text-slate-950">Thanh toán ngay</button>
+        </div>`,
+          shadcn: `<div class="grid gap-2 rounded-2xl bg-slate-950 p-4 text-white shadow-sm">
+          <button class="rounded-xl bg-sky-600 px-5 py-2.5 font-bold text-white hover:bg-sky-700">Primary</button>
+          <button class="rounded-xl bg-slate-100 px-5 py-2.5 font-bold text-slate-900 hover:bg-slate-200">Secondary</button>
+          <button class="rounded-xl bg-red-600 px-5 py-2.5 font-bold text-white hover:bg-red-700">Danger</button>
+        </div>`,
+          componentKits: `<div class="grid gap-3 rounded-2xl bg-white p-5 shadow-sm">
+          <div class="grid gap-2 rounded-2xl border border-slate-200 p-4">
+            <div class="flex items-center justify-between gap-3">
+              <span class="text-sm font-extrabold uppercase tracking-widest text-slate-500">Raw Tailwind</span>
+              <span class="rounded-full bg-red-100 px-3 py-1 text-sm font-extrabold text-red-700">8 classes</span>
+            </div>
+            <button class="rounded-xl bg-sky-600 px-5 py-3 font-bold text-white">Thanh toán</button>
           </div>
-          <div class="mt-5 grid gap-3">
-            <button class="rounded-xl bg-white px-4 py-3 font-extrabold text-slate-950">Button</button>
-            <div class="rounded-xl border border-white/15 p-4 font-bold text-slate-300">Dialog, Select, Tabs</div>
+          <div class="grid grid-cols-2 gap-3">
+            <div class="rounded-2xl bg-slate-950 p-4 text-center text-white">
+              <p class="text-xs font-extrabold uppercase tracking-widest text-sky-300">shadcn/ui</p>
+              <p class="mt-2 text-lg font-extrabold">Button size="lg"</p>
+            </div>
+            <div class="rounded-2xl bg-sky-50 p-4 text-center text-sky-900">
+              <p class="text-xs font-extrabold uppercase tracking-widest text-sky-700">daisyUI</p>
+              <p class="mt-2 text-lg font-extrabold">btn btn-primary</p>
+            </div>
+          </div>
+          <div class="rounded-2xl bg-emerald-100 p-3 text-center font-extrabold text-emerald-800">
+            AI writes API, not long class chains
           </div>
         </div>`,
           classLong: `<div class="grid gap-3">
@@ -1232,28 +1246,25 @@ const colorClass = {
           <div class="flex items-center gap-2 font-extrabold"><span class="rounded-lg bg-slate-100 px-2 py-1">p-2</span><span>+</span><span class="rounded-lg bg-sky-100 px-2 py-1 text-sky-700">p-4</span></div>
           <div class="mt-5 rounded-xl bg-slate-950 p-4 font-mono text-sm font-bold text-white">twMerge -> p-4</div>
         </div>`,
-          responsive: `<div class="grid gap-3">
-          <div class="grid grid-cols-1 gap-2 rounded-2xl bg-white p-4 shadow-sm sm:grid-cols-2">
-            <div class="h-12 rounded-xl bg-sky-100"></div>
-            <div class="h-12 rounded-xl bg-slate-200"></div>
-            <div class="h-12 rounded-xl bg-slate-200"></div>
-            <div class="h-12 rounded-xl bg-sky-100"></div>
-          </div>
-          <p class="text-center text-sm font-extrabold text-slate-500">md:grid-cols-2 / xl:grid-cols-4</p>
+          responsive: `<section class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+          <article class="rounded-2xl border bg-white p-5 shadow-sm">
+            <h3 class="text-lg font-bold">Orders</h3>
+            <p class="mt-2 text-3xl font-extrabold">128</p>
+          </article>
+        </section>`,
+          inputState: `<div class="grid place-items-center rounded-2xl bg-white p-8 shadow-sm">
+          <input class="w-full rounded-xl border border-red-500 px-4 py-3 font-semibold outline-none focus:border-sky-500 focus:ring-4 focus:ring-sky-100" aria-invalid="true" readonly />
         </div>`,
-          form: `<div class="rounded-2xl bg-white p-5 shadow-sm">
-          <label class="text-sm font-extrabold text-slate-500">Email</label>
-          <input class="mt-2 w-full rounded-xl border-2 border-red-400 px-4 py-3 font-bold outline-none" value="wrong@email" readonly />
-          <p class="mt-2 text-sm font-extrabold text-red-600">Email không hợp lệ</p>
+          form: `<label class="grid gap-2 rounded-2xl bg-white p-5 shadow-sm">
+          <span class="text-sm font-bold text-slate-700">Email khách hàng</span>
+          <input aria-invalid="true" class="h-12 rounded-xl border border-red-500 px-4 font-semibold outline-none placeholder:text-slate-400 focus:border-sky-500 focus:ring-4 focus:ring-sky-100" placeholder="name@company.com" readonly />
+          <span class="text-sm font-bold text-red-600">Email không hợp lệ</span>
+        </label>`,
+          darkMode: `<div class="rounded-2xl border bg-white p-6 text-slate-950 shadow-sm dark:border-slate-800 dark:bg-slate-950 dark:text-white">
+          <p class="text-sm font-bold text-slate-500 dark:text-slate-400">System status</p>
         </div>`,
-          darkMode: `<div class="grid gap-3 sm:grid-cols-2">
-          <div class="rounded-2xl bg-white p-5 font-extrabold text-slate-950 shadow-sm">Light</div>
-          <div class="rounded-2xl bg-slate-950 p-5 font-extrabold text-white shadow-sm">Dark</div>
-        </div>`,
-          system: `<div class="grid gap-3">
-          <div class="rounded-2xl bg-white p-4 shadow-sm"><p class="font-extrabold">Token</p><p class="mt-1 text-sm font-bold text-slate-500">color, radius, spacing</p></div>
-          <div class="rounded-2xl bg-white p-4 shadow-sm"><p class="font-extrabold">Component API</p><p class="mt-1 text-sm font-bold text-slate-500">variant, size, state</p></div>
-          <div class="rounded-2xl bg-sky-50 p-4 font-extrabold text-sky-800">Tailwind implementation</div>
+          system: `<div class="grid place-items-center rounded-2xl bg-white p-8 shadow-sm">
+          <button class="rounded-[var(--radius,0.75rem)] bg-sky-600 px-5 py-3 font-bold text-white">Save</button>
         </div>`,
           customConfig: `<div class="grid gap-3">
           <div class="rounded-2xl bg-white p-4 shadow-sm"><p class="font-extrabold text-sky-700">brand.600</p><p class="mt-1 text-sm font-bold text-slate-500">#0284c7</p></div>
@@ -1262,42 +1273,116 @@ const colorClass = {
         </div>`,
           cdnConfig: `<div class="rounded-2xl bg-slate-950 p-5 font-mono text-sm font-bold leading-7 text-slate-100 shadow-sm">
           <p>tailwind.config = {</p>
-          <p class="pl-4 text-sky-300">theme: { extend: ... }</p>
+          <p class="pl-4 text-sky-300">theme: {</p>
+          <p class="pl-8 text-emerald-300">extend: { colors, boxShadow }</p>
           <p>}</p>
-          <div class="mt-4 rounded-xl bg-sky-600 p-3 text-center font-sans text-white">bg-brand</div>
         </div>`,
-          arbitrary: `<div class="rounded-2xl bg-white p-5 shadow-sm">
-          <div class="mx-auto w-[min(260px,100%)] rounded-[1.25rem] bg-slate-950 p-[22px] text-center font-extrabold text-white">w-[min(...)]</div>
-          <p class="mt-4 text-center text-sm font-bold text-slate-500">Dùng ít, dùng có chủ đích</p>
+          arbitrary: `<div class="w-[min(720px,100%)] rounded-[1.25rem] bg-slate-950 p-[22px] text-center font-extrabold text-white shadow-sm">
+          Card có kích thước custom
         </div>`,
           cssVars: `<div class="grid gap-3">
           <div class="rounded-2xl bg-white p-4 font-mono text-sm font-bold shadow-sm">--primary: 199 89% 48%</div>
-          <button class="rounded-xl bg-sky-600 px-5 py-3 font-extrabold text-white shadow-sm">bg-[hsl(var(--primary))]</button>
+          <button class="rounded-xl bg-sky-600 px-5 py-3 font-extrabold text-white shadow-sm">Save</button>
         </div>`,
-          production: `<div class="rounded-2xl bg-white p-5 shadow-sm">
-          <div class="flex items-center justify-between gap-3"><strong>Button</strong><span class="rounded-full bg-emerald-100 px-3 py-1 text-sm font-extrabold text-emerald-700">Reusable</span></div>
-          <div class="mt-5 grid gap-3"><button class="rounded-xl bg-slate-950 px-5 py-3 font-extrabold text-white">Save</button><button class="rounded-xl border px-5 py-3 font-extrabold text-slate-700">Cancel</button></div>
+          saveButton: `<div class="grid place-items-center rounded-2xl bg-white p-8 shadow-sm">
+          <button class="rounded-xl bg-slate-950 px-5 py-3 font-bold text-white transition hover:bg-sky-700">Save</button>
+        </div>`,
+          production: `<div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+          <h3 class="truncate text-lg font-extrabold">Tên sản phẩm rất dài</h3>
+          <p class="mt-1 text-sm font-semibold text-slate-500">SKU: SKU-2026</p>
+          <span class="mt-4 inline-flex rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold text-emerald-700">In stock</span>
+          <button class="mt-5 w-full rounded-xl bg-slate-950 px-4 py-3 font-bold text-white hover:bg-sky-700">Chọn sản phẩm</button>
         </div>`,
           components: `<div class="grid gap-3">
-          <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">Button variant="primary"</div>
-          <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">Button variant="danger"</div>
-          <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">Button disabled</div>
+          <button class="rounded-xl bg-sky-600 px-5 py-3 font-bold text-white hover:bg-sky-700">Primary</button>
+          <button class="rounded-xl bg-red-600 px-5 py-3 font-bold text-white hover:bg-red-700">Danger</button>
         </div>`,
           benefits: `<div class="grid grid-cols-2 gap-3">
           ${["Nhanh", "Ít CSS chết", "Responsive", "Token"].map((item) => `<div class="rounded-2xl bg-white p-5 text-center font-extrabold shadow-sm">${item}</div>`).join("")}
         </div>`,
-          limits: `<div class="rounded-2xl bg-white p-5 shadow-sm">
-          <div class="text-5xl font-extrabold text-slate-300">class=""</div>
-          <p class="mt-4 text-lg font-bold text-slate-600">Cần component + convention để không rối.</p>
+          limits: `<div class="grid gap-3 rounded-2xl bg-white p-5 shadow-sm">
+          <div class="rounded-2xl bg-red-50 p-4">
+            <p class="text-xs font-extrabold uppercase tracking-widest text-red-600">Problem 1</p>
+            <p class="mt-2 font-mono text-sm font-bold leading-6 text-red-700">rounded-xl bg-sky-600 px-5 py-3 font-bold text-white hover:bg-sky-700 ... copied 18 times</p>
+          </div>
+          <div class="rounded-2xl bg-amber-50 p-4">
+            <p class="text-xs font-extrabold uppercase tracking-widest text-amber-700">Problem 2</p>
+            <p class="mt-2 font-mono text-sm font-bold text-amber-800">"bg-" + color + "-600"</p>
+            <p class="mt-1 text-sm font-bold text-amber-800">Compiler may miss this class.</p>
+          </div>
+          <div class="grid grid-cols-3 gap-2 text-center text-sm font-extrabold">
+            <span class="rounded-xl bg-slate-100 p-3">p-[13px]</span>
+            <span class="rounded-xl bg-slate-100 p-3">p-[17px]</span>
+            <span class="rounded-xl bg-slate-100 p-3">p-[19px]</span>
+          </div>
         </div>`,
           mistakes: `<div class="grid gap-3">
-          <div class="rounded-2xl bg-red-50 p-4 font-extrabold text-red-700">Dynamic class mơ hồ</div>
-          <div class="rounded-2xl bg-amber-50 p-4 font-extrabold text-amber-700">Arbitrary value quá tay</div>
-          <div class="rounded-2xl bg-sky-50 p-4 font-extrabold text-sky-700">Thiếu state accessibility</div>
+          <button class="rounded-xl bg-sky-600 px-5 py-3 font-bold text-white">Save</button>
+          <div class="rounded-2xl bg-red-50 p-4 font-extrabold text-red-700">Sai: bg- + color + -600</div>
+          <div class="rounded-2xl bg-emerald-50 p-4 font-extrabold text-emerald-700">Đúng: map class rõ ràng</div>
         </div>`,
           ai: `<div class="rounded-2xl bg-white p-5 shadow-sm">
-          <p class="text-sm font-extrabold uppercase tracking-widest text-sky-700">AI prompt</p>
-          <p class="mt-3 text-2xl font-extrabold">Make this card calmer, denser, production-ready.</p>
+          <div class="rounded-xl bg-slate-50 p-4">
+            <p class="text-sm font-bold text-slate-500">Revenue</p>
+            <p class="mt-2 text-3xl font-extrabold">$48k</p>
+          </div>
+        </div>`,
+          aiCost: `<div class="grid gap-5 rounded-[1.35rem] bg-white p-6 shadow-sm">
+          <div class="flex items-center justify-between gap-4">
+            <div>
+              <p class="text-sm font-extrabold uppercase tracking-widest text-sky-700">Page complexity</p>
+              <p class="mt-1 text-3xl font-extrabold text-slate-950"><span data-ai-level>6</span>/10</p>
+            </div>
+            <div class="rounded-2xl bg-emerald-100 px-4 py-3 text-right">
+              <p class="text-xs font-extrabold uppercase tracking-widest text-emerald-700">Saved</p>
+              <p class="text-2xl font-extrabold text-emerald-800" data-ai-saved>42%</p>
+            </div>
+          </div>
+
+          <input
+            class="w-full accent-sky-600"
+            type="range"
+            min="1"
+            max="10"
+            value="6"
+            data-ai-slider
+            aria-label="Page complexity"
+          />
+
+          <div class="grid gap-4">
+            <div>
+              <div class="mb-2 flex items-center justify-between text-sm font-extrabold">
+                <span>HTML + CSS</span>
+                <span data-ai-css-cost>90 cost units</span>
+              </div>
+              <div class="h-4 overflow-hidden rounded-full bg-slate-100">
+                <div class="h-full rounded-full bg-red-500" data-ai-css-bar style="width: 100%"></div>
+              </div>
+              <p class="mt-2 text-sm font-bold text-slate-500">AI phải giữ selector, cascade và CSS file trong đầu.</p>
+            </div>
+
+            <div>
+              <div class="mb-2 flex items-center justify-between text-sm font-extrabold">
+                <span>Tailwind</span>
+                <span data-ai-tailwind-cost>52 cost units</span>
+              </div>
+              <div class="h-4 overflow-hidden rounded-full bg-slate-100">
+                <div class="h-full rounded-full bg-sky-600" data-ai-tailwind-bar style="width: 58%"></div>
+              </div>
+              <p class="mt-2 text-sm font-bold text-slate-500">AI reads layout, spacing, color, state directly in markup.</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3 text-center">
+            <div class="rounded-2xl bg-red-50 p-3">
+              <p class="text-xs font-extrabold uppercase tracking-widest text-red-600">CSS context</p>
+              <p class="mt-1 text-2xl font-extrabold text-red-700" data-ai-css-context>57%</p>
+            </div>
+            <div class="rounded-2xl bg-sky-50 p-3">
+              <p class="text-xs font-extrabold uppercase tracking-widest text-sky-700">Tailwind context</p>
+              <p class="mt-1 text-2xl font-extrabold text-sky-800" data-ai-tailwind-context>82%</p>
+            </div>
+          </div>
         </div>`,
           aiReview: `<div class="grid gap-3">
           ${["Mobile", "Focus", "Long text", "Loading", "Error"].map((item) => `<div class="flex items-center justify-between rounded-2xl bg-white p-4 font-extrabold shadow-sm"><span>${item}</span><span class="rounded-full bg-emerald-100 px-3 py-1 text-sm text-emerald-700">check</span></div>`).join("")}
@@ -1312,6 +1397,8 @@ const colorClass = {
       }
 
       function renderDots() {
+        if (!el.dots) return;
+
         el.dots.innerHTML = slides
           .map(
             (_, i) =>
@@ -1394,20 +1481,20 @@ const colorClass = {
           storeToken("string", match),
         );
         html = html.replace(
-          /\b(const|let|var|function|return|import|from|export|default|module|theme|extend|colors|borderRadius|className|class|style)\b/g,
-          '<span class="code-token-keyword">$1</span>',
+          /\b(const|let|var|function|return|import|from|export|default|module|theme|extend|colors|borderRadius)\b/g,
+          (match) => storeToken("keyword", match),
         );
         html = html.replace(
           /\b(\d+(?:\.\d+)?)(px|rem|%|vh|vw)?\b/g,
-          '<span class="code-token-number">$1$2</span>',
-        );
-        html = html.replace(
-          /(&lt;\/?)([a-zA-Z][\w:-]*)/g,
-          '$1<span class="code-token-tag">$2</span>',
+          (match) => storeToken("number", match),
         );
         html = html.replace(
           /\s([a-zA-Z_:][-a-zA-Z0-9_:.]*)(=)/g,
           ' <span class="code-token-attr">$1</span>$2',
+        );
+        html = html.replace(
+          /(&lt;\/?)([a-zA-Z][\w:-]*)/g,
+          '$1<span class="code-token-tag">$2</span>',
         );
 
         tokens.forEach(({ key, type, value }) => {
@@ -1418,6 +1505,43 @@ const colorClass = {
         });
 
         return html;
+      }
+
+      function initAiCostCalculator() {
+        const slider = el.visual.querySelector("[data-ai-slider]");
+        if (!slider) return;
+
+        const refs = {
+          level: el.visual.querySelector("[data-ai-level]"),
+          saved: el.visual.querySelector("[data-ai-saved]"),
+          cssCost: el.visual.querySelector("[data-ai-css-cost]"),
+          tailwindCost: el.visual.querySelector("[data-ai-tailwind-cost]"),
+          cssBar: el.visual.querySelector("[data-ai-css-bar]"),
+          tailwindBar: el.visual.querySelector("[data-ai-tailwind-bar]"),
+          cssContext: el.visual.querySelector("[data-ai-css-context]"),
+          tailwindContext: el.visual.querySelector("[data-ai-tailwind-context]"),
+        };
+
+        const update = () => {
+          const level = Number(slider.value);
+          const cssCost = 18 + level * 12;
+          const tailwindCost = 10 + level * 7;
+          const saved = Math.round((1 - tailwindCost / cssCost) * 100);
+          const cssContext = Math.max(42, 78 - level * 3);
+          const tailwindContext = Math.min(96, 70 + level * 2);
+
+          refs.level.textContent = level;
+          refs.saved.textContent = `${saved}%`;
+          refs.cssCost.textContent = `${cssCost} cost units`;
+          refs.tailwindCost.textContent = `${tailwindCost} cost units`;
+          refs.cssBar.style.width = "100%";
+          refs.tailwindBar.style.width = `${Math.round((tailwindCost / cssCost) * 100)}%`;
+          refs.cssContext.textContent = `${cssContext}%`;
+          refs.tailwindContext.textContent = `${tailwindContext}%`;
+        };
+
+        slider.addEventListener("input", update);
+        update();
       }
 
       function renderSlide() {
@@ -1440,6 +1564,7 @@ const colorClass = {
           el.speakerNotes.textContent = "";
         }
         el.visual.innerHTML = visualTemplate(slide.visual);
+        initAiCostCalculator();
         el.prevBtn.disabled = state.index === 0;
         el.nextBtn.disabled = state.index === slides.length - 1;
 
@@ -1508,6 +1633,11 @@ const colorClass = {
       });
       el.openCodeBtn.addEventListener("click", openLightbox);
       el.codePreviewBtn.addEventListener("click", openLightbox);
+      el.codePreviewBtn.addEventListener("keydown", (event) => {
+        if (event.key !== "Enter" && event.key !== " ") return;
+        event.preventDefault();
+        openLightbox();
+      });
       el.closeLightboxBtn.addEventListener("click", closeLightbox);
       el.copyBtn.addEventListener("click", () => copyCurrentCode(el.copyBtn));
       el.lightboxCopyBtn.addEventListener("click", () =>
