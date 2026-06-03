@@ -1,0 +1,93 @@
+[
+  {
+    "id": 1,
+    "empID": "E001",
+    "name": "John Doe",
+    "department": "Software Engineer",
+    "gpa": 60000
+  },
+  {
+    "id": 2,
+    "empID": "E002",
+    "name": "Jane Smith",
+    "department": "Product Manager",
+    "gpa": 75000
+  },
+  {
+    "id": 3,
+    "empID": "E003",
+    "name": "Alice Johnson",
+    "department": "UX Designer",
+    "gpa": 65000
+  },
+  {
+    "id": 4,
+    "empID": "E004",
+    "name": "Student2",
+    "department": "Department2",
+    "gpa": 60000
+  },
+  {
+    "id": 5,
+    "empID": "E005",
+    "name": "Student3",
+    "department": "Department3",
+    "gpa": 70000
+  },
+  {
+    "id": 6,
+    "empID": "E006",
+    "name": "Student4",
+    "department": "Department4",
+    "gpa": 80000
+  },
+  {
+    "id": 7,
+    "empID": "E007",
+    "name": "Student5",
+    "department": "Department5",
+    "gpa": 70000
+  },
+  {
+    "id": 8,
+    "empID": "E008",
+    "name": "Student6",
+    "department": "Department6",
+    "gpa": 65000
+  },
+  {
+    "id": 9,
+    "empID": "E009",
+    "name": "Student7",
+    "department": "Department7",
+    "gpa": 60000
+  },
+  {
+    "id": 10,
+    "empID": "E010",
+    "name": "Student8",
+    "department": "Department8",
+    "gpa": 65000
+  },
+  {
+    "id": 11,
+    "empID": "E011",
+    "name": "Student9",
+    "department": "Department9",
+    "gpa": 70000
+  },
+  {
+    "id": 12,
+    "empID": "E012",
+    "name": "Student10",
+    "department": "Department10",
+    "gpa": 75000
+  },
+  {
+    "id": 13,
+    "empID": "E013",
+    "name": "Student11",
+    "department": "Department11",
+    "gpa": 80000
+  }
+]
