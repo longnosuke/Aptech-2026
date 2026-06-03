@@ -214,6 +214,12 @@ th {
   padding: 0 20px 32px;
 }
 
+.list-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  margin: 14px 0;
+}
+
 .search-row {
   display: flex;
   align-items: center;
@@ -224,7 +230,8 @@ th {
 }
 
 .text-input,
-.gpa-fields input {
+.gpa-fields input,
+.student-form input {
   box-sizing: border-box;
   border: 1px solid var(--border);
   border-radius: 6px;
@@ -244,7 +251,8 @@ th {
 }
 
 .text-input:focus,
-.gpa-fields input:focus {
+.gpa-fields input:focus,
+.student-form input:focus {
   outline: none;
   border-color: var(--accent);
   box-shadow: 0 0 0 3px var(--accent-bg);
@@ -304,6 +312,69 @@ th {
 .gpa-fields input {
   width: 100%;
   padding: 7px 10px;
+}
+
+.student-form {
+  display: grid;
+  gap: 14px;
+}
+
+.student-form label {
+  display: grid;
+  gap: 6px;
+}
+
+.student-form span {
+  color: var(--text-h);
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.student-form input {
+  width: 100%;
+  min-height: 40px;
+  padding: 8px 12px;
+}
+
+.form-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  background: rgba(8, 6, 13, 0.45);
+  z-index: 10;
+}
+
+.modal-panel {
+  box-sizing: border-box;
+  width: min(440px, 100%);
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  box-shadow: var(--shadow);
+  text-align: left;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.modal-header h3 {
+  margin: 0;
+  color: var(--text-h);
 }
 
 .gpa-slider {
@@ -375,6 +446,14 @@ th {
   .gpa-filter__header {
     align-items: stretch;
     flex-direction: column;
+  }
+
+  .list-toolbar {
+    justify-content: stretch;
+  }
+
+  .list-toolbar .counter {
+    justify-content: center;
   }
 
   .text-input {

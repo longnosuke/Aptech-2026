@@ -1,27 +1,56 @@
-import students from '../data/students.json';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import Add from './Add';
 
-const gpaValues = students.map(student => student.gpa);
-const GPA_MIN = Math.min(...gpaValues);
-const GPA_MAX = Math.max(...gpaValues);
-const GPA_STEP = GPA_MAX > 10 ? 1000 : 0.1;
-const formatGpa = (value) => GPA_MAX > 10 ? value.toLocaleString() : value.toFixed(1);
+const formatGpa = (value, maxGpa) => maxGpa > 10 ? value.toLocaleString() : value.toFixed(1);
 
-export default function Student() {
+export default function Student({ students, onAddStudent, onRemoveStudent }) {
+  const gpaValues = useMemo(() => students.map(student => student.gpa), [students]);
+  const GPA_MIN = gpaValues.length ? Math.min(...gpaValues) : 0;
+  const GPA_MAX = gpaValues.length ? Math.max(...gpaValues) : 10;
+  const GPA_STEP = GPA_MAX > 10 ? 1000 : 0.1;
+
   const [searchTerm, setSearchTerm] = useState('');
-  const [filteredStudents, setFilteredStudents] = useState(students);
-
-  const handleNameSearch = () => {
-    const filtered = students.filter(student => student.name.toLowerCase().includes(searchTerm.toLowerCase()));
-    setFilteredStudents(filtered);
-  };
-
+  const [appliedSearchTerm, setAppliedSearchTerm] = useState('');
   const [minGpa, setMinGpa] = useState(GPA_MIN);
   const [maxGpa, setMaxGpa] = useState(GPA_MAX);
+  const [appliedMinGpa, setAppliedMinGpa] = useState(GPA_MIN);
+  const [appliedMaxGpa, setAppliedMaxGpa] = useState(GPA_MAX);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const isAddModalOpen = searchParams.get('add') === 'true';
+
+  const filteredStudents = useMemo(() => {
+    return students.filter((student) => {
+      const matchesName = student.name
+        .toLowerCase()
+        .includes(appliedSearchTerm.toLowerCase());
+      const matchesGpa =
+        student.gpa >= appliedMinGpa && student.gpa <= appliedMaxGpa;
+
+      return matchesName && matchesGpa;
+    });
+  }, [appliedMaxGpa, appliedMinGpa, appliedSearchTerm, students]);
+
+  const handleNameSearch = () => {
+    setAppliedSearchTerm(searchTerm);
+  };
 
   const handleGpaSearch = () => {
-    const filtered = students.filter(student => student.gpa >= minGpa && student.gpa <= maxGpa);
-    setFilteredStudents(filtered);
+    setAppliedMinGpa(minGpa);
+    setAppliedMaxGpa(maxGpa);
+  };
+
+  const handleAddStudent = (student) => {
+    onAddStudent(student);
+    setSearchParams({});
+  };
+
+  const openAddModal = () => {
+    setSearchParams({ add: 'true' });
+  };
+
+  const closeAddModal = () => {
+    setSearchParams({});
   };
 
   const updateMinGpa = (value) => {
@@ -36,6 +65,12 @@ export default function Student() {
 
   return (
     <div className="student-page">
+      <div className="list-toolbar">
+        <button className="counter" type="button" onClick={openAddModal}>
+          Add Student
+        </button>
+      </div>
+
       <div className="search-row">
         <input className="text-input" type="text" placeholder="Search..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
         <button className="counter" onClick={handleNameSearch}>Search</button>
@@ -45,7 +80,7 @@ export default function Student() {
         <div className="gpa-filter__header">
           <div>
             <h3>GPA range</h3>
-            <p>Filter students from {formatGpa(minGpa)} to {formatGpa(maxGpa)}</p>
+            <p>Filter students from {formatGpa(minGpa, GPA_MAX)} to {formatGpa(maxGpa, GPA_MAX)}</p>
           </div>
           <button className="counter" onClick={handleGpaSearch}>Apply</button>
         </div>
@@ -87,13 +122,30 @@ export default function Student() {
                 <td>{student.gpa}</td>
                 <td className="actions">
                   <button className='counter' onClick={() => alert(`Edit student ${student.id}`)}>Edit</button>
-                  <button className='counter' onClick={() => alert(`Delete student ${student.id}`)}>Delete</button>
+                  <button className='counter' onClick={() => onRemoveStudent(student.id)}>Remove</button>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
+
+      {isAddModalOpen && (
+        <div className="modal-backdrop" role="presentation">
+          <section className="modal-panel" role="dialog" aria-modal="true" aria-labelledby="addStudentTitle">
+            <div className="modal-header">
+              <h3 id="addStudentTitle">Add Student</h3>
+              <button className="counter" type="button" onClick={closeAddModal}>
+                Close
+              </button>
+            </div>
+            <Add
+              onAddStudent={handleAddStudent}
+              onCancel={closeAddModal}
+            />
+          </section>
+        </div>
+      )}
     </div>
   )
 }
